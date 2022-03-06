@@ -5,7 +5,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 
 module.exports = {
-    entry: './client/front.js',
+    entry: './client/main.js',
     mode: "development",
   
       output: {
@@ -13,9 +13,22 @@ module.exports = {
         filename: 'bundle.js'
       },
 
-      plugins: [
+
+    module: {
+      rules: [
+        {
+          test: /\.(js|jsx)$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+          },
+        },
+      ]
+    },
+     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebPackPlugin({
-          template: './index.html',
+
+          template: '.client/index.html',
     }),]
 }

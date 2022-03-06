@@ -1,40 +1,51 @@
 const express = require('express');
-const hostname = '127.0.0.1';
 const cors = require('cors');
 
 const app = express();
-app.use('*', cors());
+
+const hostname = '127.0.0.1';
+const PORT = 5000;
+
+const now = new Date()
+//const EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 30)
+
+
+
+const corsOptions = {
+  origin: '*',
+  methods: 'GET, POST, PUT, PATCH',
+  optionsSuccessStatus: 200
+}
+
+app.use(cors(corsOptions));
 const jsonParser = express.json()
-const urlencodedParser = express.urlencoded({extended: false});
+//const urlencodedParser = express.urlencoded({extended: false});
 
 app.get('/', function(request, response){
       
-  response.send("<h1>Hi</h1>");
+  response.send('<h1>hello</h1>');
 });
-
-//ROUTER
-// const MessageTypes = {
-//   validationError: 'ff',
-
-// ] 
 
 const login = async function(request, response) {
   try {
-
-    //response.json(request.body)
-    const data = jsonParser(request.body)
+  const data = request.body
+  if  (data.user === 'olya' && data.password === 123){
+      response.status(200).send('token')
+      const token = {
+       id: 1,
+       expired_time: expired_time,
+      }
+    }
+  
+    else response.status(400).send('login error');
     
-    if (!request.body) return response.status(400).send('');
-    
-    else if  (data.user === 'olya' && data.password === 123) response.status(200).send(true) 
-    else response.send(false)
   }
   catch (error) {
     console.log(error)
   }
 }
 
-const refresh = async function(request, pesponse) {
+const refresh = async function(request, response) {
   req.header('Content-Type')  
   req.header('user-agent')    
   req.header('Authorization')
@@ -42,12 +53,34 @@ const refresh = async function(request, pesponse) {
  }
 
 const router = express.Router()
-router.post('/token', jsonParser, urlencodedParser, login) 
+router.post('/token', jsonParser,  login) 
 
 router.post('/refresh_token')
 //router.get('/users')
 
 app.use('/auth', router)
+
+//const verifyToken = (request, response, next) => {
+ // const bearerToken = request.header
+ 
+
+
+//}
+
+app.get('/users', async (request, response) => {
+  try {
+    const bearerToken = request.headers.authorization
+    if (bearerToken) {
+      response.send('ok')
+    }
+    else response.sendStatus(403).send('acess to the resourse is forbidden')
+  }
+
+  catch(error) {
+
+  }
+})
+    
 
 
 const start = () => {
@@ -62,46 +95,12 @@ const start = () => {
 start()
 
 
-
-
-//mongoose.connect
-
-
-
 // const server = http.createServer(async (request, response) => {
 //     response.setHeader('Content-Type', 'json');
 //     response.setHeader('Access-Control-Allow-Origin', '*');
 //     response.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
 //     //response.writeHead() //statusCode
 
-//     // let dataObject = await JSON.parse(
-//     //     request.body);
-//     let data = '';
-//     request.on('data', chunk => {
-//         data += chunk;
-//       })
-//         console.log("data", data);
-
-
-//     let data = JSON.stringify(dataObject)
-
-//   if (request.url == '/auth/token') {
-//     console.log(response.body)
-//     const body = await JSON.stringify(request.body);
-//     if(user === 'olga' && password) {
-
-//     } 
-//   }
-
-//   response.end(data)
-
-// });
-
-
-// server.listen(1234, hostname, function (){
-
-//     console.log('server listening on http://127.0.0.1:1234')
-// });
 
 
 
