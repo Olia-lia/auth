@@ -26,46 +26,46 @@ app.get('/', function(request, response){
   response.send('<h1>hello</h1>');
 });
 
-const login = async function(request, response) {
+ 
+
+const refresh_token = async function(request, response) {
   try {
-  const data = request.body
-  if  (data.user === 'olya' && data.password === 123){
-      response.status(200).send('token')
+    const data = request.body;
+
+    if(data.grant_type === 'refresh_token') {
       const token = {
-       id: 1,
-       expired_time: expired_time,
+        access_token,
+        token_type: "Bearer"
       }
+      response.json(token)
     }
-  
-    else response.status(400).send('login error');
     
-  }
-  catch (error) {
+
+  } 
+
+  catch(error) {
     console.log(error)
   }
-}
-
-const refresh = async function(request, response) {
-  req.header('Content-Type')  
-  req.header('user-agent')    
-  req.header('Authorization')
 
  }
 
 const router = express.Router()
 router.post('/token', jsonParser,  login) 
 
-router.post('/refresh_token')
+router.post('/refresh_token', jsonParser, refresh_token) 
+
+
+
 //router.get('/users')
 
 app.use('/auth', router)
 
 //const verifyToken = (request, response, next) => {
  // const bearerToken = request.header
- 
+ //}
 
-
-//}
+ //const compareToken 
+ //const compareTime
 
 app.get('/users', async (request, response) => {
   try {
