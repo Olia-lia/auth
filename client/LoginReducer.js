@@ -6,6 +6,8 @@ const initialState = {
     // isAuth: false
 }
 
-export default LoginReducer  = () => {
+const LoginReducer  = () => {
 
 }
+
+export default LoginReducer
