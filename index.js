@@ -2,7 +2,8 @@ const express = require('express');
 require('dotenv').config()
 const cors = require('cors');
 
-const token = process.env.TOKEN
+const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
+const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
 
 const app = express();
 
@@ -10,9 +11,8 @@ const hostname = '127.0.0.1';
 const PORT = 5000;
 
 const now = new Date()
-//const EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 30)
-
-
+console.log(now)
+const EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 30)
 
 const corsOptions = {
   origin: '*',
@@ -34,9 +34,14 @@ const login = async(request, response) => {
   try {
     const data = request.body
     console.log(data)
-    //if  (data.user === 'olya' && data.password === 123){
-      response.status(200).send('token')
-    //} 
+    if  (data.user == 'olya' && data.password === '123'){
+      const token = {
+        access_token: ACCESS_TOKEN,
+        refresh_token: REFRESH_TOKEN,
+        expired_in: EXPIRED_IN
+      }
+      response.status(200).json(token)
+    } 
   }
   catch(error) {
     console.log(error)
@@ -44,7 +49,7 @@ const login = async(request, response) => {
     
 } 
 
-const refresh_token = async function(request, response) {
+const refreshToken = async function(request, response) {
   try {
     const data = request.body;
 
@@ -68,7 +73,7 @@ const refresh_token = async function(request, response) {
 const router = express.Router()
 router.post('/token', jsonParser,  login) 
 
-router.post('/refresh_token', jsonParser, refresh_token) 
+router.post('/refresh_token', jsonParser, refreshToken) 
 
 
 

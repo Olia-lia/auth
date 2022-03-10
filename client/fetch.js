@@ -1,4 +1,4 @@
-const BASE_URL = 'http//localhost:5000';
+const BASE_URL = 'http://localhost:5000';
 
 const checkStatusRequest = (response) => {
     if (response.ok) {
@@ -29,8 +29,8 @@ const  fetchLogin = (body) => {
         },
     )
     .then(checkStatusRequest)
-    .then(alert(body))
     .then((response) => {
+        console.log(response.status)
         return response.json();
     })
  
@@ -39,7 +39,7 @@ const  fetchLogin = (body) => {
       return data
     })
     .then((data) => {
-      (alert('data'))
+      (alert(data))
       localStorage.setItem('access_token', JSON.stringify(data.access_token))
     }) 
   
