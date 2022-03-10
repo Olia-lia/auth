@@ -1,5 +1,6 @@
 const BASE_URL = 'http://localhost:5000';
 
+
 const checkStatusRequest = (response) => {
     if (response.ok) {
       return response;
@@ -8,14 +9,15 @@ const checkStatusRequest = (response) => {
   
     const error = new Error (`${status}`);
     throw error;
-  };
+};
   
+
 const catchError = (error) => {
     if (error.status === 401) {
         alert('not auth')
     }
     
-}
+};
 
 
 const  fetchLogin = (body) => {
@@ -30,13 +32,11 @@ const  fetchLogin = (body) => {
     )
     .then(checkStatusRequest)
     .then((response) => {
-        console.log(response.status)
         return response.json();
     })
- 
     .then((json) => {
-      const data = JSON.stringify(json);
-      return data
+      const data = JSON.parse(json);
+        return data
     })
     .then((data) => {
       (alert(data))

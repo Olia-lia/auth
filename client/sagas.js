@@ -8,13 +8,13 @@ import '@babel/polyfill'
 
 //workers 
 function* loginSaga(action) {
-  //try {
+  try {
     yield call(fetchLogin, action.credentials)
-    //yield put({type: LOGIN_REQUEST_SUCCEEDED})
-  //}
-  // catch {
-  //   yield put({type: LOGIN_REQUEST_FAILED})
-  // }
+  yield put({type: LOGIN_REQUEST_SUCCEEDED})
+  }
+  catch {
+    yield put({type: LOGIN_REQUEST_FAILED})
+  }
 }
 
 

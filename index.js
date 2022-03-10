@@ -34,9 +34,10 @@ const login = async(request, response) => {
   try {
     const data = request.body
     console.log(data)
-    if  (data.user == 'olya' && data.password === '123'){
+    if  (data.user === 'olya' && data.password === '123' || data.user === 'vasya' && data.password === 'qwerty'){
       const token = {
         access_token: ACCESS_TOKEN,
+        token_type: 'bearer',
         refresh_token: REFRESH_TOKEN,
         expired_in: EXPIRED_IN
       }
