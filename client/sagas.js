@@ -1,14 +1,26 @@
-import {put, takeEvery} from 'redux-saga/effects';
-import {LOGIN_SUCCES} from './actions/actionsCreators'
+import {put, takeEvery, call} from 'redux-saga/effects';
+import {LOGIN_REQUEST, LOGIN_REQUEST_SUCCEEDED, LOGIN_REQUEST_FAILED} from './actions/actionConstants';
+import { fetchLogin } from './fetch';
+import '@babel/polyfill'
 
-//put - dispatch
+
 
 
 //workers 
-export function* helloSaga() {
-    console.log('Hello Sagas!')
-  }
+function* loginSaga(action) {
+  //try {
+    yield call(fetchLogin, action.credentials)
+    //yield put({type: LOGIN_REQUEST_SUCCEEDED})
+  //}
+  // catch {
+  //   yield put({type: LOGIN_REQUEST_FAILED})
+  // }
+}
+
 
 
 //wotchers
 
+export default function* authSaga () {
+  yield takeEvery (LOGIN_REQUEST, loginSaga);
+} 

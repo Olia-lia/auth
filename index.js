@@ -1,5 +1,8 @@
 const express = require('express');
+require('dotenv').config()
 const cors = require('cors');
+
+const token = process.env.TOKEN
 
 const app = express();
 
@@ -26,18 +29,20 @@ app.get('/', function(request, response){
   response.send('<h1>hello</h1>');
 });
 
-const login =  async(request, response) => {
+
+const login = async(request, response) => {
   try {
     const data = request.body
-    if  (data.user === 'olya' && data.password === 123){
+    console.log(data)
+    //if  (data.user === 'olya' && data.password === 123){
       response.status(200).send('token')
-    } 
+    //} 
   }
   catch(error) {
     console.log(error)
   }
     
-}
+} 
 
 const refresh_token = async function(request, response) {
   try {

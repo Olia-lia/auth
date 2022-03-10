@@ -1,22 +1,40 @@
 import React  from "react";
-import { SET_AUTHENTICATION } from "./actions/actionConstants";
+import { LOGIN_REQUEST_FAILED, LOGIN_REQUEST_SUCCEEDED, LOGOUT } from "./actions/actionConstants";
 
 const initialState = {
-    userId: null,
-    userLogin: null,
-    isAuth: false,
+    user: null,
+    isLoginned: false,
+    error: null
 }
 
 const LoginReducer  = (state = initialState, action) => {
-    switch (actionType) {
-        case SET_AUTHENTICATION:
-            return {
-                ...state,
+    let newState
+    switch (action.type) {
+   
+        case LOGIN_REQUEST_SUCCEEDED:
+            newState = {...state,
                 ...action.data,
-                isAuth: true  
+                isLoginned: true, 
+                error: null 
             }
-     
+            
+            return newState
 
+        case LOGIN_REQUEST_FAILED: 
+            newState = {
+               ...state, 
+               user: null,
+               error
+            }
+
+            return newState
+
+        case LOGOUT: {
+            newState = initialState;
+
+            return newState
+        }
+        
         default:
             return state;
     

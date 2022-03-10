@@ -1,9 +1,20 @@
 import {React, useState} from 'react';
 
 
-const Login = () => {
+const Login = ({login}) => {
     const[user, setUser] = useState('')
     const[password, setPassword] = useState('')
+
+    const credentials= {
+      user,
+      password
+    }
+
+    const handleSubmit = (evt) => {
+      evt.preventDefault();
+      login(credentials)
+
+    }
 
 
     return(
@@ -25,7 +36,7 @@ const Login = () => {
                 onChange={evt => setPassword(evt.target.value)} />
           </label>
           <div>
-            <button type="submit">Login</button>
+            <button type="submit" onClick={(evt) => handleSubmit(evt)}>Login</button>
           </div>
         </form>
       </div>

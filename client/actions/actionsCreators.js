@@ -1,29 +1,38 @@
 import * as Constants from './actionConstants' 
 
-export const login = (data) => {
+
+export const logOut = () => {
+    return {
+        type: Constants.LOGOUT
+    }
+};
+
+
+export const loginRequest = (credentials) => {
     return {
         type: Constants.LOGIN_REQUEST,
+        credentials
+    }
+};
+
+export const loginSuccess = (data) => {
+    return {
+        type: Constants.LOGIN_REQUEST_SUCCEEDED, 
         data
     }
-}
+};
 
-export const logOut = () => ({
-    type: Constants.LOGOUT
-});
-
-
-export const addUser = (value) => {
+export const loginFailed = (error) => {
     return {
-        type: Constants.ADD_USER,
-        value
+        type: Constants.LOGIN_REQUEST_FAILED, 
+        error
     }
-}
+};
 
-
-export const setAuthenticationData = (data) => {
+export const refreshToken = () => {
     return {
-        type: Constants.SET_AUTHENTICATION, 
-        data
+        type: Constants.REFRESH_TOKEN,
+        credentials
     }
-}
 
+};
