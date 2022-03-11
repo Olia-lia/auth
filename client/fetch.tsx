@@ -5,11 +5,12 @@ const checkStatusRequest = (response) => {
     if (response.ok) {
       return response;
     }
-    const {status} = response;
+    const {status, message} = response;
+
   
-    const error = new Error (`${error}`);
-    alert(error)
-    throw error;
+    //const error = new Error (`${status}- ${statusText}`);
+    alert(message)
+  
 };
   
 
@@ -50,14 +51,14 @@ const  fetchLogin = (body) => {
     })
 }
 
-const refreshToken = () => {
-    fetch(`${BASE_URL}/auth/refresh_token`, 
-        {
-            method: 'POST',
-            body: JSON.stringify(body)
-        },
-    )
-}
+// const refreshToken = () => {
+//     fetch(`${BASE_URL}/auth/refresh_token`, 
+//         {
+//             method: 'POST',
+//             body: JSON.stringify(body)
+//         },
+//     )
+// }
 
 const getResource = () => {
     const token = localStorage.getItem('access_token')

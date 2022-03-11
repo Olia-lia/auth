@@ -61,6 +61,7 @@ app.use(
   const {statusCode, message} = error
   if(error instanceof AuthErrors) 
     response.status(statusCode).json({
+      status: 'error',
       statusCode, 
       message,
     }
@@ -98,10 +99,11 @@ const login = async(request, response, next) => {
     else if (data.user === 'kolya' && data.password === '123') {
       const error =  new AuthErrors(401, 'Такая комбинация логина и пароля не найдена')
       console.log(error)
-      // throw error
+      throw error
       response.status(401).json({
         error: "Такая комбинация логина и пароля не найдена"
       })
+      // throw new AuthErrors(401, 'no')
     }
   
     // else {

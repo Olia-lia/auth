@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const CopyPlugin = require("copy-webpack-plugin");
+//const CopyPlugin = require("copy-webpack-plugin");
 
 
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
       },
     
       resolve: {
-        extensions: ['.js', '.jsx'],
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
         alias: {
         normalize_css: __dirname + '/node_modules/normalize.css/normalize.css',
         },
@@ -31,7 +31,7 @@ module.exports = {
     module: {
       rules: [
         {
-          test: /\.(js|jsx)$/,
+          test: /\..ts$|tsx|.jsx?$$/,
           exclude: /node_modules/,
           use: {
             loader: 'babel-loader',
