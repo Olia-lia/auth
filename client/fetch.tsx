@@ -1,4 +1,6 @@
 const BASE_URL = 'http://localhost:5000';
+import * as types from './authService';
+
 
 
 const checkStatusRequest = (response) => {
@@ -43,7 +45,7 @@ const  fetchLogin = (body) => {
     })
     .then((data) => {
     
-      localStorage.setItem('access_token', JSON.stringify(data.access_token))
+      localStorage.setItem('access_token', JSON.parse(data.accessToken))
     }) 
   
     .catch((error) => {

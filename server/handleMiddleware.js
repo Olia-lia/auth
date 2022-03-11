@@ -13,6 +13,6 @@ module.export = function (error, request, response, next) {
     )
     return response.status(500).json({
       status: "error",
-      message: 'Server error. Something broke!'
+      message: 'Server error. Something broken!'
     })
   };

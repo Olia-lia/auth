@@ -17,7 +17,7 @@ function* loginSaga(action) {
   }
   catch(err) {
 
-    yield put({type: LOGIN_REQUEST_FAILED, error})
+    yield put({type: LOGIN_REQUEST_FAILED, err})
     //yield put({type: LOGOUT})
   }
 }

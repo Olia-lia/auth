@@ -1,8 +1,8 @@
 const express = require('express');
 require('dotenv').config()
 const cors = require('cors');
-// const AuthErrors = require('./server/errors')
-// const errorMiddleware = require('./server/handleMiddleware');
+// const AuthErrors = require('./errors')
+// const errorMiddleware = require('./handleMiddleware');
 
 const app = express();
 const hostname = '127.0.0.1';
@@ -96,20 +96,19 @@ const login = async(request, response, next) => {
       response.status(200).json(token)
     } 
   
-    else if (data.user === 'kolya' && data.password === '123') {
+   if (data.user === 'kolya' && data.password === '123') {
       const error =  new AuthErrors(401, 'Такая комбинация логина и пароля не найдена')
       console.log(error)
-      throw error
+  
       response.status(401).json({
         error: "Такая комбинация логина и пароля не найдена"
       })
       // throw new AuthErrors(401, 'no')
     }
   
-    // else {
-    //   const error = new AuthErrors()
-    //   next(error)
-    // }
+   
+    next()
+    
   }
   catch(error) {
     next(error)
