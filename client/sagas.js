@@ -3,16 +3,19 @@ import {LOGIN_REQUEST, LOGIN_REQUEST_SUCCEEDED, LOGIN_REQUEST_FAILED} from './ac
 import { fetchLogin } from './fetch';
 import '@babel/polyfill'
 
-
-
+//watchers
+export default function* authSaga () {
+  yield takeEvery (LOGIN_REQUEST, loginSaga);
+  // yield takeEvery (LOGIN_REQUEST, loginSaga);
+} 
 
 //workers 
 function* loginSaga(action) {
   try {
-    yield call(fetchLogin, action.credentials)
+    const response = yield call(fetchLogin, action.credentials)
     yield put({type: LOGIN_REQUEST_SUCCEEDED})
   }
-  catch {
+  catch(err) {
 
     yield put({type: LOGIN_REQUEST_FAILED, error})
     //yield put({type: LOGOUT})
@@ -21,8 +24,3 @@ function* loginSaga(action) {
 
 
 
-//wotchers
-
-export default function* authSaga () {
-  yield takeEvery (LOGIN_REQUEST, loginSaga);
-} 
