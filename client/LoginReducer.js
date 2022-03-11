@@ -13,18 +13,19 @@ const LoginReducer  = (state = initialState, action) => {
    
         case LOGIN_REQUEST_SUCCEEDED:
             newState = {...state,
-                ...action.data,
+                user: action.data,
                 isLoginned: true, 
                 error: null 
             }
+            console.log(newState)
             
             return newState
 
         case LOGIN_REQUEST_FAILED: 
             newState = {
-               ...state, 
                user: null,
-               error
+               isLoginned: false,
+               error: error
             }
 
             return newState

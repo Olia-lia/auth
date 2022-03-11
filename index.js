@@ -1,17 +1,15 @@
 const express = require('express');
 require('dotenv').config()
 const cors = require('cors');
-
-const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
-const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
+// const AuthErrors = require('./server/errors')
+// const errorMiddleware = require('./server/handleMiddleware');
 
 const app = express();
-
 const hostname = '127.0.0.1';
 const PORT = 5000;
-
+const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
+const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
 const now = new Date()
-console.log(now)
 const EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 30)
 
 const corsOptions = {
@@ -20,17 +18,72 @@ const corsOptions = {
   optionsSuccessStatus: 200
 }
 
-app.use(cors(corsOptions));
 const jsonParser = express.json()
+const router = express.Router()
+
+/////ERRRORS 
+
+class AuthErrors extends Error {
+  constructor(statusCode, message) {
+    super(message);
+      this.statusCode = statusCode,
+      this.message = message
+    }
+
+
+    Unauthorized(message) {
+      //401 если токен неверен / истекла сессия
+      //нет комбинации пароля и логина
+      statusCode = 401
+      message = message
+    }
+    
+
+    BadRequest(message) {
+
+      //400 или 401 если токен не передан
+    }
+
+    Forbidden () {
+      //403 токен передан и клиент узнан, но не имеет доступа к контенту
+    }
+
+};
+
+
+
+
+app.use(cors(corsOptions));
+app.use('/auth', router);
+app.use(
+  (error, request, response, next) => {
+  console.log(error)
+  const {statusCode, message} = error
+  if(error instanceof AuthErrors) 
+    response.status(statusCode).json({
+      status: "error",
+      statusCode, 
+      message,
+    }
+  )
+  return response.status(500).json({
+    status: "error",
+    message: 'Server error. Something broke!'
+  })
+})
+
+
+
+
 //const urlencodedParser = express.urlencoded({extended: false});
 
-app.get('/', function(request, response){
+// app.get('/', function(request, response){
       
-  response.send('<h1>hello</h1>');
-});
+//   response.send('<h1>hello</h1>');
+// });
 
 
-const login = async(request, response) => {
+const login = async(request, response, next) => {
   try {
     const data = request.body
     console.log(data)
@@ -43,12 +96,39 @@ const login = async(request, response) => {
       }
       response.status(200).json(token)
     } 
+  
+    else if (data.user === 'kolya' && data.password === '123') {
+     const error =  new AuthErrors(401, 'Такая комбинация логина и пароля не найдена')
+     console.log(error)
+      throw error
+    }
+
+    else {
+      const error = new AuthErrors()
+      next(error)
+    }
+   
   }
   catch(error) {
-    console.log(error)
+    next(error)
   }
     
 } 
+
+
+// async validateAccessToken(access_token) {
+//   try {
+//     jwt.verify(access_token, )
+//   }
+// }
+
+// async refresh(refresh_token) {
+//  if(!refresh_token) {
+//    throw Error.
+//  }
+
+// }
+
 
 const refreshToken = async function(request, response) {
   try {
@@ -71,16 +151,11 @@ const refreshToken = async function(request, response) {
 
  }
 
-const router = express.Router()
-router.post('/token', jsonParser,  login) 
-
-router.post('/refresh_token', jsonParser, refreshToken) 
 
 
 
 //router.get('/users')
 
-app.use('/auth', router)
 
 //const verifyToken = (request, response, next) => {
  // const bearerToken = request.header
@@ -103,6 +178,8 @@ app.get('/users', async (request, response) => {
   }
 })
     
+router.post('/token', jsonParser,  login) 
+router.post('/refresh_token', jsonParser, refreshToken) 
 
 
 const start = () => {

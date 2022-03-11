@@ -7,7 +7,8 @@ const checkStatusRequest = (response) => {
     }
     const {status} = response;
   
-    const error = new Error (`${status}`);
+    const error = new Error (`${error}`);
+    alert(error)
     throw error;
 };
   
@@ -34,12 +35,13 @@ const  fetchLogin = (body) => {
     .then((response) => {
         return response.json();
     })
-    .then((json) => {
-      const data = JSON.parse(json);
+    .then((obj) => {
+      const data = JSON.stringify(obj);
+      (alert(data))
         return data
     })
     .then((data) => {
-      (alert(data))
+    
       localStorage.setItem('access_token', JSON.stringify(data.access_token))
     }) 
   

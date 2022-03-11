@@ -10,10 +10,12 @@ import '@babel/polyfill'
 function* loginSaga(action) {
   try {
     yield call(fetchLogin, action.credentials)
-  yield put({type: LOGIN_REQUEST_SUCCEEDED})
+    yield put({type: LOGIN_REQUEST_SUCCEEDED})
   }
   catch {
-    yield put({type: LOGIN_REQUEST_FAILED})
+
+    yield put({type: LOGIN_REQUEST_FAILED, error})
+    //yield put({type: LOGOUT})
   }
 }
 
