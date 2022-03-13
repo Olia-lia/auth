@@ -1,9 +1,8 @@
 import {put, takeEvery, call} from 'redux-saga/effects';
-import {LOGIN_REQUEST, LOGIN_REQUEST_SUCCEEDED, LOGIN_REQUEST_FAILED} from './actions/actionConstants';
-import { fetchLogin } from './fetch';
+import {LOGIN_REQUEST, LOGIN_REQUEST_SUCCEEDED, LOGIN_REQUEST_FAILED, LOGOUT} from './actions/actionConstants';
+import {login} from './fetch';
 import '@babel/polyfill'
 import {LoginResponse, credentials} from './authTypes';
-import { TypedUseSelectorHook } from 'react-redux';
 
 //watchers
 export default function* authSaga () {
@@ -17,13 +16,13 @@ function* loginSaga({type, payload} : {
 }) { 
   try {
     
-    const response: LoginResponse = yield call(fetchLogin, payloadss)
+    const response: LoginResponse = yield call(login, payload)
     yield put({type: LOGIN_REQUEST_SUCCEEDED})
   }
   catch(err) {
 
     yield put({type: LOGIN_REQUEST_FAILED, err})
-    //yield put({type: LOGOUT})
+    yield put({type: LOGOUT})
   }
 }
 

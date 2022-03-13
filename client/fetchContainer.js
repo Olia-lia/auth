@@ -1,28 +1,28 @@
 
-function createFetchContainer(method) { 
-    const defaultOptions = {method};
 
-    return function fetchContainer( url, options) {
-      options || (options = {});
-      return fetch(url, Object.assign(options, defaultOptions));
-    }
-  }
-
-
-
-const fetchRequest = (endpoint, {body, ...someConfig}) => {
-  const defaultHeaders = {'Content-Type': 'application/json'}
-  const config = {
-    method: body ? 'POST' : 'GET',
+export default fetchRequest = (method, endpoint, {body, ...someConfig}) => {
+  const options = {
+    method: method,
     ...customConfig,
     
     headers: {
       'Content-Type': 'application/json',
       ...someConfig.header
-  }
-    if (body) {
-      config.body = JSON.stringify(body)
     }
+  }
 
- 
-}
+  if (body) {
+    config.body = JSON.stringify(body)
+  }  
+
+  return fetch(`${BASE_URL}/${endpoint}`, options)
+    .then(async response => {
+      if (response.ok) {
+        return await response.json()
+      } else {
+        const errorMessage = await response.text()
+        return Promise.reject(new Error(errorMessage))
+      }
+    })
+
+ }

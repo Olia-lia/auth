@@ -1,4 +1,5 @@
 const BASE_URL = 'http://localhost:5000';
+import fetchRequest from './fetchContainer'
 import * as types from './authTypes';
 
 
@@ -25,29 +26,9 @@ import * as types from './authTypes';
 // };
 
 
-const  fetchLogin = (body: types.credentials) => {
-  
-    fetch(`${BASE_URL}/auth/token`, 
-        {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-            },
-            
-            body: JSON.stringify(body)
-        },
-    )
-    .then(async response => {
-        if (response.ok) {
-            const successPesponse: types.LoginResponse = await response.json()
-            return successPesponse
-        }
-        else {
-        const errorMessage = await response.text()
-        return Promise.reject(new Error(errorMessage))
-      }
-    }
-    )
+const login = (body: types.credentials) => {
+  return fetchRequest(`${BASE_URL}/auth/token`, body)
+    
     // .then((data) => {
     
     //   localStorage.setItem('access_token', JSON.parse(data.accessToken))
@@ -80,4 +61,4 @@ const getResource = () => {
 
 
 
-export  {fetchLogin}
+export  {login}
