@@ -1,4 +1,5 @@
-import * as Constants from './actionConstants' 
+import * as Constants from './actionConstants';
+import * as types from '../authTypes';
 
 
 export const logOut = () => {
@@ -8,14 +9,14 @@ export const logOut = () => {
 };
 
 
-export const loginRequest = (credentials) => {
+export const loginRequest = (credentials: types.credentials) => {
     return {
         type: Constants.LOGIN_REQUEST,
         credentials
     }
 };
 
-export const loginSuccess = (data) => {
+export const loginSuccess = (data: types.LoginResponse) => {
     return {
         type: Constants.LOGIN_REQUEST_SUCCEEDED, 
         data
@@ -32,7 +33,7 @@ export const loginFailed = (error) => {
 export const refreshToken = () => {
     return {
         type: Constants.REFRESH_TOKEN,
-        credentials
+        
     }
 
 };

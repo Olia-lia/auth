@@ -25,7 +25,7 @@ const LoginReducer  = (state = initialState, action) => {
             newState = {
                user: null,
                isLoginned: false,
-               error: error
+               error: action.error
             }
 
             return newState

@@ -88,10 +88,10 @@ const login = async(request, response, next) => {
     console.log(data)
     if  (data.user === 'olya' && data.password === '123' || data.user === 'vasya' && data.password === 'qwerty'){
       const token = {
-        access_token: ACCESS_TOKEN,
-        token_type: 'bearer',
-        refresh_token: REFRESH_TOKEN,
-        expired_in: EXPIRED_IN
+        accessToken: ACCESS_TOKEN,
+        tokenType: 'bearer',
+        refreshToken: REFRESH_TOKEN,
+        expiredIn: EXPIRED_IN
       }
       response.status(200).json(token)
     } 

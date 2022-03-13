@@ -1,55 +1,60 @@
 const BASE_URL = 'http://localhost:5000';
-import * as types from './authService';
+import * as types from './authTypes';
 
 
 
-const checkStatusRequest = (response) => {
-    if (response.ok) {
-      return response;
-    }
-    const {status, message} = response;
+// const checkStatusRequest = (response) => {
+//     if (response.ok) {
+//       return response;
+//     }
+//     const {status, message} = response;
 
   
-    //const error = new Error (`${status}- ${statusText}`);
-    alert(message)
+//     //const error = new Error (`${status}- ${statusText}`);
+//     alert(message)
   
-};
+// };
   
 
-const catchError = (error) => {
-    if (error.status === 401) {
-        alert('not auth')
-    }
+// const catchError = (error) => {
+//     console.log(error)
+//     if (error.status === 401) {
+//         alert('not auth')
+//     }
     
-};
+// };
 
 
-const  fetchLogin = (body) => {
+const  fetchLogin = (body: types.credentials) => {
+  
     fetch(`${BASE_URL}/auth/token`, 
         {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
             },
+            
             body: JSON.stringify(body)
         },
     )
-    .then(checkStatusRequest)
-    .then((response) => {
-        return response.json();
-    })
-    .then((obj) => {
-      const data = JSON.stringify(obj);
-      (alert(data))
-        return data
-    })
-    .then((data) => {
+    .then(async response => {
+        if (response.ok) {
+            const successPesponse: types.LoginResponse = await response.json()
+            return successPesponse
+        }
+        else {
+        const errorMessage = await response.text()
+        return Promise.reject(new Error(errorMessage))
+      }
+    }
+    )
+    // .then((data) => {
     
-      localStorage.setItem('access_token', JSON.parse(data.accessToken))
-    }) 
+    //   localStorage.setItem('access_token', JSON.parse(data.accessToken))
+    // }) 
   
     .catch((error) => {
-        catchError(error)
+        console.log(error)
     })
 }
 

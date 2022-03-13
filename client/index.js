@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import App from './app.js';
-import authSaga from './sagas.js';
+import authSaga from './sagas';
 
 
 import {createStore, applyMiddleware} from 'redux';

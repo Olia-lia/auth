@@ -2,11 +2,13 @@ import {React, useState} from 'react';
 
 
 const Login = ({login}) => {
-    const[user, setUser] = useState('')
+    const[username, setUser] = useState('')
     const[password, setPassword] = useState('')
+    const[userValidate, setUserValidate] = useState(false)
+    const[passwordError, setPasswordError] = useState(false)
 
     const credentials= {
-      user,
+      username,
       password
     }
 
