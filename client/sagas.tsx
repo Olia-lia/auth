@@ -6,7 +6,7 @@ import {LoginResponse, credentials} from './authTypes';
 
 //watchers
 export default function* authSaga () {
-  yield takeEvery (LOGIN_REQUEST, loginSaga);
+   yield takeEvery (LOGIN_REQUEST, loginSaga);
   // yield takeEvery (LOGIN_REQUEST, loginSaga);
 } 
 
@@ -17,6 +17,7 @@ function* loginSaga({type, payload} : {
   try {
     
     const response: LoginResponse = yield call(login, payload)
+    localStorage.setItem('accessToken', response.accessToken      )
     yield put({type: LOGIN_REQUEST_SUCCEEDED})
   }
   catch(err) {

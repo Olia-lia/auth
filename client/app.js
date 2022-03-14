@@ -1,4 +1,4 @@
-import React from 'react';
+import {useEffects} from 'react';
 import Login from './components/login';
 import { connect } from 'react-redux';
 import * as actions from './actions/actionsCreators'
@@ -11,6 +11,12 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const App = (props) => {
+
+  useEffect(() => {
+    if(localStorage.)
+  }, [])
+
+
     return (
         <div>
            <Login login={props.login}/>

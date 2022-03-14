@@ -1,21 +1,26 @@
 
 
-export default fetchRequest = (method, endpoint, {body, ...someConfig}) => {
+export default fetchRequest = (method, url, {body, ...someConfig}) => {
+  const token = localStorage.getItem('accessToken')
+
   const options = {
     method: method,
-    ...customConfig,
+    ...someConfig,
     
     headers: {
       'Content-Type': 'application/json',
+
       ...someConfig.header
     }
   }
-
+  
+  if(token) options.headers. headers.Authorization = `Bearer ${token}`
+  s
   if (body) {
     config.body = JSON.stringify(body)
   }  
 
-  return fetch(`${BASE_URL}/${endpoint}`, options)
+  return fetch(url, options)
     .then(async response => {
       if (response.ok) {
         return await response.json()

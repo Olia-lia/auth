@@ -55,6 +55,22 @@ class AuthErrors extends Error {
 
 app.use(cors(corsOptions));
 app.use('/auth', router);
+
+app.use(
+(request, response, next) => {
+  try {
+    const authHeader =  request.headers.Authorization;
+    if(!authHeader) {
+      return next(new AuthErrors(401, 'Токен не найден'))
+    }
+    //проверка на наличие аксес токенаы
+
+  }
+  catch(error) {
+    return next(new AuthErrors(401, 'Пользователь не авторизован'))
+  }
+})
+
 app.use(
   (error, request, response, next) => {
   console.log(error)
@@ -67,7 +83,7 @@ app.use(
     }
   )
   return response.status(500).json({
-    message: 'Server error. Something broke!'
+    message: 'Server error. Something is broken!'
   })
 })
 

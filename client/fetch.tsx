@@ -16,18 +16,8 @@ import * as types from './authTypes';
   
 // };
   
-
-// const catchError = (error) => {
-//     console.log(error)
-//     if (error.status === 401) {
-//         alert('not auth')
-//     }
-    
-// };
-
-
 const login = (body: types.credentials) => {
-  return fetchRequest(`${BASE_URL}/auth/token`, body)
+  fetchRequest(`${BASE_URL}/auth/token`, body)
     
     // .then((data) => {
     
@@ -49,16 +39,14 @@ const login = (body: types.credentials) => {
 // }
 
 const getResource = () => {
-    const token = localStorage.getItem('access_token')
-    fetch(`${BASE_URL}/users`, {
-        method: 'GET',
-        headers: {
-            'Content-type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }  
-    })
+    fetchRequest('GET', `${BASE_URL}/users`)
+}
+
+const logout = () => {
+    return fetchRequest('POST', )
 }
 
 
 
-export  {login}
+
+export  {login, getResource}
