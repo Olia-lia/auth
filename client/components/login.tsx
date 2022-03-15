@@ -1,4 +1,5 @@
-import {React, useState} from 'react';
+import {useState} from 'react';
+import {credentialsLogin} from '../authTypes'
 
 
 const Login = ({login}) => {
@@ -7,7 +8,7 @@ const Login = ({login}) => {
     const[userValidate, setUserValidate] = useState(false)
     const[passwordError, setPasswordError] = useState(false)
 
-    const credentials= {
+    const credentials = {
       username,
       password
     }

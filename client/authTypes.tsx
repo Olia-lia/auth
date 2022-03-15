@@ -1,13 +1,14 @@
-export interface credentials {
+export interface credentialsLogin {
     username: string,
     password: string
 }
 
 
-export interface LoginResponse {
+export type LoginResponse = {
     accessToken: string,
     tokenType: string,
     refreshToken: string,
     expiredIn: number
+    
 }
 

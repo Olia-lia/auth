@@ -27,11 +27,14 @@ const LoginReducer  = (state = initialState, action) => {
                isLoginned: false,
                error: action.error
             }
+            console.log('failed')
+            console.log(newState)
 
             return newState
 
         case LOGOUT: {
             newState = initialState;
+            console.log('logout')
 
             return newState
         }

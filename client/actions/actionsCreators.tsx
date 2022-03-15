@@ -9,7 +9,7 @@ export const logOut = () => {
 };
 
 
-export const loginRequest = (credentials: types.credentials) => {
+export const loginRequest = (credentials: types.credentialsLogin) => {
     return {
         type: Constants.LOGIN_REQUEST,
         credentials
@@ -23,7 +23,7 @@ export const loginSuccess = (data: types.LoginResponse) => {
     }
 };
 
-export const loginFailed = (error) => {
+export const loginFailed = (error: string) => {
     return {
         type: Constants.LOGIN_REQUEST_FAILED, 
         error

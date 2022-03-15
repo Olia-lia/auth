@@ -55,6 +55,20 @@ class AuthErrors extends Error {
 
 app.use(cors(corsOptions));
 app.use('/auth', router);
+// app.use(
+//   (request, response, refreshMW) => {
+//     try {
+//       const authHeader =  request.headers.Authorization;
+//       if(!authHeader) {
+//         return refreshMW(new AuthErrors(401, 'Токен не найден'))
+//       }
+//       //проверка на наличие аксес токена
+  
+//     }
+//     catch(error) {
+//       return refreshMW(new AuthErrors(401, 'Пользователь не авторизован'))
+//     }
+//   })
 app.use(
   (error, request, response, next) => {
   console.log(error)
@@ -67,7 +81,9 @@ app.use(
     }
   )
   return response.status(500).json({
-    message: 'Server error. Something broke!'
+    status: 'error',
+    statusCode,
+    message: 'Server error. Something are broken!'
   })
 })
 
@@ -86,32 +102,29 @@ const login = async(request, response, next) => {
   try {
     const data = request.body
     console.log(data)
-    if  (data.user === 'olya' && data.password === '123' || data.user === 'vasya' && data.password === 'qwerty'){
+
+    if  (data.username === 'olya' && data.password === '123' || data.user === 'vasya' && data.password === 'qwerty'){
       const token = {
         accessToken: ACCESS_TOKEN,
         tokenType: 'bearer',
         refreshToken: REFRESH_TOKEN,
         expiredIn: EXPIRED_IN
       }
-      response.status(200).json(token)
+      return response.status(200).json(token)
     } 
   
-   if (data.user === 'kolya' && data.password === '123') {
-      const error =  new AuthErrors(401, 'Такая комбинация логина и пароля не найдена')
-      console.log(error)
-  
-      response.status(401).json({
-        error: "Такая комбинация логина и пароля не найдена"
-      })
-      // throw new AuthErrors(401, 'no')
-    }
-  
-   
-    next()
+    if (data.username === 'kolya' && data.password === '123') {
+      return next(new AuthErrors(401, 'Такая комбинация логина и пароля не найдена'))
+     }
     
+
+    if (data.username === '' || data.password === '') {
+      return next(new AuthErrors(401, 'Поле формы не может быть пустым'))
+    }
+    next(new AuthErrors(500, 'Server Error'))
   }
   catch(error) {
-    next(error)
+    return next()
   }
     
 } 
@@ -166,6 +179,13 @@ const refreshToken = async function(request, response) {
  //const compareTime
 
 app.get('/users', async (request, response) => {
+  //token.verify() => {
+  //  if(err) new AuthErrors.forbidden
+  // else response.json ({
+  //    message,
+  //     data
+  //})
+  
   try {
     const bearerToken = request.headers.authorization
     if (bearerToken) {
