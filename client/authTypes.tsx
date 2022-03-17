@@ -6,9 +6,8 @@ export interface credentialsLogin {
 
 export type LoginResponse = {
     accessToken: string,
-    tokenType: string,
     refreshToken: string,
-    expiredIn: number
-    
+    accessTokenExpiredIn: number,
+    //refreshTokenExpiredIn: number
 }
 

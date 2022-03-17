@@ -1,7 +1,8 @@
 const BASE_URL = 'http://localhost:5000';
 import {fetchRequest} from './fetchContainer'
 import * as types from './authTypes';
-import { createNoSubstitutionTemplateLiteral } from 'typescript';
+
+ //validation 
 
   
 // const catchError = (error) => {
@@ -14,7 +15,6 @@ import { createNoSubstitutionTemplateLiteral } from 'typescript';
 //   }
 // };
 
-
 const login = (data: types.credentialsLogin) => {
     return fetchRequest('POST', `${BASE_URL}/auth/token`, data)
     .then((response => { 
@@ -24,26 +24,45 @@ const login = (data: types.credentialsLogin) => {
       return response.json()
     }))
     .then(data => {
+      console.log(data)
       localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('refreshToken', data.refreshToken);
+      localStorage.setItem('accessTokenExpiredIn', data.accessTokenExpiredIn)
       return data
     })
     .catch(async error => {
       const body = await error.json()
       alert(body.message)
-         //     const {status, statusText} = error;
-    //     const newerror = new Error (`${status}- ${statusText}`);
-    //     alert(newerror)
-    //  })
-
-      })
-      
-   
+    })
 }
 
 const getResource = () => {
-  fetchRequest('GET', `${BASE_URL}/users`)
+  return fetchRequest('GET', `${BASE_URL}/users`)
+  .then((response => {
+    console.log(response)
+  }))
+  .catch(async error => {
+    const body = await error.json()
+    alert(body.message)
+  })
+}
+
+const checkExpireIn = () => {
+  const now = new Date().getTime()
+  console.log(now)
+  const expireInStr = localStorage.getItem('accessTokenExpiredIn')
+  if(!expireInStr) return null
+  const expireIn = JSON.parse(expireInStr)
+  console.log(expireIn)
+  if (now > expireIn) localStorage.removeItem('accessToken')
+  return expireIn
+}
+
+const refreshToken = (data) => {
+  return fetchRequest('POST', `${BASE_URL}/auth/refresh_token`, data) 
 }
 
 
 
-export  {login, getResource}
+
+export  {login, getResource, checkExpireIn, refreshToken}
