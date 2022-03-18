@@ -1,5 +1,5 @@
 import * as Constants from './actionConstants';
-import * as types from '../authTypes';
+import * as types from '../../authTypes';
 
 
 export const logOut = () => {
@@ -37,16 +37,15 @@ export const refreshToken = (data) => {
     }
 };
 
-export const getResource = () => {
+export const getResource = (resourse: any) => {
     return {
         type: Constants.GET_RESOURSE,
-        //payload???
+        resourse,
     }
 };
 
-export const checkExpiredTime = (time: number) => {
+export const checkExpiredTime = () => {
     return {
         type: Constants.CHECK_EXPIRED_TIME,
-        time
     }
 }

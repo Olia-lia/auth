@@ -3,15 +3,13 @@ require('dotenv').config();
 const cors = require('cors');
 const jwt = require('jsonwebtoken')
 
-
-// const AuthErrors = require('./errors');
-// const errorMiddleware = require('./handleMiddleware');
+//const AuthErrors = require('./errors');
+//const errorMiddleware = require('./handleMiddleware');
 //const Token = require('./token');
 
 const app = express();
 const hostname = '127.0.0.1';
 const PORT = 5000;
-
 
 const corsOptions = {
   origin: '*',
@@ -59,8 +57,10 @@ class AuthErrors extends Error {
       message = message
     }
     
-    BadRequest(message) {
-      //400 или 401 если токен не передан
+    BadRequest(message, errorsArray = []) {
+      this.statusCode = 400,
+      errorsArray = errorsArray,
+      message = message
     }
 
     Forbidden () {
@@ -127,15 +127,20 @@ const login = async(request, response, next) => {
   catch(error) {
     return next()
   }
-    
 } 
+
+// const validateRefreshToken = (request, response, next) => {
+
+// }
 
 const refreshToken = async function(request, response, next) {
   try {
     const data = request.body;
+    if(!data.grant_type || !data.refreshToken) 
+      return next(new AuthErrors)
 
     if (data.grant_type === 'refresh_token') {
-      
+    
     }
     else next(new AuthErrors(401, 'no refresh'))
     
@@ -147,7 +152,7 @@ const refreshToken = async function(request, response, next) {
  }
 
 
- /// GET 
+ //////////////////////// GET 
  const USERS = [
   {user: 'Olya', status: 'single'},
   {user: 'Kolya', status: 'single'},
@@ -179,8 +184,7 @@ const validateAccessToken = (request, response, next) => {
 app.get('/users', validateAccessToken, (request, response) => {
   return response.status(200).json(USERS)
 })
-
-
+////////////////////////////////////
 
 router.post('/token', jsonParser,  login) 
 router.post('/refresh_token', jsonParser, refreshToken) 

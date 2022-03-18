@@ -1,8 +1,8 @@
 import {useEffect} from 'react';
-import Login from './components/login';
+import Login from './authorization/components/login';
 import { connect } from 'react-redux';
-import * as actions from './actions/actionsCreators';
-import { credentialsLogin } from './authTypes';
+import * as actions from './authorization/redux/actions/actionsCreators';
+import { credentialsLogin } from './authorization/authTypes';
 
 const mapDispatchToProps = (dispatch) => {
   return {

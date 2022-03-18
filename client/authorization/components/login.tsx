@@ -19,7 +19,6 @@ const Login = ({login}) => {
 
     }
 
-
     return(
       <div className="login-wrapper">
         <h1>Log In</h1>

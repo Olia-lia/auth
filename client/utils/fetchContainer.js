@@ -1,7 +1,7 @@
 
 const fetchRequest = (method, url, body, ...someConfig) => {
   someConfig = {...someConfig}
-  const token = localStorage.getItem('accessToken')
+  const accessToken = localStorage.getItem('accessToken')
   
   const options = {
     method: method,
@@ -16,9 +16,8 @@ const fetchRequest = (method, url, body, ...someConfig) => {
     options.body = JSON.stringify(body)
   }  
 
-  if(token != null) {
+  if(accessToken != null) {
     options.headers.authorization = `Bearer ${token}`
- 
   }
     
   return fetch(url, options)
