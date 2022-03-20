@@ -40,7 +40,7 @@ class Token {
 
 }
 
-/////ERRRORS 
+/////ERRORS 
 
 class AuthErrors extends Error {
   constructor(statusCode, message, errorsArray) {
@@ -50,20 +50,16 @@ class AuthErrors extends Error {
       this.errorsArray = errorsArray
     }
 
-    Unauthorized(message) {
-      //401 если токен неверен / истекла сессия
-      //нет комбинации пароля и логина
-      statusCode = 401
-      message = message
+    static Unauthorized(message){
+      return new AuthErrors(401, message)
     }
     
-    BadRequest(message, errorsArray = []) {
-      this.statusCode = 400,
-      errorsArray = errorsArray,
-      message = message
+    static BadRequest(message, errorsArray = []) {
+      return new AuthErrors(400, message, errorsArray) 
     }
 
-    Forbidden () {
+    static Forbidden(message) {
+      return new AuthErrors(403, message)
       //403 токен передан и клиент узнан, но не имеет доступа к контенту
     }
 
@@ -75,18 +71,15 @@ app.use('/auth', router);
 app.use(
   (error, request, response, next) => {
   console.log(error)
-  const {statusCode, message} = error
+  const {statusCode, message, errorsArray} = error
   if(error instanceof AuthErrors) 
     response.status(statusCode).json({
-      status: 'error',
-      statusCode, 
       message,
+      errorsArray
     }
   )
   return response.status(500).json({
-    status: 'error',
-    statusCode,
-    message: 'Server error. Something are broken!'
+    message: 'Server error! Something is broken!'
   })
 })
 
@@ -115,12 +108,12 @@ const login = async(request, response, next) => {
     } 
   
     if (data.username === 'kolya' && data.password === '123') {
-      return next(new AuthErrors(401, 'Такая комбинация логина и пароля не найдена'))
+      return next(AuthErrors.Unauthorized(401, 'Такая комбинация логина и пароля не найдена'))
      }
     
 
     if (data.username === '' || data.password === '') {
-      return next(new AuthErrors(400, 'Поле формы не может быть пустым'))
+      return next(new AuthErrors(400, ''))
     }
     next(new AuthErrors(500, 'Server Error'))
   }

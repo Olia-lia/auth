@@ -37,8 +37,7 @@ function* getResourseSaga(action: any) {
     const checkedAceessToken: boolean = yield call(checkExpireIn)
     if (checkedAceessToken == true) 
       yield call(getResource);
-
-    //else yield call(refreshToken)
+    else yield call(refreshToken)
   }
 
   catch(error) {

@@ -66,7 +66,7 @@ const refreshToken = () => {
     localStorage.setItem('accessToken', data.accessToken);
     localStorage.setItem('refreshToken', data.refreshToken);
     localStorage.setItem('accessTokenExpiredIn', data.accessTokenExpiredIn)
-    return data
+    return getResource()
   })
   .catch(async error => {
     const body = await error.json()
