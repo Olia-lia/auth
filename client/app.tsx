@@ -2,7 +2,7 @@ import {useEffect} from 'react';
 import Login from './authorization/components/login';
 import { connect } from 'react-redux';
 import * as actions from './authorization/redux/actions/actionsCreators';
-import { credentialsLogin } from './authorization/authTypes';
+import { credentialsLogin, AuthState } from './authorization/authTypes';
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -11,7 +11,12 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 
-const mapStateToProps = ()
+const mapStateToProps = (state: AuthState) => {
+  return {
+    isLoggined: state.isLoginned,
+  }
+};
+
 
 const App = (props) => {
 
@@ -23,13 +28,15 @@ const App = (props) => {
   // useEffect(() => {
   //   if(localStorage
   // }, [])
-
-
-
+  if(!props.isLoggined) {
+    return(
+      <Login login={props.login}/>
+    )
+  } 
   return (
       <div>
           <button onClick={props.getResource} style={buttonStyle}>get Resourse</button>
-          <Login login={props.login}/>
+          <button></button>
       </div>
   )
 }

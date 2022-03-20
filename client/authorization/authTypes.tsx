@@ -1,3 +1,13 @@
+import { string } from "prop-types"
+
+
+export type AuthState = {
+    user: null,
+    isLoginned: boolean,
+    error: string | null
+
+}
+
 export interface credentialsLogin {
     username: string,
     password: string
