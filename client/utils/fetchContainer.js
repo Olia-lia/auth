@@ -16,9 +16,9 @@ const fetchRequest = (method, url, body, ...someConfig) => {
     options.body = JSON.stringify(body)
   }  
 
-  if(accessToken != null) {
-    options.headers.authorization = `Bearer ${token}`
-  }
+  // if(accessToken != null) {
+  //   options.headers.authorization = `Bearer ${token}`
+  // }
     
   return fetch(url, options)
 }

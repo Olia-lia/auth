@@ -7,9 +7,11 @@ import { credentialsLogin } from './authorization/authTypes';
 const mapDispatchToProps = (dispatch) => {
   return {
     login: (credentials: credentialsLogin): void => {dispatch(actions.loginRequest(credentials))},
-    getResource: () => {dispatch(actions.getResource())}
+    getResource:() => {dispatch(actions.getResource())}
   }
 };
+
+const mapStateToProps = ()
 
 const App = (props) => {
 

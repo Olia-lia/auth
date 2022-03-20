@@ -16,7 +16,7 @@ class AuthErrors extends Error {
     }
 
     static Forbidden(message) {
-      return new AuthErrors(403, )
+      return new AuthErrors(403, message)
       //403 токен передан и клиент узнан, но не имеет доступа к контенту
     }
 

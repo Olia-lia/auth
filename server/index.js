@@ -1,7 +1,9 @@
 const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const { string } = require('prop-types');
+const e = require('express');
 
 //const AuthErrors = require('./errors');
 //const errorMiddleware = require('./handleMiddleware');
@@ -26,8 +28,8 @@ const router = express.Router();
 ////TOKEN
 class Token {
   static generateTokens(username) {
-    const accessToken = jwt.sign(username, proccess.env.ACCESS_TOKEN, {expiresIn: '40m'});
-    const refreshToken = jwt.sign(username, proccess.env.REFRESH_TOKEN, {expiresIn: '50days'})
+    const accessToken = jwt.sign(username, proccess.env.ACCESS_TOKEN, {expiresIn: '40s'});
+    const refreshToken = jwt.sign(username, proccess.env.REFRESH_TOKEN, {expiresIn: '15m'})
    // const now = new Date();
     //const ACCESS_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 2)
    //const REFRESH_TOKEN_EXPIRED_IN = new Date().setDates(now.getMinutes() + 2)
@@ -41,6 +43,11 @@ class Token {
 }
 
 /////ERRORS 
+
+const error = {
+  type: string,
+
+}
 
 class AuthErrors extends Error {
   constructor(statusCode, message, errorsArray) {
@@ -87,9 +94,10 @@ app.use(
 const login = async(request, response, next) => {
   try {
     const data = request.body
+   
     console.log(data)
 
-    if (data.username === 'olya' && data.password === '123' || data.user === 'vasya' && data.password === 'qwerty'){
+    if (data.username === 'olya' && data.password === '123') {
       
       // const accessToken = Token.generateAccessToken({username: data.username});
       // const refreshToken= Token.generateRefreshToken({username: data.username});
@@ -108,16 +116,35 @@ const login = async(request, response, next) => {
     } 
   
     if (data.username === 'kolya' && data.password === '123') {
-      return next(AuthErrors.Unauthorized(401, 'Такая комбинация логина и пароля не найдена'))
+      next(AuthErrors.Unauthorized('Такая комбинация логина и пароля не найдена'))
      }
-    
 
-    if (data.username === '' || data.password === '') {
-      return next(new AuthErrors(400, ''))
+    //validation
+    const errors = []
+
+    if (data.username === '') {
+      errorUser = {
+        type: 'invalid value',
+        field: 'username'
+      }
+      errors.push(errorUser)
     }
+
+    if(data.password === '') {
+      errorPassw = {
+        type: 'invalid value',
+        field: 'password'
+      }
+      errors.push(errorPassw)
+    }
+    next(AuthErrors.BadRequest('Validation error', [...errors]))
+   ////////////////
+
     next(new AuthErrors(500, 'Server Error'))
   }
+
   catch(error) {
+    console.log(error)
     return next()
   }
 } 

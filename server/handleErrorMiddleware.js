@@ -6,7 +6,6 @@ module.export = function (error, request, response, next) {
     const {statusCode, message} = error
     if(error instanceof AuthErrors) 
       response.status(statusCode).json({
-        status: "error",
         statusCode, 
         message,
       }

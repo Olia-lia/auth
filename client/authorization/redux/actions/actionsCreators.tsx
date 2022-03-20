@@ -37,10 +37,9 @@ export const refreshToken = (data) => {
     }
 };
 
-export const getResource = (resourse: any) => {
+export const getResource = () => {
     return {
         type: Constants.GET_RESOURSE,
-        resourse,
     }
 };
 

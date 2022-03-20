@@ -10,11 +10,12 @@ import createSagaMiddleware from 'redux-saga';
 import LoginReducer from './authorization/redux/LoginReducer';
 
 const sagaMiddleware = createSagaMiddleware()
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+//const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
     LoginReducer,
-    composeEnhancers(applyMiddleware(sagaMiddleware))
+    applyMiddleware(sagaMiddleware)
+    //composeEnhancers(applyMiddleware(sagaMiddleware))
 );
   
 sagaMiddleware.run(authSaga)
