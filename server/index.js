@@ -55,6 +55,7 @@ class AuthErrors extends Error {
       this.statusCode = statusCode,
       this.message = message
       this.errorsArray = errorsArray
+      //this.type = type
     }
 
     static Unauthorized(message){

@@ -1,6 +1,7 @@
 const BASE_URL = 'http://localhost:5000';
 import {fetchRequest} from '../utils/fetchContainer'
 import * as types from './authTypes';
+import {catchError} from './errorsService'
 
 const checkRequest = (response: any) => {
   if (response.status >= 400) {
