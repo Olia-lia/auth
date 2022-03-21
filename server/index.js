@@ -40,14 +40,10 @@ class Token {
     }
   }
 
-}
+};
 
 /////ERRORS 
 
-const error = {
-  type: string,
-
-}
 
 class AuthErrors extends Error {
   constructor(statusCode, message, errorsArray) {
@@ -55,22 +51,20 @@ class AuthErrors extends Error {
       this.statusCode = statusCode,
       this.message = message
       this.errorsArray = errorsArray
-      //this.type = type
     }
 
     static Unauthorized(message){
       return new AuthErrors(401, message)
     }
     
-    static BadRequest(message, errorsArray = []) {
-      return new AuthErrors(400, message, errorsArray) 
+    static BadRequest(errorsArray = []) {
+      return new AuthErrors(400, errorsArray) 
     }
 
     static Forbidden(message) {
       return new AuthErrors(403, message)
       //403 токен передан и клиент узнан, но не имеет доступа к контенту
     }
-
 };
 
 
@@ -120,25 +114,28 @@ const login = async(request, response, next) => {
       next(AuthErrors.Unauthorized('Такая комбинация логина и пароля не найдена'))
      }
 
-    //validation
-    const errors = []
+    ////validation
+    ////error required
+    ///invalid value
+    const validationErrors = []
 
     if (data.username === '') {
       errorUser = {
-        type: 'invalid value',
+        type: 'validationError',
         field: 'username'
       }
-      errors.push(errorUser)
+      validationErrors.push(errorUser)
     }
 
     if(data.password === '') {
-      errorPassw = {
-        type: 'invalid value',
+       const errorPassword = {
+        type: 'validationError',
         field: 'password'
       }
-      errors.push(errorPassw)
+      validationErrors.push(errorPassword)
     }
-    next(AuthErrors.BadRequest('Validation error', [...errors]))
+    if(validationErrors.length > 0)
+      next(AuthErrors.BadRequest([...validationErrors]))
    ////////////////
 
     next(new AuthErrors(500, 'Server Error'))

@@ -7,7 +7,8 @@ import { credentialsLogin, AuthState } from './authorization/authTypes';
 const mapDispatchToProps = (dispatch) => {
   return {
     login: (credentials: credentialsLogin): void => {dispatch(actions.loginRequest(credentials))},
-    getResource:() => {dispatch(actions.getResource())}
+    getResource:() => {dispatch(actions.getResource())},
+    logout: () => {dispatch(actions.logOut())}
   }
 };
 
@@ -28,15 +29,16 @@ const App = (props) => {
   // useEffect(() => {
   //   if(localStorage
   // }, [])
-  if(!props.isLoggined) {
-    return(
-      <Login login={props.login}/>
-    )
-  } 
+  // if(props.isLoggined == false) {
+  //   return(
+  //     <Login login={props.login}/>
+  //   )
+  // } 
   return (
       <div>
-          <button onClick={props.getResource} style={buttonStyle}>get Resourse</button>
-          <button></button>
+        <Login login={props.login}/>
+        <button onClick={props.getResource} style={buttonStyle}>get Resourse</button>
+        <button onClick={props.logout} style={buttonStyle}>Log out</button>
       </div>
   )
 }

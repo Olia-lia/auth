@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import App from './app';
-import authSaga from './authorization/sagas';
+import rootSaga from './sagas/rootSaga';
 
 
 import {createStore, applyMiddleware} from 'redux';
@@ -10,15 +10,14 @@ import createSagaMiddleware from 'redux-saga';
 import LoginReducer from './authorization/redux/LoginReducer';
 
 const sagaMiddleware = createSagaMiddleware()
-//const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
     LoginReducer,
-    applyMiddleware(sagaMiddleware)
-    //composeEnhancers(applyMiddleware(sagaMiddleware))
+    composeEnhancers(applyMiddleware(sagaMiddleware))
 );
   
-sagaMiddleware.run(authSaga)
+sagaMiddleware.run(rootSaga)
 
 const action = type => store.dispatch({type})
 

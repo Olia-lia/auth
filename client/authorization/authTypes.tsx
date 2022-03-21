@@ -1,11 +1,7 @@
-import { string } from "prop-types"
-
-
 export type AuthState = {
     user: null,
     isLoginned: boolean,
     error: string | null
-
 }
 
 export interface credentialsLogin {
@@ -27,4 +23,9 @@ export type RefreshTokenRequest = {
     grant_type: string,
     refreshToken: string | null,
 }
+
+export type errorOfValidation = {
+    type: string,
+    field: string
+  }
 

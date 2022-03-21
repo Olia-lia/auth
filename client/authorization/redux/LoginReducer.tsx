@@ -1,7 +1,8 @@
 import React  from "react";
-import { LOGIN_REQUEST_FAILED, LOGIN_REQUEST_SUCCEEDED, LOGOUT } from "./actions/actionConstants";
+import {LOGIN_REQUEST_FAILED, LOGIN_REQUEST_SUCCEEDED, LOGOUT} from "./actions/actionConstants";
+import * as types from '../authTypes'
 
-const initialState = {
+const initialState: types.AuthState = {
     user: null,
     isLoginned: false,
     error: null
@@ -33,7 +34,7 @@ const LoginReducer  = (state = initialState, action) => {
             return newState
 
         case LOGOUT: {
-            newState = initialState;
+            newState = initialState
             console.log('logout')
 
             return newState

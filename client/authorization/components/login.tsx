@@ -5,18 +5,22 @@ import {credentialsLogin} from '../authTypes'
 const Login = ({login}) => {
     const[username, setUser] = useState('')
     const[password, setPassword] = useState('')
-    const[userValidate, setUserValidate] = useState(false)
-    const[passwordError, setPasswordError] = useState(false)
+    // const[userValidate, setUserValidate] = useState(false)
+    // const[passwordError, setPasswordError] = useState(false)
 
     const credentials = {
       username,
       password
     }
 
+    const buttonStyle = {
+      width: '130px',
+      height: '30px',
+    }
+    
     const handleSubmit = (evt) => {
       evt.preventDefault();
       login(credentials)
-
     }
 
     return(
@@ -38,7 +42,7 @@ const Login = ({login}) => {
                 onChange={evt => setPassword(evt.target.value)} />
           </label>
           <div>
-            <button type="submit" onClick={(evt) => handleSubmit(evt)}>Login</button>
+            <button style={buttonStyle} type="submit" onClick={(evt) => handleSubmit(evt)}>Login</button>
           </div>
         </form>
       </div>
