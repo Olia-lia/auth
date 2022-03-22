@@ -6,7 +6,7 @@ import {checkExpireIn, checkRefreshTokenIsExist} from '../authorization/authMidd
 
 import '@babel/polyfill'
 import {LoginResponse, credentialsLogin, Error} from '../authorization/authTypes';
-import { fetchRequest } from '../utils/fetchContainer';
+import {SET_PAGE_ERROR} from '../page/redux/actionCreators'
 
 
 const handleError = async(error: any) => {
@@ -21,6 +21,8 @@ const handleError = async(error: any) => {
        // return;
       //}
       // use logout func
+
+
       localStorage.removeItem('accessToken');
       break
     
@@ -72,11 +74,12 @@ function* loginSaga(action: any) {
       
       if (errorInstance instanceof ValidationError)
         yield put({type: LOGIN_REQUEST_FAILED, error: errorInstance})
-      //else if  (errorInstance instanceof ModalError)
-
+      // else if (errorInstance instanceof ModalError)
+      //   yield put ({type: SET_PAGE_ERROR, error: errorInstance})
+  
        
       yield put({type: LOGOUT})
-      
+    
   }
 };
 
