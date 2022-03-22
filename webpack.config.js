@@ -1,8 +1,8 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-//const CopyPlugin = require("copy-webpack-plugin");
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     entry: './client/index.js',
@@ -37,12 +37,24 @@ module.exports = {
             loader: 'babel-loader',
           },
         },
+        { 
+          test: /\.css$/, 
+          use: [
+            MiniCssExtractPlugin.loader,
+            'css-loader',
+            'postcss-loader'
+          ] 
+        },
       ]
     },
-     plugins: [
+    plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebPackPlugin({
 
           template: 'client/index.html',
-    }),]
+        }),
+        new MiniCssExtractPlugin({
+          filename: "[name].css",
+        }),
+    ]
 }

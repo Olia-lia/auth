@@ -1,0 +1,23 @@
+.login__wrapper {
+    width: 50%;
+    margin: 0 auto;
+};
+
+
+.login__form {
+    border: 1px solid grey;
+};
+
+
+.input {
+   width: 100px; 
+   text-align: center;
+   border-color: green;
+   border-radius: 12px;
+   padding: 5px;
+};
+
+
+.input--not-valid {
+    border-color: red;
+}

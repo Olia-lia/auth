@@ -23,7 +23,7 @@ export const loginSuccess = (data: types.LoginResponse) => {
     }
 };
 
-export const loginFailed = (error: string) => {
+export const loginFailed = (error) => {
     return {
         type: Constants.LOGIN_REQUEST_FAILED, 
         error

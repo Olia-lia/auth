@@ -1,48 +1,107 @@
 import {put, takeEvery, call, takeLeading} from 'redux-saga/effects';
-import {LOGIN_REQUEST, LOGIN_REQUEST_SUCCEEDED, LOGIN_REQUEST_FAILED, LOGOUT, GET_RESOURSE, REFRESH_TOKEN, CHECK_EXPIRED_TIME} from '../authorization/redux/actions/actionConstants';
+import {LOGIN_REQUEST, LOGIN_REQUEST_SUCCEEDED, LOGIN_REQUEST_FAILED, LOGOUT, REFRESH_TOKEN, CHECK_EXPIRED_TIME} from '../authorization/redux/actions/actionConstants';
 import {login, refreshToken, logout, saveTokensToLocalStorage} from '../authorization/authFetch';
 import {getResource} from '../client/clientRequest'
 import {checkExpireIn, checkRefreshTokenIsExist} from '../authorization/authMiddlewares'
 
 import '@babel/polyfill'
-import {LoginResponse, credentialsLogin} from '../authorization/authTypes';
+import {LoginResponse, credentialsLogin, Error} from '../authorization/authTypes';
 import { fetchRequest } from '../utils/fetchContainer';
 
 
-export default function* authSaga () {
-  yield takeEvery(LOGIN_REQUEST, loginSaga);
-  yield takeLeading(CHECK_EXPIRED_TIME, checkExpireIn)
+const catchError = async(error: any) => {
+  const data: Error = await error.json()
+  const {message, errorsArray} = data
+
+  switch (error.status) {
+      case(401):
+
+      //if(!retried) { 
+      // retry
+       // return;
+      //}
+      // use logout func
+      localStorage.removeItem('accessToken');
+      break
+    
+    case(400): 
+      return data
+      break
+    }
+};
+
+
+export class AppError {
+  message: string
+  errors: Array<any>
+
+  constructor(message: string, errors) {
+    this.message = message;
+    this.errors = errors
+  }
+}
+
+export class ValidationError extends AppError {
+  constructor(message: string, errors) {
+    super(message, errors);
+    this.message = message,
+    this.errors = errors
+  }
+
+  static createValidError(errors) {
+    return new ValidationError('validationError', errors)
+  }
+}
+
+export class ModalError extends AppError {
+  constructor(message: string, errors) {
+    super(message, errors);
+    
+  }
+  static createModalError(errors) {
+    return new ModalError('modalError', errors)
+  }
 } 
 
+export default function* authSaga () {
+  yield takeEvery(LOGIN_REQUEST, loginSaga);
+  //yield takeLeading(CHECK_EXPIRED_TIME, checkExpireIn)
+} 
 
+// 
 
 function* loginSaga(action: any) { 
   try {
     const response: LoginResponse = yield call(login, action.credentials)
-    console.log(response)
-      
-    if(response) yield put({type: LOGIN_REQUEST_SUCCEEDED, response})  
-    //const validationErr: ValidationError = {
-
+    if(response) {
+      yield (saveTokensToLocalStorage(response)) 
+      yield put({type: LOGIN_REQUEST_SUCCEEDED, response})  
     }
-    //error mapper;
-    // map.validationErrMapper(err => {
-    //   const { errStatus, message, field } = err;
-    //   return {
-    //     type: field,
-    //     message,
-    //   };
-    // }); 
-    // yield put({type: LOGIN_REQUEST_FAILED, validationErr})
+ }
 
-  //}
-  catch(error ) {
-    //if (error instanceof ValidationError) {
-      console.log(error)
-   // }
+  catch(error) {
+    const err: Error = yield (catchError(error))
+    console.log(err)
 
-    yield put({type: LOGIN_REQUEST_FAILED, error})
-    yield put({type: LOGOUT})
+    // const createError = (err) => {
+    //      switch(err.message) {
+    //         case('validationError'): 
+    //           return ValidationError.createValidError(err.errorsArray)
+    //         break;
+    //         case('modalError'):
+    //           return ModalError.createModalError(err.errorsArray)
+    //         break 
+    //         default:
+    //           return null
+    //           //return AppError.createAppError()
+    //       }
+    //     }
+    //    const errorInstance = createError(err);
+    //    console.log(errorInstance)
+    //   if (errorInstance instanceof ValidationError)
+      yield put({type: LOGIN_REQUEST_FAILED, err})
+      
+      yield put({type: LOGOUT})
   }
 };
 

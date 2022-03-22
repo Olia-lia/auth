@@ -44,12 +44,11 @@ class Token {
 
 /////ERRORS 
 
-
 class AuthErrors extends Error {
   constructor(statusCode, message, errorsArray) {
     super(message);
       this.statusCode = statusCode,
-      this.message = message
+      this.message = message,
       this.errorsArray = errorsArray
     }
 
@@ -57,14 +56,15 @@ class AuthErrors extends Error {
       return new AuthErrors(401, message)
     }
     
-    static BadRequest(errorsArray = []) {
-      return new AuthErrors(400, errorsArray) 
+    static BadRequest(message, errorsArray = []) {
+      return new AuthErrors(400, message, errorsArray) 
     }
 
-    static Forbidden(message) {
+    static ForbiddenError(message) {
       return new AuthErrors(403, message)
       //403 токен передан и клиент узнан, но не имеет доступа к контенту
     }
+
 };
 
 
@@ -121,21 +121,21 @@ const login = async(request, response, next) => {
 
     if (data.username === '') {
       errorUser = {
-        type: 'validationError',
-        field: 'username'
+        field: 'username',
+        subtype: 'required error'
       }
       validationErrors.push(errorUser)
     }
 
     if(data.password === '') {
        const errorPassword = {
-        type: 'validationError',
-        field: 'password'
+        field: 'password',
+        subtype: 'required error'
       }
       validationErrors.push(errorPassword)
     }
     if(validationErrors.length > 0)
-      next(AuthErrors.BadRequest([...validationErrors]))
+      next(AuthErrors.BadRequest('validationError', [...validationErrors]))
    ////////////////
 
     next(new AuthErrors(500, 'Server Error'))

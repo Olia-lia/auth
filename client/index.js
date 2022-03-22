@@ -1,19 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'normalize.css';
 import {Provider} from 'react-redux';
 import App from './app';
 import rootSaga from './sagas/rootSaga';
 
 
 import {createStore, applyMiddleware} from 'redux';
-import createSagaMiddleware from 'redux-saga'; 
+import createSagaMiddleware from 'redux-saga';
+import rootReducer from './rootReducer'; 
 import LoginReducer from './authorization/redux/LoginReducer';
 
 const sagaMiddleware = createSagaMiddleware()
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
-    LoginReducer,
+    rootReducer,
     composeEnhancers(applyMiddleware(sagaMiddleware))
 );
   

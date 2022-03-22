@@ -1,7 +1,17 @@
+export type ErrorElement = {
+    field: string
+    subtype: string
+} 
+
+export type Error = {
+   message: string,
+   errorsArray: Array<ErrorElement>
+}
+
 export type AuthState = {
     user: null,
     isLoginned: boolean,
-    error: string | null
+    error: Error | null
 }
 
 export interface credentialsLogin {
