@@ -1,0 +1,32 @@
+.modal {
+    position: fixed;
+    margin-top: 40px;
+    width: 40% ;
+    height: auto;
+    border: 1px solid red;
+    background-color: rgba(0, 0, 0 , 0.8);
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+
+
+.modal.active {
+    display: block;
+}
+
+  
+.modal__content {
+    padding: 15px;
+    background-color: white;
+    border-radius: 10px;
+    height: auto;
+}
+
+.modal__content.active{
+}
+  
+
+  

@@ -1,0 +1,5 @@
+
+
+const defaultState = {
+    pageError: null
+}

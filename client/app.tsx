@@ -1,8 +1,9 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import Login from './authorization/components/login/login';
+import Modal from './page/components/modal/modal';
 import { connect } from 'react-redux';
-import * as actions from './authorization/redux/actions/actionsCreators';
-import { credentialsLogin, AuthState } from './authorization/authTypes';
+import * as actions from './authorization/redux/actionsCreators';
+import { credentialsLogin, AuthState } from './authorization/authTypes'
 
 
 const mapDispatchToProps = (dispatch) => {
@@ -23,6 +24,8 @@ const mapStateToProps = (state: AuthState) => {
 
 const App = (props) => {
   const{errors} = props
+
+
   const buttonStyle = {
     width: '130px',
     height: '30px',
@@ -43,11 +46,12 @@ const App = (props) => {
   //   )
   // } 
 
-
+const [modalOpened, setModal] = useState(true)
 
   return (
       <div>
         <Login login={props.login} errors={props.errors}/>
+        <Modal active={modalOpened} setActive={setModal}></Modal>
         <button onClick={props.getResource} style={buttonStyle}>get Resourse</button>
         <button onClick={props.logout} style={buttonStyle}>Log out</button>
       </div>

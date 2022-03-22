@@ -1,7 +1,7 @@
 import {put, takeEvery, call, takeLeading} from 'redux-saga/effects';
-import {LOGIN_REQUEST, LOGIN_REQUEST_SUCCEEDED, LOGIN_REQUEST_FAILED, LOGOUT, REFRESH_TOKEN, CHECK_EXPIRED_TIME} from '../authorization/redux/actions/actionConstants';
+import {LOGIN_REQUEST, LOGIN_REQUEST_SUCCEEDED, LOGIN_REQUEST_FAILED, LOGOUT, REFRESH_TOKEN, CHECK_EXPIRED_TIME, HANDLE_ERROR} from '../authorization/redux/actionConstants';
 import {login, refreshToken, logout, saveTokensToLocalStorage} from '../authorization/authFetch';
-import {getResource} from '../client/clientRequest'
+import {ValidationError, ModalError} from '../errorsMapper'
 import {checkExpireIn, checkRefreshTokenIsExist} from '../authorization/authMiddlewares'
 
 import '@babel/polyfill'
@@ -9,7 +9,7 @@ import {LoginResponse, credentialsLogin, Error} from '../authorization/authTypes
 import { fetchRequest } from '../utils/fetchContainer';
 
 
-const catchError = async(error: any) => {
+const handleError = async(error: any) => {
   const data: Error = await error.json()
   const {message, errorsArray} = data
 
@@ -31,40 +31,11 @@ const catchError = async(error: any) => {
 };
 
 
-export class AppError {
-  message: string
-  errors: Array<any>
 
-  constructor(message: string, errors) {
-    this.message = message;
-    this.errors = errors
-  }
-}
-
-export class ValidationError extends AppError {
-  constructor(message: string, errors) {
-    super(message, errors);
-    this.message = message,
-    this.errors = errors
-  }
-
-  static createValidError(errors) {
-    return new ValidationError('validationError', errors)
-  }
-}
-
-export class ModalError extends AppError {
-  constructor(message: string, errors) {
-    super(message, errors);
-    
-  }
-  static createModalError(errors) {
-    return new ModalError('modalError', errors)
-  }
-} 
 
 export default function* authSaga () {
   yield takeEvery(LOGIN_REQUEST, loginSaga);
+ // yield takeEvery(HANDLE_ERROR, handleError)
   //yield takeLeading(CHECK_EXPIRED_TIME, checkExpireIn)
 } 
 
@@ -80,28 +51,32 @@ function* loginSaga(action: any) {
  }
 
   catch(error) {
-    const err: Error = yield (catchError(error))
+    const err = yield call(handleError, error)
+
     console.log(err)
 
-    // const createError = (err) => {
-    //      switch(err.message) {
-    //         case('validationError'): 
-    //           return ValidationError.createValidError(err.errorsArray)
-    //         break;
-    //         case('modalError'):
-    //           return ModalError.createModalError(err.errorsArray)
-    //         break 
-    //         default:
-    //           return null
-    //           //return AppError.createAppError()
-    //       }
-    //     }
-    //    const errorInstance = createError(err);
-    //    console.log(errorInstance)
-    //   if (errorInstance instanceof ValidationError)
-      yield put({type: LOGIN_REQUEST_FAILED, err})
+    const createError = (err) => {
+         switch(err.message) {
+            case('validationError'): 
+              return ValidationError.createValidError(err.errorsArray)
+            break;
+            case('modalError'):
+              return ModalError.createModalError(err.errorsArray)
+            break 
+            default:
+              return null
+              //return AppError.createAppError()
+          }
+        }
+       const errorInstance = createError(err);
       
+      if (errorInstance instanceof ValidationError)
+        yield put({type: LOGIN_REQUEST_FAILED, error: errorInstance})
+      //else if  (errorInstance instanceof ModalError)
+
+       
       yield put({type: LOGOUT})
+      
   }
 };
 

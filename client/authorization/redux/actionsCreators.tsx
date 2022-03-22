@@ -1,5 +1,5 @@
 import * as Constants from './actionConstants';
-import * as types from '../../authTypes';
+import * as types from '../authTypes';
 
 
 export const logOut = () => {
@@ -46,5 +46,12 @@ export const getResource = () => {
 export const checkExpiredTime = () => {
     return {
         type: Constants.CHECK_EXPIRED_TIME,
+    }
+}
+
+export const  handleErrors = (error) => {
+    return {
+        type: Constants.HANDLE_ERROR,
+        error
     }
 }
