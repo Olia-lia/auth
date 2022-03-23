@@ -1,11 +1,12 @@
 const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
-const jwt = require('jsonwebtoken');
-
-//const AuthErrors = require('./errors');
+const AuthErrors = require('./errors');
 const errorMiddleware = require('./handleErrorMiddleware');
-//const Token = require('./token');
+const Token = require('./tokenService');
+
+const sc = process.env.ACCESS_TOKEN
+console.log(sc)
 
 const app = express();
 const hostname = '127.0.0.1';
@@ -21,90 +22,30 @@ const jsonParser = express.json();
 const router = express.Router();
 //const urlencodedParser = express.urlencoded({extended: false});
 
-
-
-////TOKEN
-class Token {
-  static generateTokens(username) {
-    const accessToken = jwt.sign(username, proccess.env.ACCESS_TOKEN, {expiresIn: '40s'});
-    const refreshToken = jwt.sign(username, proccess.env.REFRESH_TOKEN, {expiresIn: '15m'})
-   // const now = new Date();
-    //const ACCESS_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 2)
-   //const REFRESH_TOKEN_EXPIRED_IN = new Date().setDates(now.getMinutes() + 2)
-   
-    return  {
-      accessToken,
-      refreshToken
-    }
-  }
-
-};
-
-/////ERRORS 
-
-class AuthErrors extends Error {
-  constructor(statusCode, message, errorsArray) {
-    super(message);
-      this.statusCode = statusCode,
-      this.message = message,
-      this.errorsArray = errorsArray
-    }
-
-    static Unauthorized(message, errorsArray){
-      return new AuthErrors(401, message, errorsArray)
-    }
-    
-    static BadRequest(message, errorsArray = []) {
-      return new AuthErrors(400, message, errorsArray) 
-    }
-
-    static ForbiddenError(message) {
-      return new AuthErrors(403, message)
-      //403 токен передан и клиент узнан, но не имеет доступа к контенту
-    }
-
-};
-
-
 app.use(cors(corsOptions));
 app.use('/auth', router);
 app.use(errorMiddleware)
-// app.use(
-//   (error, request, response, next) => {
-//   console.log(error)
-//   const {statusCode, message, errorsArray} = error
-//   if(error instanceof AuthErrors) 
-//     response.status(statusCode).json({
-//       message,
-//       errorsArray
-//     }
-//   )
-//   return response.status(500).json({message: 'modalError',
-//     errorsArray: 'Server error! Something is broken!'
-//   })
-// })
 
 
-const login = async(request, response, errorMiddleware, next) => {
+
+const login = async(request, response, next) => {
   try {
     const data = request.body
    
     console.log(data)
 
     if (data.username === 'olya' && data.password === '123') {
-      
-      // const accessToken = Token.generateAccessToken({username: data.username});
-      // const refreshToken= Token.generateRefreshToken({username: data.username});
-     //const responseData = Token.generateTokens({username: data.username})
-    const now = new Date();
-    const ACCESS_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 2)
-    //const REFRESH_TOKEN_EXPIRED_IN = new Date().setDates(now.getMinutes() + 2)
-     const responseData = {
-       accessToken: 'eeeeeeerff',
-       refreshToken: 'fdss',
-       accessTokenExpiredIn: ACCESS_TOKEN_EXPIRED_IN,
-       //refreshTokenExpiredIn: REFRESH_TOKEN_EXPIRED_IN
-     }
+      const accessToken = Token.generateAccessToken('olya');
+      const refreshToken = Token.generateRefreshToken('olya');
+      const now = new Date();
+      const ACCESS_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 2)
+      const REFRESH_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 10)
+      const responseData = {
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+        accessTokenExpiredIn: ACCESS_TOKEN_EXPIRED_IN,
+        refreshTokenExpiredIn: REFRESH_TOKEN_EXPIRED_IN
+      }
       console.log(responseData)
       return response.status(200).json(responseData)
     } 

@@ -1,7 +1,6 @@
 const AuthErrors = require('./errors')
 
-module.export = (error, request, response, next) => {
-  console.log(error)
+module.exports = (error, request, response, next) => {
   const {statusCode, message, errorsArray} = error
   if(error instanceof AuthErrors) 
     response.status(statusCode).json({
