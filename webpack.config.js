@@ -42,7 +42,17 @@ module.exports = {
           test: /\.css$/, 
           use: [
             MiniCssExtractPlugin.loader,
-            'css-loader',
+            //'style-loader',
+            {
+              loader: require.resolve("css-loader"),
+              options: {
+                sourceMap: true,
+                importLoaders: 1,
+                modules: {
+                  localIdentName: "z[hash:base64]"
+                }
+              }
+            },
             'postcss-loader'
           ] 
         },

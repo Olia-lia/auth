@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import {credentialsLogin, FieldErrors} from '../../authTypes';
-import './login.css';
+import './login.module.css';
 
 
 const Login: React.FC = (props) => {
