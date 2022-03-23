@@ -4,7 +4,7 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 
 //const AuthErrors = require('./errors');
-//const errorMiddleware = require('./handleMiddleware');
+const errorMiddleware = require('./handleErrorMiddleware');
 //const Token = require('./token');
 
 const app = express();
@@ -68,23 +68,24 @@ class AuthErrors extends Error {
 
 app.use(cors(corsOptions));
 app.use('/auth', router);
-app.use(
-  (error, request, response, next) => {
-  console.log(error)
-  const {statusCode, message, errorsArray} = error
-  if(error instanceof AuthErrors) 
-    response.status(statusCode).json({
-      message,
-      errorsArray
-    }
-  )
-  return response.status(500).json({message: 'modalError',
-    errorsArray: 'Server error! Something is broken!'
-  })
-})
+app.use(errorMiddleware)
+// app.use(
+//   (error, request, response, next) => {
+//   console.log(error)
+//   const {statusCode, message, errorsArray} = error
+//   if(error instanceof AuthErrors) 
+//     response.status(statusCode).json({
+//       message,
+//       errorsArray
+//     }
+//   )
+//   return response.status(500).json({message: 'modalError',
+//     errorsArray: 'Server error! Something is broken!'
+//   })
+// })
 
 
-const login = async(request, response, next) => {
+const login = async(request, response, errorMiddleware, next) => {
   try {
     const data = request.body
    

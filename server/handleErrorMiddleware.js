@@ -1,17 +1,15 @@
 const AuthErrors = require('./errors')
 
-
-module.export = function (error, request, response, next) {
-    console.log(error)
-    const {statusCode, message} = error
-    if(error instanceof AuthErrors) 
-      response.status(statusCode).json({
-        statusCode, 
-        message,
-      }
-    )
-    return response.status(500).json({
-      status: "error",
-      message: 'Server error. Something broken!'
-    })
-  };
+module.export = (error, request, response, next) => {
+  console.log(error)
+  const {statusCode, message, errorsArray} = error
+  if(error instanceof AuthErrors) 
+    response.status(statusCode).json({
+      message,
+      errorsArray
+    }
+  )
+  return response.status(500).json({message: 'modalError',
+    errorsArray: 'Server error! Something is broken!'
+  })
+};
