@@ -2,30 +2,40 @@ import {useEffect, useState} from 'react';
 import Login from './authorization/components/login/login';
 import Modal from './page/components/modal/modal';
 import { connect } from 'react-redux';
-import * as actions from './authorization/redux/actionsCreators';
-import { credentialsLogin, AuthState } from './authorization/authTypes'
+import * as authActions from './authorization/redux/actionsCreators';
+import * as clientActions from './client/redux/actionsCreators'
+import * as types from './authorization/authTypes'
+import {PageState} from './page/pageTypes'
+
+
+export type globalState = {
+    login: types.AuthState
+    page: PageState
+}
 
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    login: (credentials: credentialsLogin): void => {dispatch(actions.loginRequest(credentials))},
-    getResource:() => {dispatch(actions.getResource())},
-    logout: () => {dispatch(actions.logOut())}
+    login: (credentials: types.credentialsLogin): void => {dispatch(authActions.loginRequest(credentials))},
+    getResource:() => {dispatch(clientActions.getResource())},
+    logout: () => {dispatch(authActions.logOut())}
   }
 };
 
-const mapStateToProps = (state: AuthState) => {
+const mapStateToProps = (state: globalState) => {
   return {
-    isLoggined: state.isLoginned,
-    errors: state.error
+    isLoggined: state.login.isLoginned,
+    usernameErrors: state.login.userFieldErrors,
+    passwordErrors: state.login.passwordFieldErrors,
+    isFetchingError: state.page.isFetchingError,
+    pageError: state.page.pageError
   }
 };
 
 
-const App = (props) => {
-  const{errors} = props
-
-
+const App: React.FC = (props) => {
+  const{pageError, isFetchingError} = props
+  
   const buttonStyle = {
     width: '130px',
     height: '30px',
@@ -45,13 +55,24 @@ const App = (props) => {
   //     <Login login={props.login}/>
   //   )
   // } 
+  
+  const [modalOpened, setModal] = useState(true)
+  
 
-const [modalOpened, setModal] = useState(true)
 
   return (
       <div>
-        <Login login={props.login} errors={props.errors}/>
-        <Modal active={modalOpened} setActive={setModal}></Modal>
+        <Login 
+          login={props.login} 
+          usernameErrors={props.usernameErrors}
+          passwordErrors={props.passwordErrors}/>
+        {isFetchingError &&
+          <Modal active={modalOpened} setActive={setModal}>
+            {<span>
+              {pageError.errors}
+            </span>} 
+          </Modal>
+        }
         <button onClick={props.getResource} style={buttonStyle}>get Resourse</button>
         <button onClick={props.logout} style={buttonStyle}>Log out</button>
       </div>

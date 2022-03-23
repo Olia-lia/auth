@@ -1,6 +1,7 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 import {getResource} from '../client/clientRequest';
-import {LOGIN_REQUEST_FAILED, LOGOUT, GET_RESOURSE} from '../authorization/redux/actionConstants';
+import {LOGIN_REQUEST_FAILED, LOGOUT} from '../authorization/redux/actionConstants';
+import { GET_RESOURSE } from "../client/redux/actionConstants";
 
 export default function* clientRequestSaga () {
     yield takeEvery(GET_RESOURSE, getResourseSaga)

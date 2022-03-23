@@ -50,8 +50,8 @@ class AuthErrors extends Error {
       this.errorsArray = errorsArray
     }
 
-    static Unauthorized(message){
-      return new AuthErrors(401, message)
+    static Unauthorized(message, errorsArray){
+      return new AuthErrors(401, message, errorsArray)
     }
     
     static BadRequest(message, errorsArray = []) {
@@ -78,8 +78,8 @@ app.use(
       errorsArray
     }
   )
-  return response.status(500).json({
-    message: 'Server error! Something is broken!'
+  return response.status(500).json({message: 'modalError',
+    errorsArray: 'Server error! Something is broken!'
   })
 })
 
@@ -109,34 +109,41 @@ const login = async(request, response, next) => {
     } 
   
     if (data.username === 'kolya' && data.password === '123') {
-      next(AuthErrors.Unauthorized('Такая комбинация логина и пароля не найдена'))
+      next(AuthErrors.Unauthorized('modalError', 'Такая комбинация логина и пароля не найдена'))
      }
-
-    ////validation
-    ////error required
-    ///invalid value
+     //////////Validation
     const validationErrors = []
 
-    if (data.username === '') {
-      errorUser = {
+    if (data.username === 'o') {
+      const error = {
         field: 'username',
-        subtype: 'required error'
+        type: 'invalid'
       }
-      validationErrors.push(errorUser)
+      validationErrors.push(error)
+    }
+
+    if (data.username === '') {
+      const error = {
+        field: 'username',
+        type: 'required'
+      }
+      validationErrors.push(error)
     }
 
     if(data.password === '') {
-       const errorPassword = {
+       const error = {
         field: 'password',
-        subtype: 'required error'
+        type: 'required'
       }
-      validationErrors.push(errorPassword)
+      validationErrors.push(error)
     }
     if(validationErrors.length > 0)
       next(AuthErrors.BadRequest('validationError', [...validationErrors]))
+
    ////////////////
 
-    next(new AuthErrors(500, 'Server Error'))
+    next(new AuthErrors(500, 'modalError', 'something broke'))
+ 
   }
 
   catch(error) {
@@ -169,19 +176,15 @@ const refreshToken = async function(request, response, next) {
 
 
  //////////////////////// GET 
- const USERS = [
-  {user: 'Olya', status: 'single'},
-  {user: 'Kolya', status: 'single'},
-]
 
 const validateAccessToken = (request, response, next) => {
   try {
     const authHeader = request.headers.authorization
     if (!authHeader) {
-      return next(new AuthErrors(401, 'no token'))
+      return next(new AuthErrors(401, 'noAccessToken'))
     }
     const token = authHeader.split(' ')[1]
-    if (!token) return next(new AuthErrors(401, ''))
+    if (!token) return next(new AuthErrors(401, 'noAccessToken'))
 
     jwt.verify(token, process.env.ACCESS_TOKEN, (error, user) => {
       if (error) {
@@ -197,10 +200,15 @@ const validateAccessToken = (request, response, next) => {
   }
 }
 
+const USERS = [
+  {user: 'Olya', status: 'single'},
+  {user: 'Kolya', status: 'single'},
+]
+
 app.get('/users', validateAccessToken, (request, response) => {
   return response.status(200).json(USERS)
 })
-////////////////////////////////////
+
 
 router.post('/token', jsonParser,  login) 
 router.post('/refresh_token', jsonParser, refreshToken) 

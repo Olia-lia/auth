@@ -8,10 +8,16 @@ export type Error = {
    errorsArray: Array<ErrorElement>
 }
 
+export type FieldErrors = {
+    invalid: boolean;
+    required: boolean
+}
+
 export type AuthState = {
     user: null,
     isLoginned: boolean,
-    error: Error | null
+    userFieldErrors: FieldErrors,
+    passwordFieldErrors: FieldErrors
 }
 
 export interface credentialsLogin {

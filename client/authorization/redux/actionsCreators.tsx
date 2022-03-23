@@ -30,24 +30,6 @@ export const loginFailed = (error) => {
     }
 };
 
-export const refreshToken = (data) => {
-    return {
-        type: Constants.REFRESH_TOKEN,
-        data
-    }
-};
-
-export const getResource = () => {
-    return {
-        type: Constants.GET_RESOURSE,
-    }
-};
-
-export const checkExpiredTime = () => {
-    return {
-        type: Constants.CHECK_EXPIRED_TIME,
-    }
-}
 
 export const  handleErrors = (error) => {
     return {

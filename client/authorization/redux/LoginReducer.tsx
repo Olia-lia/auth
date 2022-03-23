@@ -5,18 +5,28 @@ import * as types from '../authTypes'
 const initialState: types.AuthState = {
     user: null,
     isLoginned: false,
-    error: null
+    userFieldErrors: {
+        invalid: false,
+        required: false
+    },
+    passwordFieldErrors: {
+        invalid: false, 
+        required: false
+    }
 }
 
-const LoginReducer  = (state = initialState, action) => {
-    let newState
+export const loginReducer  = (state = initialState, action) => {
+    let newState: types.AuthState
+
     switch (action.type) {
    
         case LOGIN_REQUEST_SUCCEEDED:
-            newState = {...state,
+            newState = {
+                ...state,
                 user: action.data,
                 isLoginned: true, 
-                error: null 
+                ...state.userFieldErrors,
+                ...state.passwordFieldErrors
             }
             console.log(newState)
             
@@ -24,12 +34,36 @@ const LoginReducer  = (state = initialState, action) => {
 
         case LOGIN_REQUEST_FAILED: 
             newState = {
-               user: null,
-               isLoginned: false,
-               error: action.error
+                ...state, 
+                    user: null,
+                    isLoginned: false,
             }
-            console.log('failed')
-            console.log(newState)
+
+            
+            const responseError = action.error;
+            
+
+            const setError = (errorType, error) => {
+                switch(error.type){
+                    case('required'):
+                        errorType.required = true
+                        break;
+                    case('invalid'):
+                        errorType.invalid = true
+                        break;
+                    default: false
+                }
+            }
+
+            responseError.errors.forEach((error) => {
+               if (error.field === 'username') {
+                    setError(newState.userFieldErrors, error)
+               }
+               else if(error.field === 'password') {
+                   setError(newState.passwordFieldErrors, error)
+               }
+           })
+           console.log(newState)
 
             return newState
 
@@ -46,6 +80,3 @@ const LoginReducer  = (state = initialState, action) => {
     }
 
 }
-
-
-export default LoginReducer

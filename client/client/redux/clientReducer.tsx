@@ -4,6 +4,6 @@ const initialState: types.AuthState = {
     errors: null
 }
 
-const clientReducer = (state = initialState, action) {
+export const clientReducer = (state = initialState, action) {
     
 }

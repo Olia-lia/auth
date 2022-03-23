@@ -3,21 +3,29 @@
     margin: 0 auto;
 };
 
+.login__heading {
+    text-align: center;
+}
+
 
 .login__form {
     border: 1px solid grey;
 };
 
-
-.input {
-   width: 100px; 
+input[type='text'] {
+ -webkit-appearance: none;
+      
+   width: 100%; 
    text-align: center;
-   border-color: green;
-   border-radius: 12px;
+   outline: green;
+   border-radius: 10px;
    padding: 5px;
 };
 
-
 .input--not-valid {
     border-color: red;
+}
+
+.form__button{
+    width: 100%;
 }

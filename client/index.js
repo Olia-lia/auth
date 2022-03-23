@@ -4,12 +4,9 @@ import 'normalize.css';
 import {Provider} from 'react-redux';
 import App from './app';
 import rootSaga from './sagas/rootSaga';
-
-
 import {createStore, applyMiddleware} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import rootReducer from './rootReducer'; 
-import LoginReducer from './authorization/redux/LoginReducer';
 
 const sagaMiddleware = createSagaMiddleware()
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -23,7 +20,6 @@ sagaMiddleware.run(rootSaga)
 
 const action = type => store.dispatch({type})
 
- 
 ReactDOM.render(
   <Provider store={store}>
     <App/>

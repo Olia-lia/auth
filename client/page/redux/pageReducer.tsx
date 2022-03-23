@@ -1,20 +1,24 @@
-import {SET_PAGE_ERROR} from './actionCreators'
+import {CLEAN_PAGE_ERROR, SET_PAGE_ERROR} from './actionCreators';
+import {PageState} from '../pageTypes'
 
-const initialState = {
+
+const initialState: PageState = {
+    isFetchingError: false,
     pageError: null
 }
 
-const pageReducer = (state = initialState, action) => {
-    let newState 
+export const pageReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_PAGE_ERROR: 
-            newState = {
+            return {
+                isFetchingError: true, 
                 pageError: action.error
-            }
+            };
+
+        case CLEAN_PAGE_ERROR:
+            return initialState
 
         default: 
             return state;
     }
 };
-
-export default pageReducer

@@ -1,26 +1,24 @@
 .modal {
     position: fixed;
     margin-top: 40px;
-    width: 40% ;
-    height: auto;
-    border: 1px solid red;
+    max-width: 200px;
+    height: auto; 
+    box-sizing: content-box;
+    border: 2px solid red;
     background-color: rgba(0, 0, 0 , 0.8);
     margin-left: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     display: none;
 }
-
 
 .modal.active {
     display: block;
 }
 
-  
 .modal__content {
-    padding: 15px;
-    background-color: white;
+    padding: 25px;
+    background-color: none;
+    color: white;
+    text-align: center;
     border-radius: 10px;
     height: auto;
 }

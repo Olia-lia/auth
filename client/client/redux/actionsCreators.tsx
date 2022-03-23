@@ -7,3 +7,18 @@ export const getResource = () => {
     }
 };
 
+
+export const refreshToken = (data) => {
+    return {
+        type: Constants.REFRESH_TOKEN,
+        data
+    }
+};
+
+
+
+export const checkExpiredTime = () => {
+    return {
+        type: Constants.CHECK_EXPIRED_TIME,
+    }
+}
