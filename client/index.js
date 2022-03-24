@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'normalize.css';
 import {Provider} from 'react-redux';
+import {BrowserRouter} from 'react-router-dom'
 import App from './app';
 import rootSaga from './sagas/rootSaga';
 import {createStore, applyMiddleware} from 'redux';
@@ -21,8 +22,10 @@ sagaMiddleware.run(rootSaga)
 const action = type => store.dispatch({type})
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App/>
-  </Provider>,
+  <BrowserRouter>
+    <Provider store={store}>
+      <App/>
+    </Provider>
+  </BrowserRouter>,
   document.querySelector("#root")
 );

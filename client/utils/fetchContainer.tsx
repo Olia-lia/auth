@@ -1,8 +1,6 @@
 const fetchRequest = (method: string, url: URL | string, body?: any, ...someConfig:any) => {
   // check is authorization header valid
-  //someConfig = {...someConfig}
-
-
+ 
   const accessToken = localStorage.getItem('accessToken')
   const options = {
     method: method,
@@ -18,7 +16,7 @@ const fetchRequest = (method: string, url: URL | string, body?: any, ...someConf
     options.body = JSON.stringify(body)
   }  
 
-  if(method === 'GET' && accessToken != null) {
+  if(accessToken != null) {
     options.headers.authorization = `Bearer ${accessToken}`
   }
 

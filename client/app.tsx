@@ -1,18 +1,21 @@
 import {useEffect, useState} from 'react';
+import {Route, Switch} from 'react-router-dom';
 import Login from './authorization/components/login/login';
 import Modal from './page/components/modal/modal';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import * as authActions from './authorization/redux/actionsCreators';
-import * as clientActions from './client/redux/actionsCreators'
-import * as types from './authorization/authTypes'
+import * as clientActions from './client/redux/actionsCreators';
+
+import * as types from './authorization/authTypes';
 import {PageState} from './page/pageTypes'
+import { ClientState } from './client/clientTypes';
 
 
 export type globalState = {
-    login: types.AuthState
-    page: PageState
+    login: types.AuthState,
+    page: PageState,
+    client: ClientState,
 }
-
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -25,31 +28,24 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state: globalState) => {
   return {
     isLoggined: state.login.isLoginned,
-    usernameErrors: state.login.userFieldErrors,
-    passwordErrors: state.login.passwordFieldErrors,
+    isValidationError: state.login.isValidationError,
+    fieldsErrors: state.login.fieldsErrors,
     isFetchingError: state.page.isFetchingError,
-    pageError: state.page.pageError
+    pageError: state.page.pageError,
+    users: state.client.users
   }
 };
 
 
 const App: React.FC = (props) => {
-  const{pageError, isFetchingError} = props
+  const{pageError, isFetchingError, isValidationError, fieldsErrors} = props
   
   const buttonStyle = {
     width: '130px',
     height: '30px',
   }
-  
-  // const validationErrors = () => {
-  //     errors.map(error => {
-  //     if (error.type= 'validationError') 
-  //       return
-  //   })
-  // }
-  // useEffect(() => {
-  //   if(localStorage
-  // }, [])
+
+ 
   // if(props.isLoggined == false) {
   //   return(
   //     <Login login={props.login}/>
@@ -57,15 +53,12 @@ const App: React.FC = (props) => {
   // } 
   
   const [modalOpened, setModal] = useState(true)
-  
-
 
   return (
       <div>
         <Login 
           login={props.login} 
-          usernameErrors={props.usernameErrors}
-          passwordErrors={props.passwordErrors}/>
+          isError={isValidationError} errors={fieldsErrors}/>
         {isFetchingError &&
           <Modal active={modalOpened} setActive={setModal}>
             {<span>

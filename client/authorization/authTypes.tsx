@@ -9,15 +9,15 @@ export type Error = {
 }
 
 export type FieldErrors = {
-    invalid: boolean;
-    required: boolean
+    username: string | null,
+    password: string | null
 }
 
 export type AuthState = {
     user: null,
     isLoginned: boolean,
-    userFieldErrors: FieldErrors,
-    passwordFieldErrors: FieldErrors
+    isValidationError: boolean,
+    fieldsErrors: FieldErrors
 }
 
 export interface credentialsLogin {

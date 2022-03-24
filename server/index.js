@@ -1,12 +1,12 @@
 const express = require('express');
 require('dotenv').config();
+const jwt = require('jsonwebtoken')
 const cors = require('cors');
 const AuthErrors = require('./errors');
 const errorMiddleware = require('./handleErrorMiddleware');
 const Token = require('./tokenService');
 
 const sc = process.env.ACCESS_TOKEN
-console.log(sc)
 
 const app = express();
 const hostname = '127.0.0.1';
@@ -46,7 +46,6 @@ const login = async(request, response, next) => {
         accessTokenExpiredIn: ACCESS_TOKEN_EXPIRED_IN,
         refreshTokenExpiredIn: REFRESH_TOKEN_EXPIRED_IN
       }
-      console.log(responseData)
       return response.status(200).json(responseData)
     } 
   
@@ -59,7 +58,17 @@ const login = async(request, response, next) => {
     if (data.username === 'o') {
       const error = {
         field: 'username',
-        type: 'invalid'
+        type: 'invalid',
+        message: 'too shot'
+      }
+      validationErrors.push(error)
+    }
+
+    if (data.password === 'o') {
+      const error = {
+        field: 'password',
+        type: 'invalid',
+        message: 'too shot'
       }
       validationErrors.push(error)
     }
@@ -67,7 +76,8 @@ const login = async(request, response, next) => {
     if (data.username === '') {
       const error = {
         field: 'username',
-        type: 'required'
+        type: 'required',
+        message: 'required field'
       }
       validationErrors.push(error)
     }
@@ -75,7 +85,8 @@ const login = async(request, response, next) => {
     if(data.password === '') {
        const error = {
         field: 'password',
-        type: 'required'
+        type: 'required',
+        message: 'required field'
       }
       validationErrors.push(error)
     }
@@ -102,12 +113,11 @@ const refreshToken = async function(request, response, next) {
   try {
     const data = request.body;
     if(!data.grant_type || !data.refreshToken) 
-      return next(new AuthErrors)
+      return next(AuthErrors.Unauthorized('noToken'))
 
     if (data.grant_type === 'refresh_token') {
-    
     }
-    else next(new AuthErrors(401, 'no refresh'))
+    else next(new AuthErrors(401, 'noToken'))
     
 
   } catch(error) {
@@ -122,15 +132,17 @@ const refreshToken = async function(request, response, next) {
 const validateAccessToken = (request, response, next) => {
   try {
     const authHeader = request.headers.authorization
+    
     if (!authHeader) {
-      return next(new AuthErrors(401, 'noAccessToken'))
+      return next(AuthErrors.Unauthorized('noAccessToken'))
     }
     const token = authHeader.split(' ')[1]
+
     if (!token) return next(new AuthErrors(401, 'noAccessToken'))
 
     jwt.verify(token, process.env.ACCESS_TOKEN, (error, user) => {
       if (error) {
-        return next(new AuthErrors(403, 'forb'))
+        return next(new AuthErrors(403, 'forbidden'))
       }
 
       request.user = user
@@ -138,7 +150,7 @@ const validateAccessToken = (request, response, next) => {
     })
   }
   catch(error) {
-    
+   console.log(error)
   }
 }
 

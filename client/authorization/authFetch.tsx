@@ -25,7 +25,8 @@ const refreshToken = () => {
 
 const logout = () => {
   localStorage.removeItem('accessToken');
-  localStorage.removeItem('refreshToken')
+  localStorage.removeItem('refreshToken');
+  localStorage.removeItem('accessTokenExpiredIn')
 }
 
 export {login, refreshToken, logout, saveTokensToLocalStorage}

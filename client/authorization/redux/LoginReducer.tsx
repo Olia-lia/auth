@@ -1,19 +1,16 @@
 import React  from "react";
-import {LOGIN_REQUEST_FAILED, LOGIN_REQUEST_SUCCEEDED, LOGOUT} from "./actionConstants";
+import {LOGIN_REQUEST_FAILED, LOGIN_REQUEST_SUCCEEDED, RESET_LOGIN_STATE} from "./actionConstants";
 import * as types from '../authTypes'
 
 const initialState: types.AuthState = {
     user: null,
     isLoginned: false,
-    userFieldErrors: {
-        invalid: false,
-        required: false
-    },
-    passwordFieldErrors: {
-        invalid: false, 
-        required: false
+    isValidationError: false,
+    fieldsErrors: {
+        username: null,
+        password: null
     }
-}
+};
 
 export const loginReducer  = (state = initialState, action) => {
     let newState: types.AuthState
@@ -22,14 +19,14 @@ export const loginReducer  = (state = initialState, action) => {
    
         case LOGIN_REQUEST_SUCCEEDED:
             newState = {
-                ...state,
                 user: action.data,
                 isLoginned: true, 
-                ...state.userFieldErrors,
-                ...state.passwordFieldErrors
+                isValidationError: false,
+                fieldsErrors: {
+                    username: null,
+                    password: null
+                }
             }
-            console.log(newState)
-            
             return newState
 
         case LOGIN_REQUEST_FAILED: 
@@ -37,46 +34,38 @@ export const loginReducer  = (state = initialState, action) => {
                 ...state, 
                     user: null,
                     isLoginned: false,
+                    isValidationError: true,
             }
-
             
             const responseError = action.error;
-            
-
-            const setError = (errorType, error) => {
-                switch(error.type){
-                    case('required'):
-                        errorType.required = true
-                        break;
-                    case('invalid'):
-                        errorType.invalid = true
-                        break;
-                    default: false
-                }
-            }
-
-            responseError.errors.forEach((error) => {
+             responseError.errors.forEach((error) => {
                if (error.field === 'username') {
-                    setError(newState.userFieldErrors, error)
+                    newState.fieldsErrors.username = error.message
                }
                else if(error.field === 'password') {
-                   setError(newState.passwordFieldErrors, error)
+                newState.fieldsErrors.password = error.message
                }
            })
            console.log(newState)
 
             return newState
 
-        case LOGOUT: {
-            newState = initialState
-            console.log('logout')
+        case RESET_LOGIN_STATE: {
+            newState = {
+                user: null,
+                isLoginned: false,
+                isValidationError: false,
+                fieldsErrors: {
+                    username: null,
+                    password: null
+                }
+            };
 
             return newState
         }
         
         default:
             return state;
-    
     }
 
-}
+};

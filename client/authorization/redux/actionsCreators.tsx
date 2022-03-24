@@ -8,6 +8,12 @@ export const logOut = () => {
     }
 };
 
+export const resetLoginState = () => {
+    return {
+        type: Constants.RESET_LOGIN_STATE
+    }
+};
+
 
 export const loginRequest = (credentials: types.credentialsLogin) => {
     return {
@@ -36,4 +42,4 @@ export const  handleErrors = (error) => {
         type: Constants.HANDLE_ERROR,
         error
     }
-}
+};

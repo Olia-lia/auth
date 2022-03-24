@@ -12,7 +12,7 @@
     border: 1px solid grey;
 };
 
-input[type='text'] {
+.input {
  -webkit-appearance: none;
       
    width: 100%; 
@@ -22,8 +22,12 @@ input[type='text'] {
    padding: 5px;
 };
 
-.input--not-valid {
-    border-color: red;
+input:valid {
+    border-color: green;
+  }
+  
+.input--invalid {
+border-color: red;
 }
 
 .form__button{

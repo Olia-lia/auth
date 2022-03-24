@@ -1,7 +1,8 @@
 import { call, put, takeEvery } from "redux-saga/effects";
-import {getResource} from '../client/clientRequest';
+import {getResource} from '../client/clientFetch';
 import {LOGIN_REQUEST_FAILED, LOGOUT} from '../authorization/redux/actionConstants';
 import { GET_RESOURSE } from "../client/redux/actionConstants";
+import {checkValidAccessToken, checkValidRefreshToken} from '../client/checkValidTokens';
 
 export default function* clientRequestSaga () {
     yield takeEvery(GET_RESOURSE, getResourseSaga)
@@ -9,10 +10,10 @@ export default function* clientRequestSaga () {
 
 function* getResourseSaga(action: any) {
     try {
-      // const checkedAceessToken: boolean = yield call(checkExpireIn)
-      // if (checkedAceessToken == true) 
-      //   yield call(getResource);
-      // else yield call(refreshToken)
+      const checkedAccessToken: boolean = yield call(checkValidAccessToken)
+      if (checkedAccessToken == true) 
+        yield call(getResource);
+     // else yield call(refreshToken)
   
       const response: Response = yield call(getResource);
     }
