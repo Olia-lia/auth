@@ -3,11 +3,6 @@ export type ErrorElement = {
     subtype: string
 } 
 
-export type Error = {
-   message: string,
-   errorsArray: Array<ErrorElement>
-}
-
 export type FieldErrors = {
     username: string | null,
     password: string | null
@@ -16,6 +11,7 @@ export type FieldErrors = {
 export type AuthState = {
     user: null,
     isLoginned: boolean,
+    retry: number,
     isValidationError: boolean,
     fieldsErrors: FieldErrors
 }

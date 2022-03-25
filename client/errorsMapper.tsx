@@ -23,7 +23,6 @@ export class AppError {
     }
   };
 
-  
   export class ModalError extends AppError {
     constructor(message: string, errors) {
       super(message, errors);

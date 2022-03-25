@@ -1,25 +1,27 @@
 import {useEffect, useState} from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {Route, Routes, Redirect} from 'react-router-dom';
 import Login from './authorization/components/login/login';
 import Modal from './page/components/modal/modal';
+import ClientPage from './client/components/clientPage/clientPage';
 import {connect} from 'react-redux';
 import * as authActions from './authorization/redux/actionsCreators';
 import * as clientActions from './client/redux/actionsCreators';
 
-import * as types from './authorization/authTypes';
+import * as authTypes from './authorization/authTypes';
+import * as clientTypes from './client/clientTypes'
 import {PageState} from './page/pageTypes'
 import { ClientState } from './client/clientTypes';
 
 
 export type globalState = {
-    login: types.AuthState,
+    login: authTypes.AuthState,
     page: PageState,
     client: ClientState,
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    login: (credentials: types.credentialsLogin): void => {dispatch(authActions.loginRequest(credentials))},
+    login: (credentials: authTypes.credentialsLogin): void => {dispatch(authActions.loginRequest(credentials))},
     getResource:() => {dispatch(clientActions.getResource())},
     logout: () => {dispatch(authActions.logOut())}
   }
@@ -27,7 +29,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state: globalState) => {
   return {
-    isLoggined: state.login.isLoginned,
+    isLogined: state.login.isLoginned,
     isValidationError: state.login.isValidationError,
     fieldsErrors: state.login.fieldsErrors,
     isFetchingError: state.page.isFetchingError,
@@ -38,7 +40,7 @@ const mapStateToProps = (state: globalState) => {
 
 
 const App: React.FC = (props) => {
-  const{pageError, isFetchingError, isValidationError, fieldsErrors} = props
+  const{pageError, isFetchingError, isValidationError, fieldsErrors, isLogined, getResource} = props
   
   const buttonStyle = {
     width: '130px',
@@ -56,18 +58,31 @@ const App: React.FC = (props) => {
 
   return (
       <div>
-        <Login 
-          login={props.login} 
-          isError={isValidationError} errors={fieldsErrors}/>
-        {isFetchingError &&
-          <Modal active={modalOpened} setActive={setModal}>
-            {<span>
-              {pageError.errors}
-            </span>} 
-          </Modal>
-        }
-        <button onClick={props.getResource} style={buttonStyle}>get Resourse</button>
-        <button onClick={props.logout} style={buttonStyle}>Log out</button>
+        <main>
+          <Routes>
+            <Route path='/' 
+              element = {<Login 
+                login={props.login} 
+                isError={isValidationError} errors={fieldsErrors}/>}/>
+              {/* // {isLogined ? 
+              //   <Redirect to='/user' /> : 
+              //   <Login/>/> */}
+
+            <Route path='/user' 
+              element={<ClientPage 
+                getResource={getResource}/>}/>
+                   
+            </Routes>
+          <button onClick={props.logout} style={buttonStyle}>Log out</button>
+      
+          {isFetchingError &&
+            <Modal active={modalOpened} setActive={setModal}>
+              {<span>
+                {pageError.errors}
+              </span>} 
+            </Modal>
+          } 
+        </main>
       </div>
   )
 }

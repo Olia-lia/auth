@@ -5,6 +5,7 @@ import * as types from '../authTypes'
 const initialState: types.AuthState = {
     user: null,
     isLoginned: false,
+    retry: 0,
     isValidationError: false,
     fieldsErrors: {
         username: null,
@@ -62,6 +63,15 @@ export const loginReducer  = (state = initialState, action) => {
             };
 
             return newState
+        }
+
+        case RETRY: {
+            newState = {
+                ...state,
+                user: null,
+                isLoginned: false,
+             }
+             newState.retry = state.retry + 1
         }
         
         default:

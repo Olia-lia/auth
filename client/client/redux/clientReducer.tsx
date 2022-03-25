@@ -1,8 +1,11 @@
 import * as types from '../clientTypes';
-import { GET_RESOURSE } from './actionConstants';
+import { GET_RESOURSE, RESOURSE_SUCCEEDED } from './actionConstants';
 
 const initialState: types.ClientState = {
-    users: null
+   isFetching: false,
+   isError: false,
+   users: []
+
 }
 
 export const clientReducer = (state = initialState, action) =>  {
@@ -11,10 +14,19 @@ export const clientReducer = (state = initialState, action) =>  {
     switch (action.type) {
         case GET_RESOURSE:
             newState = {
-                users: action.payload
+              ...state,
+              isFetching: true,
             }
 
-            return newState
+            return newState;
+
+        case RESOURSE_SUCCEEDED: 
+            newState = {
+                ...state, 
+                isError: false,
+                users: action.data
+            }
+            
         default: 
             return state
     }

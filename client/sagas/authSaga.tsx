@@ -5,7 +5,8 @@ import {ValidationError, ModalError} from '../errorsMapper'
 
 
 import '@babel/polyfill'
-import {LoginResponse, credentialsLogin, Error} from '../authorization/authTypes';
+import {LoginResponse, credentialsLogin} from '../authorization/authTypes';
+import { ErrorType } from '../typesGlobal';
 import {SET_PAGE_ERROR, CLEAN_PAGE_ERROR} from '../page/redux/actionCreators'
 
 
@@ -48,8 +49,12 @@ const createError = (err) => {
      case('modalError'):
        return ModalError.createModalError(err.errorsArray)
      break 
+     case(undefined):
+     const error = new Error('Server Not Available')
+     return ModalError.createModalError(error)
+
      default:
-       return null
+     
        //return AppError.createAppError()
    }
  }
@@ -76,7 +81,7 @@ function* loginSaga(action: any) {
  }
 
   catch(error) {
-    const err: Error = yield call(handleError, error)
+    const err: ErrorType = yield call(handleError, error)
     const errorInstance = createError(err);
       
       if (errorInstance instanceof ValidationError) {
@@ -88,6 +93,7 @@ function* loginSaga(action: any) {
         yield put({type: CLEAN_PAGE_ERROR}) ///очистить все ошибки
       }
        
+      
       //yield put({type: LOGOUT})
 
 

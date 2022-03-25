@@ -3,6 +3,7 @@ export const LOGIN_REQUEST_SUCCEEDED = 'LOGIN_REQUEST_SUCCEEDED';
 export const LOGIN_REQUEST_FAILED = "LOGIN_REQUEST_FAILED";
 export const RESET_LOGIN_STATE = "RESET_LOGIN_STATE";
 export const LOGOUT = 'LOGOUT';
+export const RETRY = "RETRY";
 
 
 

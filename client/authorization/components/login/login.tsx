@@ -32,15 +32,22 @@ const Login: React.FC = (props) => {
       login(credentials)
     }
 
+    // const blur = (evt) => {
+    //   switch (evt.target.name)
+    // }
+
     useEffect(() => {
       if (errors.username != null) {
         setUserNotValid(true)
-      }
-      if(errors.password != null)
+        console.log(userNotValid)
+       }
+      if(errors.password != null) {
         setPasswordNotValid(true)
-     }, []);
+        console.log(passwordNotValid)}
+    },
+       [errors]);
 
-     console.log(passwordNotValid)
+  
 
     return(
       <div className="login__wrapper">
@@ -49,10 +56,11 @@ const Login: React.FC = (props) => {
 
           <Input 
             id="username" 
+            name="username"
             type="text" 
             placeholder="your login" 
-            className={userNotValid ? classNames : 'input'} 
-            label={errors.username}
+            className={userNotValid ? 'input:invalid' : 'input'} 
+            label={!userNotValid ? errors.username : ''}
             onChange={evt => setUser(evt.target.value)}
             >
           </Input>
@@ -62,11 +70,13 @@ const Login: React.FC = (props) => {
           <label>
             <p>Password</p>
             <input 
-                className={classNames}
+                className={passwordNotValid ? classNames : 'input'} 
+                id="password"
+                name="password"
                 type="password"
                 placeholder='your password'
                 onChange={evt => setPassword(evt.target.value)}/>
-                {passwordNotValid && <span>{errors.password}</span>}
+                {!passwordNotValid && <span>{errors.password}</span>}
           </label>
           <div>
             <button className="form__button" style={buttonStyle} type="submit" onClick={(evt) => handleSubmit(evt)}>Login</button>

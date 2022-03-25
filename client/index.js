@@ -8,14 +8,19 @@ import rootSaga from './sagas/rootSaga';
 import {createStore, applyMiddleware} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import rootReducer from './rootReducer'; 
+import {errorMiddleware} from './middlewares/errorMiddleware'
+
+
+
 
 const sagaMiddleware = createSagaMiddleware()
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
     rootReducer,
-    composeEnhancers(applyMiddleware(sagaMiddleware))
+    composeEnhancers(applyMiddleware(sagaMiddleware, errorMiddleware))
 );
+console.log(store.getState())
   
 sagaMiddleware.run(rootSaga)
 

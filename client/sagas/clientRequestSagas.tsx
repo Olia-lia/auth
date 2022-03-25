@@ -16,6 +16,7 @@ function* getResourseSaga(action: any) {
      // else yield call(refreshToken)
   
       const response: Response = yield call(getResource);
+      console.log(response)
     }
   
     catch(error) {

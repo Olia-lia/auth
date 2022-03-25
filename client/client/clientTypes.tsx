@@ -4,5 +4,7 @@ export type UserInfo = {
 }
 
 export type ClientState = {
+    isFetching: boolean;
+    isError: boolean; 
     users: null | Array<UserInfo>
 }

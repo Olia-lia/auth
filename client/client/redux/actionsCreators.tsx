@@ -1,12 +1,19 @@
 import * as Constants from './actionConstants';
+import * as Types from '../clientTypes'
 
 
-export const getResource = (data) => {
+export const getResource = () => {
     return {
         type: Constants.GET_RESOURSE,
-        payload: data,
     }
 };
+
+export const setResourse = (data: Types.UserInfo) => {
+    return {
+        type: Constants.RESOURSE_SUCCEEDED,
+        data
+    }
+}
 
 
 export const refreshToken = (body) => {

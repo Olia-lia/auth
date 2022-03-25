@@ -43,3 +43,9 @@ export const  handleErrors = (error) => {
         error
     }
 };
+
+export const retry = () => {
+    return {
+        type: Constants.RETRY,
+    }
+}
