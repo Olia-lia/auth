@@ -2,7 +2,7 @@ import {Link, Outlet} from 'react-router-dom';
 
 const Layout = () =>{
     return(
-        <div>
+        <div className='page'>
             <header>
                 <Link to="/login">login</Link>
             </header>

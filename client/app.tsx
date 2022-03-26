@@ -14,6 +14,9 @@ import * as clientTypes from './client/clientTypes'
 import {PageState} from './page/pageTypes'
 import { ClientState } from './client/clientTypes';
 
+import 'normalize.css';
+import './style.sass';
+
 
 export type globalState = {
     login: authTypes.AuthState,

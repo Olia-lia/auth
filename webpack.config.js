@@ -19,7 +19,7 @@ const babelOptions = preset => {
 
 module.exports = {
     entry: './client/index.js',
-    mode: "development",
+    mode: 'development',
     devtool: 'source-map',
   
       output: {
@@ -28,7 +28,7 @@ module.exports = {
       },
     
       resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+        extensions: ['.ts', '.tsx', '.js', '.jsx', '.woff2'],
         alias: {
         normalize_css: __dirname + '/node_modules/normalize.css/normalize.css',
         },
@@ -53,10 +53,11 @@ module.exports = {
           },
         },
         { 
-          test: /\.css$/, 
+          test: /s[ac]ss$/, 
           use: [
             MiniCssExtractPlugin.loader,
-            //'style-loader',
+            'css-loader?url=false',
+        
             {
               loader: 'css-loader?url=false',
               options: {
@@ -67,9 +68,19 @@ module.exports = {
               
               }
             },
-            'postcss-loader'
+            
+            // {
+            //   loader: 'postcss-loader',
+            //   options: {
+            //     plugins: () => [
+            //       require("autoprefixer")()
+            //     ],
+            //   },
+            // // },
+            
+            'sass-loader',
           ],
-          include: /\.module\.css$/,
+         // include: /\.module\.css$/,
         },
         {
           test: /\.css$/,
