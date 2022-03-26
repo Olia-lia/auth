@@ -1,19 +1,29 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import {useParams, Link} from 'react-router-dom';
 import { getResource } from '../../clientFetch';
 
 
 const ClientPage: React.FC = (props) => {
-    const {getResource} = props
+    const {users} = props;
+    const [friendUsers, setUsers] = useState([]);
+    const {id} = useParams()
 
-    // useEffect(() => 
-    //     const users = getResource
-    // )
+    // useEffect(() => {
+    
+    // }, [])
 
-return (
-    <div>
-        <p>Welcome to clientPage</p>
-    </div>
-)
+    return (
+        <div>
+            <h1>Your friends</h1>
+                {
+                    users.map(user => {
+                        <Link key={user.id} to={`/user/${user.id}`}>
+                            <li>{user.name}</li>
+                        </Link>
+                    })
+                } 
+        </div>
+    )
 
 }
 

@@ -1,7 +1,8 @@
 import {put, takeEvery, call, takeLeading, delay, spawn} from 'redux-saga/effects';
 import {LOGIN_REQUEST, LOGIN_REQUEST_SUCCEEDED, LOGIN_REQUEST_FAILED, LOGOUT, RESET_LOGIN_STATE} from '../authorization/redux/actionConstants';
 import {login, refreshToken, logout, saveTokensToLocalStorage} from '../authorization/authFetch';
-import {ValidationError, ModalError} from '../errorsMapper'
+import {ValidationError, ModalError} from '../errorsMapper';
+import {GET_RESOURSE} from '../client/redux/actionConstants';
 
 
 import '@babel/polyfill'
@@ -55,7 +56,7 @@ const createError = (err) => {
 
      default:
      
-       //return AppError.createAppError()
+    throw new Error
    }
  }
 
@@ -76,7 +77,9 @@ function* loginSaga(action: any) {
     const response: LoginResponse = yield call(login, action.credentials)
     if(response) {
       yield (saveTokensToLocalStorage(response)) 
-      yield put({type: LOGIN_REQUEST_SUCCEEDED, response})  
+      yield put({type: LOGIN_REQUEST_SUCCEEDED, response}) 
+      //yield put({type: GET_RESOURSE})
+     
     }
  }
 

@@ -15,6 +15,13 @@ export const setResourse = (data: Types.UserInfo) => {
     }
 }
 
+export const rejectResourse = (error) => {
+    return {
+        type: Constants.RESOURSE_FAILED,
+        error
+    }
+}
+
 
 export const refreshToken = (body) => {
     return {

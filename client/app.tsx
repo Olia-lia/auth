@@ -1,11 +1,13 @@
 import {useEffect, useState} from 'react';
-import {Route, Routes, Redirect} from 'react-router-dom';
-import Login from './authorization/components/login/login';
-import Modal from './page/components/modal/modal';
-import ClientPage from './client/components/clientPage/clientPage';
+import {Route, Routes, Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import * as authActions from './authorization/redux/actionsCreators';
 import * as clientActions from './client/redux/actionsCreators';
+
+import Login from './authorization/components/login/login';
+import Modal from './page/components/modal/modal';
+import ClientPage from './client/components/clientPage/clientPage';
+import Layout from './page/components/layout/layout'
 
 import * as authTypes from './authorization/authTypes';
 import * as clientTypes from './client/clientTypes'
@@ -40,7 +42,7 @@ const mapStateToProps = (state: globalState) => {
 
 
 const App: React.FC = (props) => {
-  const{pageError, isFetchingError, isValidationError, fieldsErrors, isLogined, getResource} = props
+  const{pageError, isFetchingError, isValidationError, fieldsErrors, isLogined, getResource, users} = props
   
   const buttonStyle = {
     width: '130px',
@@ -58,21 +60,22 @@ const App: React.FC = (props) => {
 
   return (
       <div>
-        <main>
+       
+  
           <Routes>
-            <Route path='/' 
-              element = {<Login 
-                login={props.login} 
-                isError={isValidationError} errors={fieldsErrors}/>}/>
+            {/* <Route path='/' element={<Layout/>}> */}
+              <Route path='/' 
+                element = {<Login 
+                  login={props.login} 
+                  isError={isValidationError} errors={fieldsErrors}/>}/>
               {/* // {isLogined ? 
               //   <Redirect to='/user' /> : 
               //   <Login/>/> */}
 
-            <Route path='/user' 
-              element={<ClientPage 
-                getResource={getResource}/>}/>
-                   
-            </Routes>
+              <Route path='user' element={<ClientPage users={users}/>}/>
+        
+            {/* </Route>     */}
+          </Routes>
           <button onClick={props.logout} style={buttonStyle}>Log out</button>
       
           {isFetchingError &&
@@ -82,7 +85,6 @@ const App: React.FC = (props) => {
               </span>} 
             </Modal>
           } 
-        </main>
       </div>
   )
 }

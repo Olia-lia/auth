@@ -4,6 +4,19 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
 
+//uglify, postcss, optimization
+
+const babelOptions = preset => {
+  const opts = {
+    presets: [
+      '@babel/preset-env'
+    ],
+    plugins: [
+      '@babel/plugin-proposal-class-properties'
+    ]
+  }
+}
+
 module.exports = {
     entry: './client/index.js',
     mode: "development",
@@ -36,6 +49,7 @@ module.exports = {
           exclude: /node_modules/,
           use: {
             loader: 'babel-loader',
+            //options: babelOptions('@babel/preset-typescript')
           },
         },
         { 

@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 import {getResource} from '../client/clientFetch';
 import {LOGIN_REQUEST_FAILED, LOGOUT} from '../authorization/redux/actionConstants';
-import { GET_RESOURSE } from "../client/redux/actionConstants";
+import { GET_RESOURSE, RESOURSE_SUCCEEDED } from "../client/redux/actionConstants";
 import {checkValidAccessToken, checkValidRefreshToken} from '../client/checkValidTokens';
 
 export default function* clientRequestSaga () {
@@ -16,7 +16,9 @@ function* getResourseSaga(action: any) {
      // else yield call(refreshToken)
   
       const response: Response = yield call(getResource);
-      console.log(response)
+      if(response) {
+        yield put({type: RESOURSE_SUCCEEDED, response})
+      }
     }
   
     catch(error) {

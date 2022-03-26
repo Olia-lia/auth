@@ -1,5 +1,5 @@
 import * as types from '../clientTypes';
-import { GET_RESOURSE, RESOURSE_SUCCEEDED } from './actionConstants';
+import { GET_RESOURSE, RESOURSE_FAILED, RESOURSE_SUCCEEDED } from './actionConstants';
 
 const initialState: types.ClientState = {
    isFetching: false,
@@ -25,6 +25,15 @@ export const clientReducer = (state = initialState, action) =>  {
                 ...state, 
                 isError: false,
                 users: action.data
+            }
+
+            return newState
+
+        case RESOURSE_FAILED:
+            newState = {
+                isFetching: false,
+                isError: true,
+                users: null
             }
             
         default: 

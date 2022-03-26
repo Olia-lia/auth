@@ -9,12 +9,14 @@
       "target": "es2017",
       "module": "esnext",
       "sourceMap": true,
+      "removeComments": true,
       "strict": true,
       "esModuleInterop": true,
       "noEmit": true ,
       "skipLibCheck": true,
       "forceConsistentCasingInFileNames": true,
       "jsx": "react-jsx",
+      "baseUrl": "./",
       "allowSyntheticDefaultImports": true,
       "resolveJsonModule": true
   

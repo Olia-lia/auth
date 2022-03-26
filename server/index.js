@@ -155,8 +155,8 @@ const validateAccessToken = (request, response, next) => {
 }
 
 const USERS = [
-  {user: 'Olya', status: 'single'},
-  {user: 'Kolya', status: 'single'},
+  {user: 'Vasya', id: 23, status: 'single'},
+  {user: 'Kolya', id: 566, status: 'single'},
 ]
 
 app.get('/users', validateAccessToken, (request, response) => {

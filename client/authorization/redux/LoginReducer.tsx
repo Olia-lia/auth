@@ -1,5 +1,5 @@
 import React  from "react";
-import {LOGIN_REQUEST_FAILED, LOGIN_REQUEST_SUCCEEDED, RESET_LOGIN_STATE} from "./actionConstants";
+import {LOGIN_REQUEST_FAILED, LOGIN_REQUEST_SUCCEEDED, RESET_LOGIN_STATE, RETRY} from "./actionConstants";
 import * as types from '../authTypes'
 
 const initialState: types.AuthState = {
