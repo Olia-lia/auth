@@ -6,6 +6,12 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 //uglify, postcss, optimization
 
+
+const isDev = process.env.NODE_ENV === 'development'
+const isProd = !isDev
+
+const filename = ext => isDev ? `[name].${ext}` : `[name].[hash].${ext}`
+
 const babelOptions = preset => {
   const opts = {
     presets: [
@@ -14,8 +20,48 @@ const babelOptions = preset => {
     plugins: [
       '@babel/plugin-proposal-class-properties'
     ]
+  } 
+   if (preset) {
+    opts.presets.push(preset)
   }
-}
+
+  return opts
+};
+
+
+const jsLoaders = () => {
+  const loaders = [{
+    loader: 'babel-loader',
+    options: babelOptions()
+  }]
+
+  if (isDev) {
+    loaders.push('eslint-loader')
+  }
+
+  return loaders
+};
+
+
+const cssLoaders = extra => {
+  const loaders = [
+    {
+      loader: MiniCssExtractPlugin.loader,
+      options: {
+        hmr: isDev,
+        reloadAll: true
+      },
+    },
+    'css-loader'
+  ]
+
+  if (extra) {
+    loaders.push(extra)
+  }
+
+  return loaders
+};
+
 
 module.exports = {
     entry: './client/index.js',
@@ -56,27 +102,30 @@ module.exports = {
           test: /s[ac]ss$/, 
           use: [
             MiniCssExtractPlugin.loader,
-            'css-loader?url=false',
-        
-            {
-              loader: 'css-loader?url=false',
-              options: {
-                sourceMap: true,
-                importLoaders: 1,
-                modules: true,
+            
+            // {
+            //   loader: 'css-loader?url=false',
+            //   options: {
+            //     sourceMap: true,
+            //     importLoaders: 1,
+            //     modules: true,
                 //localIdentName: "z[hash:base64]"
               
-              }
-            },
+              //}
+            //},
             
             // {
             //   loader: 'postcss-loader',
-            //   options: {
-            //     plugins: () => [
-            //       require("autoprefixer")()
-            //     ],
-            //   },
-            // // },
+             
+        
+            // },
+            {
+            loader: 'css-loader',
+            options: {
+              url: false,
+            }
+            },
+        
             
             'sass-loader',
           ],
@@ -96,7 +145,7 @@ module.exports = {
           template: 'client/index.html',
         }),
         new MiniCssExtractPlugin({
-          filename: "[name].css",
+          filename: filename('css'),
         }),
     ]
 }

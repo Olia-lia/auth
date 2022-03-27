@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import { isNonNullChain } from 'typescript';
 import {credentialsLogin, FieldErrors} from '../../authTypes';
 import { Input } from '../../../UI/input';
-import './login.css';
+//import './login.css';
 
 
 const Login: React.FC = (props) => {
