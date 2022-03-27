@@ -14,6 +14,8 @@ import * as clientTypes from './client/clientTypes'
 import {PageState} from './page/pageTypes'
 import { ClientState } from './client/clientTypes';
 
+import {RequireAuthorization} from './hoc/requireAuthorization'
+
 import 'normalize.css';
 import './style.sass';
 
@@ -45,13 +47,8 @@ const mapStateToProps = (state: globalState) => {
 
 
 const App: React.FC = (props) => {
-  const{pageError, isFetchingError, isValidationError, fieldsErrors, isLogined, getResource, users} = props
+  const{pageError, isFetchingError, isValidationError, fieldsErrors, isLogined, logout, getResource, users} = props
   
-  const buttonStyle = {
-    width: '130px',
-    height: '30px',
-  }
-
  
   // if(props.isLoggined == false) {
   //   return(
@@ -60,26 +57,29 @@ const App: React.FC = (props) => {
   // } 
   
   const [modalOpened, setModal] = useState(true)
+  console.log(isLogined)
 
   return (
       <div>
        
   
           <Routes>
-            {/* <Route path='/' element={<Layout/>}> */}
-              <Route path='/' 
-                element = {<Login 
-                  login={props.login} 
-                  isError={isValidationError} errors={fieldsErrors}/>}/>
-              {/* // {isLogined ? 
-              //   <Redirect to='/user' /> : 
-              //   <Login/>/> */}
-
-              <Route path='user' element={<ClientPage users={users}/>}/>
-        
-            {/* </Route>     */}
+            <Route path='/' element={<Layout/>}>
+              <Route path='/' element = {
+                <Login login={props.login} isError={isValidationError} errors={fieldsErrors}>
+                  {isLogined ? <Link to='user'/> : <Login/>}
+                </Login>}>
+              </Route>
+              <Route path='user' element={
+                <RequireAuthorization isLogined={isLogined}>
+                  <ClientPage 
+                  // users={users} 
+                  logout={logout}/>
+                </RequireAuthorization>
+              }/>
+            </Route>    
           </Routes>
-          <button onClick={props.logout} style={buttonStyle}>Log out</button>
+         
       
           {isFetchingError &&
             <Modal active={modalOpened} setActive={setModal}>

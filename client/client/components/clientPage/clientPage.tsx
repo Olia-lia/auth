@@ -4,9 +4,16 @@ import { getResource } from '../../clientFetch';
 
 
 const ClientPage: React.FC = (props) => {
-    const {users} = props;
+    const {users, logout} = props;
     const [friendUsers, setUsers] = useState([]);
     const {id} = useParams()
+
+    const buttonStyle = {
+        width: '130px',
+        height: '30px',
+      }
+    
+     
 
     // useEffect(() => {
     
@@ -22,6 +29,7 @@ const ClientPage: React.FC = (props) => {
                         </Link>
                     })
                 } 
+             <button onClick={logout} style={buttonStyle}>Log out</button>
         </div>
     )
 

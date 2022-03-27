@@ -1,9 +1,10 @@
 .modal {
     position: fixed;
     margin-top: 40px;
-    max-width: 200px;
+    min-width: 250px;
+    max-width: 400px;
     height: auto; 
-    box-sizing: content-box;
+    box-sizing: border-box;
     border: 2px solid red;
     background-color: rgba(0, 0, 0 , 0.8);
     margin-left: auto;
@@ -17,7 +18,7 @@
 .modal__content {
     padding: 25px;
     background-color: none;
-    color: white;
+    color: $white;
     text-align: center;
     border-radius: 10px;
     height: auto;

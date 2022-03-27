@@ -1,13 +1,15 @@
 .page {
     height: 100%;
-    color: black;
-  }
+    color: $black;
+};
 
-  .page__body {
-    display: grid;
-    grid-template-rows: 1fr min-content;
-    align-content: start;
-    min-width: 320px;
-    min-height: 100%;
-    margin: 0;
-  }
+.page__body {
+  display: grid;
+  grid-template-rows: min-content 1fr min-content;
+  align-content: start;
+  background-color: $page-background;
+  min-width: 320px;
+  min-height: 100%;
+  margin: 0;
+  color: $black;
+};

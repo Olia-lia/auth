@@ -1,0 +1,59 @@
+.login__wrapper {
+    width: 100%;
+  
+    border: 1px solid black;
+};
+
+.login__heading {
+    text-align: center;
+}
+
+
+.login__form {
+    margin: 0 auto;
+    padding: 50px;
+    color: white;
+    min-width: 300px;
+    text-align: center;
+    max-width: 500px; 
+    border-radius: 15px;
+    background-color: rgba(0,39,103,255);
+    opacity: 0.8;
+};
+
+.login__form input[type='text'],
+.login__form input[type='password']{
+   -webkit-appearance: none;
+   width: 80%; 
+   outline: none;
+   border: none;
+   border: 2px solid grey;
+   border-radius: 5px;
+   background-color: grey;
+   opacity: 0.6;
+   padding: 5px;
+};
+
+.input-fieldset {
+    margin: 0 auto;
+    width: 100%;
+}
+
+.input-label {
+    display: block;
+    font-weight: 400;
+    text-transform: uppercase;
+    font-size: 13px;
+    padding-left: 15px;
+    padding-bottom: 10px;
+    color: rgba(255,255,255,.7);
+
+}
+
+.input--invalid {
+border-color: red;
+}
+
+.form__button{
+    width: 100%;
+}

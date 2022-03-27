@@ -6,11 +6,11 @@ const AuthErrors = require('./errors');
 const errorMiddleware = require('./handleErrorMiddleware');
 const Token = require('./tokenService');
 
-const sc = process.env.ACCESS_TOKEN
-
 const app = express();
 const hostname = '127.0.0.1';
 const PORT = 5000;
+
+console.log(process.env.ACCESS_TOKEN)
 
 const corsOptions = {
   origin: '*',

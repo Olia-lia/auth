@@ -52,32 +52,30 @@ const Login: React.FC = (props) => {
     return(
       <div className="login__wrapper">
         <h1 className="login__heading">Log In</h1>
-        <form className="form">
+        <form className="login__form">
 
           <Input 
             id="username" 
             name="username"
             type="text" 
             placeholder="your login" 
-            className={userNotValid ? 'input:invalid' : 'input'} 
-            label={!userNotValid ? errors.username : ''}
+            className={!userNotValid ? 'input:invalid' : 'input'} 
+            label="username"
             onChange={evt => setUser(evt.target.value)}
             >
           </Input>
-
-     
-      
-          <label>
-            <p>Password</p>
-            <input 
-                className={passwordNotValid ? classNames : 'input'} 
-                id="password"
-                name="password"
-                type="password"
-                placeholder='your password'
-                onChange={evt => setPassword(evt.target.value)}/>
-                {!passwordNotValid && <span>{errors.password}</span>}
-          </label>
+          {!userNotValid ? <span className="login-error">{errors.username}</span> : ''}
+          <Input
+            className={passwordNotValid ? classNames : 'input'}
+            id="password"
+            name="password"
+            type="password"
+            placeholder='your password'
+            label="password"
+            onChange={evt => setPassword(evt.target.value)}>
+            
+          </Input>
+            {!passwordNotValid && <span className="login-error">{errors.password}</span>}
           <div>
             <button className="form__button" style={buttonStyle} type="submit" onClick={(evt) => handleSubmit(evt)}>Login</button>
           </div>
