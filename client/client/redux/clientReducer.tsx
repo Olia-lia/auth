@@ -9,31 +9,27 @@ const initialState: types.ClientState = {
 }
 
 export const clientReducer = (state = initialState, action) =>  {
-    let newState: types.ClientState
 
     switch (action.type) {
         case GET_RESOURSE:
-            newState = {
+           return {
               ...state,
               isFetching: true,
             }
 
-            return newState;
-
         case RESOURSE_SUCCEEDED: 
-            newState = {
+            return {
                 ...state, 
                 isError: false,
                 users: action.data
             }
-
-            return newState
+            
 
         case RESOURSE_FAILED:
-            newState = {
+            return {
                 isFetching: false,
                 isError: true,
-                users: null
+                users: []
             }
             
         default: 

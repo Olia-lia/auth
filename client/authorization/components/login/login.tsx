@@ -1,6 +1,5 @@
 import {useState, useEffect} from 'react';
-import { isNonNullChain } from 'typescript';
-import {credentialsLogin, FieldErrors} from '../../authTypes';
+import {CredentialsLogin, FieldErrors} from '../../authTypes';
 import { Input } from '../../../UI/input';
 //import './login.css';
 
@@ -12,12 +11,10 @@ const Login: React.FC = (props) => {
     const[password, setPassword] = useState('');
     const[userNotValid, setUserNotValid] = useState(false);
     const[passwordNotValid, setPasswordNotValid] = useState(false);
-    // const[fieldRequired, setUserRequired] = useState('required');
-    // const[passwordRequired, setPasswordRequired] = useState('reqiured');
       
     let classNames= "input input--invalid"
    
-    const credentials = {
+    const credentials: CredentialsLogin = {
       username,
       password
     }
@@ -31,10 +28,6 @@ const Login: React.FC = (props) => {
       evt.preventDefault();
       login(credentials)
     }
-
-    // const blur = (evt) => {
-    //   switch (evt.target.name)
-    // }
 
     useEffect(() => {
       if (errors.username != null) {

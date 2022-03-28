@@ -8,16 +8,17 @@ export default function* clientRequestSaga () {
     yield takeEvery(GET_RESOURSE, getResourseSaga)
 } 
 
-function* getResourseSaga(action: any) {
+export function* getResourseSaga(action: any) {
     try {
       const checkedAccessToken: boolean = yield call(checkValidAccessToken)
       if (checkedAccessToken == true) 
         yield call(getResource);
-     // else yield call(refreshToken)
+     //else yield call(refreshToken)
   
       const response: Response = yield call(getResource);
+      console.log(response)
       if(response) {
-        yield put({type: RESOURSE_SUCCEEDED, response})
+        yield put({type: RESOURSE_SUCCEEDED, data: response})
       }
     }
   

@@ -1,13 +1,25 @@
 import {Navigate, useLocation} from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const RequireAuthorization = ({isLogined, children }) => {
+import { globalState } from 'client/typesGlobal';
+
+const mapStateToProps = (state: globalState) => ({
+    isLoginned: state.login.isLoginned
+})
+
+const RequireAuthorization = (Component) => {
+
+    const RequiredComponent = (props) => {
     const location = useLocation() 
-    console.log(isLogined)
-    if(isLogined) {
-        return <Navigate to='/login' state={{from: location}}/>
-    }
+  
+    if(props.isLoginned) return <Navigate to='/login' state={{from: location}}/>
+    
 
-    return children
+    return <Component {...props}/>
 }
+let connectedRequiredComponent =  connect(mapStateToProps)(RequiredComponent)
+return connectedRequiredComponent
+}
+
 
 export {RequireAuthorization}

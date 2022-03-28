@@ -16,7 +16,7 @@ export type AuthState = {
     fieldsErrors: FieldErrors
 }
 
-export interface credentialsLogin {
+export interface CredentialsLogin {
     username: string,
     password: string
 }

@@ -27,6 +27,20 @@ app.use('/auth', router);
 app.use(errorMiddleware)
 
 
+const generateTokensResponse = () => {
+  const accessToken = Token.generateAccessToken('olya');
+  const refreshToken = Token.generateRefreshToken('olya');
+  const now = new Date();
+  const ACCESS_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 2)
+  const REFRESH_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 10)
+  const responseData = {
+    accessToken: accessToken,
+    refreshToken: refreshToken,
+    accessTokenExpiredIn: ACCESS_TOKEN_EXPIRED_IN,
+    refreshTokenExpiredIn: REFRESH_TOKEN_EXPIRED_IN
+  }
+  return responseData
+}
 
 const login = async(request, response, next) => {
   try {
@@ -105,27 +119,26 @@ const login = async(request, response, next) => {
   }
 } 
 
-// const validateRefreshToken = (request, response, next) => {
+const validateRefreshToken = (request, response, next) => {
+  try{
+  const data = request.body;
+  if(!data.grant_type || !data.refreshToken) 
+    return next(AuthErrors.Unauthorized('noToken'))
+  if (data.grant_type === 'refresh_token') 
+    return next(AuthErrors.Unauthorized('noToken'))
+    jwt.verify(data.refreshToken, process.env.REFRESH_TOKEN, (error, tokens) => {
+      if (error) {
+        return next(AuthErrors.Unauthorized('invalid token'))
+      }
 
-// }
-
-const refreshToken = async function(request, response, next) {
-  try {
-    const data = request.body;
-    if(!data.grant_type || !data.refreshToken) 
-      return next(AuthErrors.Unauthorized('noToken'))
-
-    if (data.grant_type === 'refresh_token') {
-    }
-    else next(new AuthErrors(401, 'noToken'))
-    
-
-  } catch(error) {
-    console.log(error)
+      request.tokens = tokens
+      next()
+    })
+  } 
+  catch(error) {
+    return null
   }
-
- }
-
+}
 
  //////////////////////// GET 
 
@@ -165,7 +178,10 @@ app.get('/users', validateAccessToken, (request, response) => {
 
 
 router.post('/token', jsonParser,  login) 
-router.post('/refresh_token', jsonParser, refreshToken) 
+router.post('/refresh_token', jsonParser, (request, response) => {
+  const newResponse = generateTokensResponse()
+  return response.status(200).json(newResponse)
+}) 
 
 
 const start = () => {
