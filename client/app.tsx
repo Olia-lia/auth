@@ -29,9 +29,11 @@ const App: React.FC = (props) => {
               <Route path='/login' element = {
                 <LoginContainer/>}/>
               <Route path='/user' element={
-               
+               <RequireAuthorization>
+
                   <ClientPageContainer/>
            
+                </RequireAuthorization>
               }/>
             </Route>    
           </Routes>
