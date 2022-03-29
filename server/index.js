@@ -122,6 +122,7 @@ const login = async(request, response, next) => {
 const validateRefreshToken = (request, response, next) => {
   try{
   const data = request.body;
+  console.log(data)
   if(!data.grant_type || !data.refreshToken) 
     return next(AuthErrors.Unauthorized('noToken'))
   if (data.grant_type === 'refresh_token') 
@@ -136,7 +137,7 @@ const validateRefreshToken = (request, response, next) => {
     })
   } 
   catch(error) {
-    return null
+    return next()
   }
 }
 
@@ -145,6 +146,7 @@ const validateRefreshToken = (request, response, next) => {
 const validateAccessToken = (request, response, next) => {
   try {
     const authHeader = request.headers.authorization
+    console.log(authHeader)
     
     if (!authHeader) {
       return next(AuthErrors.Unauthorized('noAccessToken'))
@@ -153,9 +155,10 @@ const validateAccessToken = (request, response, next) => {
 
     if (!token) return next(new AuthErrors(401, 'noAccessToken'))
 
+   
     jwt.verify(token, process.env.ACCESS_TOKEN, (error, user) => {
       if (error) {
-        return next(new AuthErrors(403, 'forbidden'))
+        return next(new AuthErrors(401, 'noAccessToken'))
       }
 
       request.user = user
@@ -172,13 +175,20 @@ const USERS = [
   {user: 'Kolya', id: 566, status: 'single'},
 ]
 
+const COMMENTS = [
+  {id: 23, comment: 'hello'}
+]
+
 app.get('/users', validateAccessToken, (request, response) => {
   return response.status(200).json(USERS)
 })
 
+app.get('/comments', validateAccessToken, (request, response) => {
+  return response.status(200).json(COMMENTS)
+})
 
 router.post('/token', jsonParser,  login) 
-router.post('/refresh_token', jsonParser, (request, response) => {
+router.post('/refresh_token', validateRefreshToken, (request, response) => {
   const newResponse = generateTokensResponse()
   return response.status(200).json(newResponse)
 }) 

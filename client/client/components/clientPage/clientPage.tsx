@@ -11,27 +11,23 @@ const ClientPage: React.FC = (props) => {
         width: '130px',
         height: '30px',
       }
-    
-     
-
-    // useEffect(() => {
-    
-    // }, [])
 
     return (
         <div>
-            <h1>Your friends {users[0].status} </h1>
-            <ul>{
-                
-                    users.map((user: types.UserInfo) => {
-                        <li>
-                            <Link key={user.id} to={`/user/${user.id}`}>
-                                {user.user}
-                            </Link> 
-                        </li>
-                    })
-                }               
-            </ul>
+            <h1>Your page</h1> 
+                {
+           
+                users.map((user: types.UserInfo) => {
+                        
+                  return (
+                    <Link key={user.id} to={`/user/${user.id}`}>
+                        {user.user}
+                    </Link>
+                  )
+                })  
+                } 
+                        
+          
              <button onClick={logout} style={buttonStyle}>Log out</button>
         </div>
     )
@@ -39,4 +35,4 @@ const ClientPage: React.FC = (props) => {
 }
 
 
-export {ClientPage}
+export default ClientPage

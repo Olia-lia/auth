@@ -2,9 +2,10 @@ import * as Constants from './actionConstants';
 import * as Types from '../clientTypes'
 
 
-export const getResource = () => {
+export const getResource = (endpoint: string) => {
     return {
         type: Constants.GET_RESOURSE,
+        endpoint
     }
 };
 
@@ -13,32 +14,38 @@ export const setResourse = (data: Types.UserInfo) => {
         type: Constants.RESOURSE_SUCCEEDED,
         data
     }
-}
+};
 
 export const rejectResourse = (error) => {
     return {
         type: Constants.RESOURSE_FAILED,
         error
     }
-}
+};
 
-
-export const refreshToken = (body) => {
+export const refreshToken = (endpoint: string) => {
     return {
         type: Constants.REFRESH_TOKEN,
-        body
+        endpoint
     }
 };
 
-
-export const checkExpiredTime = () => {
+export const refreshSuccess = () => {
     return {
-        type: Constants.CHECK_EXPIRED_TIME,
+        type: Constants.REFRESH_SUCCEEDED,
     }
-}
+};
+
+export const refreshFailed = (error) => {
+    return {
+        type: Constants.REFRESH_FAILED,
+        error
+    }
+};
+
 
 export const cleanValidationError = () => {
     return {
         type: Constants.CLEAN_VALIDATION_ERROR
     }
-}
+};

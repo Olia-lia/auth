@@ -26,14 +26,7 @@ export type LoginResponse = {
     accessToken: string,
     refreshToken: string,
     accessTokenExpiredIn: number,
-    //refreshTokenExpiredIn: number
-}
-
-export type RefreshTokenRequest = {
-    //client_id: number,
-    //client_secret: string,
-    grant_type: string,
-    refreshToken: string | null,
+    refreshTokenExpiredIn: number
 }
 
 export type errorOfValidation = {

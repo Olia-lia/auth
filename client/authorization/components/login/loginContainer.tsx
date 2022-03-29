@@ -8,8 +8,6 @@ import * as authActions from '../../redux/actionsCreators'
 const mapDispatchToProps = (dispatch) => {
     return {
       login: (credentials: CredentialsLogin): void => {dispatch(authActions.loginRequest(credentials))},
-      //getResource:() => {dispatch(clientActions.getResource())},
-      //logout: () => {dispatch(authActions.logOut())}
     }
   };
   

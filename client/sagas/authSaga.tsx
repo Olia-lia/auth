@@ -1,6 +1,7 @@
 import {put, takeEvery, call, takeLeading, delay, spawn} from 'redux-saga/effects';
+import { GET_RESOURSE } from 'client/client/redux/actionConstants';
 import {LOGIN_REQUEST, LOGIN_REQUEST_SUCCEEDED, LOGIN_REQUEST_FAILED, LOGOUT, RESET_LOGIN_STATE} from '../authorization/redux/actionConstants';
-import {login, refreshToken, logout, saveTokensToLocalStorage} from '../authorization/authFetch';
+import {login, logout, saveTokensToLocalStorage} from '../authorization/authFetch';
 import {ValidationError, ModalError} from '../errorsMapper';
 import { getResource } from '../client/redux/actionsCreators';
 
@@ -13,7 +14,7 @@ import {SET_PAGE_ERROR, CLEAN_PAGE_ERROR} from '../page/redux/actionCreators'
 const handleError = async(error: any) => {
   const data: ErrorType = await error.json()
   const {message, errorsArray} = data
-
+  
   switch (error.status) {
     case(401):
 
@@ -77,11 +78,9 @@ function* loginSaga(action: any) {
     if(response) {
       yield (saveTokensToLocalStorage(response)) 
       yield put({type: LOGIN_REQUEST_SUCCEEDED, response}) 
-      yield put(getResource())
-     
+      //yield put(getResource('users'))
     }
- }
-
+  }
   catch(error) {
     const err: ErrorType = yield call(handleError, error)
     const errorInstance = createError(err);

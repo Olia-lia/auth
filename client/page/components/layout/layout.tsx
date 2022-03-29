@@ -1,20 +1,28 @@
-import {Link, Outlet} from 'react-router-dom';
+import {Link, NavLink, Outlet} from 'react-router-dom';
 import Modal from '../modal/modal';
 import {useState} from 'react';
 
 const Layout = (props) =>{
-    const {isFetchingError, pageError} = props
+    const {isFetchingError, pageError, getResource} = props
      
   const [modalOpened, setModal] = useState(true)
 
     return(
         <div className='page__body'>
             <header>
-                <Link to="/login">login</Link>
-                <Link to="/user">user</Link>
+              <ul>
+                <li>
+                  <Link to="/login">login</Link>
+                </li>
+                <li>
+                  <Link to="/user">user</Link>
+                </li>
+
+                <button onClick={()=>{getResource('users')}}>getResousce</button>
+              </ul>
             </header>
-            <main><Outlet/></main>
-            <footer>My App</footer>
+            <main className='page__main'><Outlet/></main>
+            {/* <footer>My App</footer> */}
 
           {isFetchingError &&
             <Modal active={modalOpened} setActive={setModal}>
