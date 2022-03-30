@@ -1,18 +1,18 @@
 
 module.exports = class AuthErrors extends Error {
-    constructor(statusCode, message, errorsArray) {
+    constructor(statusCode, message, errors) {
         super(message);
           this.statusCode = statusCode,
           this.message = message,
-          this.errorsArray = errorsArray
+          this.errorsArray = errors
         }
   
-        static Unauthorized(message, errorsArray){
-          return new AuthErrors(401, message, errorsArray)
+        static Unauthorized(message){
+          return new AuthErrors(401, message)
         }
         
-        static BadRequest(message, errorsArray = []) {
-          return new AuthErrors(400, message, errorsArray) 
+        static BadRequest(message, errors = []) {
+          return new AuthErrors(400, message, errors) 
         }
   
         static ForbiddenError(message) {

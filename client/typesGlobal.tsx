@@ -1,6 +1,6 @@
 import * as authTypes from './authorization/authTypes';
-import * as clientTypes from './client/clientTypes'
-import {PageState} from './page/pageTypes'
+import * as clientTypes from './client/clientTypes';
+import {PageState} from './page/pageTypes';
 
 export type globalState = {
     login: authTypes.AuthState,

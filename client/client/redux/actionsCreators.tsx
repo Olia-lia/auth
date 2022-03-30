@@ -1,51 +1,43 @@
 import * as Constants from './actionConstants';
-import * as Types from '../clientTypes'
+import * as Types from '../clientTypes';
 
 
 export const getResource = (endpoint: string) => {
     return {
         type: Constants.GET_RESOURSE,
         endpoint
-    }
+    };
 };
 
 export const setResourse = (data: Types.UserInfo) => {
     return {
         type: Constants.RESOURSE_SUCCEEDED,
         data
-    }
+    };
 };
 
 export const rejectResourse = (error) => {
     return {
         type: Constants.RESOURSE_FAILED,
         error
-    }
+    };
 };
 
-export const refreshToken = (endpoint: string) => {
+export const refreshToken = () => {
     return {
         type: Constants.REFRESH_TOKEN,
-        endpoint
-    }
+     
+    };
 };
 
-export const refreshSuccess = () => {
+export const getToken = () => {
     return {
-        type: Constants.REFRESH_SUCCEEDED,
-    }
+        type: Constants.GET_TOKEN,
+    };
 };
 
-export const refreshFailed = (error) => {
-    return {
-        type: Constants.REFRESH_FAILED,
-        error
-    }
-};
-
-
-export const cleanValidationError = () => {
-    return {
-        type: Constants.CLEAN_VALIDATION_ERROR
-    }
-};
+// export const cleanValidationError = () => {
+//     return {
+//         type: Constants.CLEAN_VALIDATION_ERROR,
+//     };
+// };

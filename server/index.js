@@ -64,9 +64,9 @@ const login = async(request, response, next) => {
     } 
   
     if (data.username === 'kolya' && data.password === '123') {
-      next(AuthErrors.Unauthorized('modalError', 'Такая комбинация логина и пароля не найдена'))
+      next(AuthErrors.BadRequest('modalError', 'Такая комбинация логина и пароля не найдена'))
      }
-     //////////Validation
+  
     const validationErrors = []
 
     if (data.username === 'o') {
@@ -106,8 +106,6 @@ const login = async(request, response, next) => {
     }
     if(validationErrors.length > 0)
       next(AuthErrors.BadRequest('validationError', [...validationErrors]))
-
-   ////////////////
 
     next(new AuthErrors(500, 'modalError', 'something broke'))
  

@@ -1,62 +1,44 @@
-import { ErrorType } from "./typesGlobal";
+import { ErrorType } from './typesGlobal';
 
 const ErrorTypes = {
-  validationErrror: "validationError",
-  pageError: "modalError",
+    validationErrror: 'validationError',
+    pageError: 'modalError',
+};
+
+
+export class ValidationError extends Error {
+    constructor(message: string, errors: any) {
+        super(message);
+        this.message = message,
+        this.errors = errors;
+    }
+
+    static createValidError(errors = []) {
+        return new ValidationError('validationError', errors);
+    }
 }
 
-// export const handleError = async(error: any) => {
-//   const data: ErrorType = await error.json()
-//   const {message, errorsArray} = await data
-//   switch (error.status) {
-//     case(401):
-//       //localStorage.removeItem('accessToken');
-//       return data
-//       break
-    
-//     case(400): 
-//       return data
-//       break
+export class ModalError extends Error {
+    constructor(message: string, errors: any) {
+        super(message);
+        this.message = message,
+        this.errors = errors;
+    }
 
-//     // case(404):
-//     //   return data 
-//     //   break
-    
-//     default: 
-//       return data
-//   }
-// };
+    static createModalError(errors) {
+        return new ModalError('modalError', errors);
+    }
+}
 
 
-export class AppError {
-  message: string
-  errors: Array<any>
+export class UnauthorizedError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.message = message;
+    }
 
-  constructor(message: string, errors) {
-    this.message = message;
-    this.errors = errors
-  }
-};
+    static createUnauthorizedError(message) {
+        return new UnauthorizedError(message);
+    }
 
-  
-export class ValidationError extends AppError {
-  constructor(message: string, errors) {
-    super(message, errors);
-    this.message = message,
-    this.errors = errors
-  }
-
-  static createValidError(errors) {
-    return new ValidationError('validationError', errors)
-  }
-};
-
-export class ModalError extends AppError {
-  constructor(message: string, errors) {
-    super(message, errors);
-    
-  }
-  static createModalError(errors) {
-    return new ModalError('modalError', errors)
-  }
-} 
+}

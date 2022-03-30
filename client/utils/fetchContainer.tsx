@@ -1,52 +1,85 @@
-import { put } from "redux-saga/effects";
+import * as Errors from '../errorsMapper';
 
-const fetchRequest = (method: string, url: URL | string, body?: any, ...someConfig:any, isRetried = false) => {
-  // check is authorization header valid
+interface IStatus {
+	status?: number
+}
 
-  //const checkedAccessToken: boolean = yield call(checkValidAccessToken);
-  const token = getToken();
+const getToken = (): boolean => { 
+    const accessToken = localStorage.getItem('accessToken');
+    if(!accessToken) return false;
+    const now = new Date().getTime();
+    const expireInStr = localStorage.getItem('accessTokenExpiredIn');
+    if(!expireInStr) return false;
+    const expireIn = JSON.parse(expireInStr);
+    if (now > expireIn) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('accessTokenExpiredIn');
+        return false;
+    }
+    return true;
+};
 
-  if (checkedAccessToken) {
-    const accessToken = localStorage.getItem('accessToken')
-    const options = {
-      method: method,
-      ...someConfig,
-      
-      headers: {
-        'Content-Type': 'application/json',
-        ...someConfig.header
-      }
+
+const fetchRequest = (url: URL | string, method: string, body?: any, isRetried:boolean = false, ...someConfig: any) => {
+    console.log(isRetried)
+    //const token = getToken(); вынести в сагу
+    const token = localStorage.getItem('accessToken');
+
+    const options = {   
+        method: method,
+        ...someConfig,
+        
+        headers: {
+            'Content-Type': 'application/json',
+            ...someConfig.header
+        }
     };
 
     if (body) {
-      options.body = JSON.stringify(body)
-    }  
-
-    if(accessToken != null) {
-      options.headers.authorization = `Bearer ${accessToken}`
+        options.body = JSON.stringify(body);
     }
 
-    return fetch(url, options)
-    .then((response) => checkStatusResponse(response))
-  }
+    if(token) {
+        options.headers.authorization = `Bearer ${token}`;
+    }
+
+    return fetch(url, options) // типизация
+        .then((response: Response) => {
+            if (response.status >= 400) {
+                if (response.status === 401 && !isRetried) {
+                    fetchRequest(url, options, isRetried = true);
+                }
+                else handleError(response);
+            }
+            else if(response.ok) {
+                return response.json();
+            }
+        });
 };
 
+const handleError = (error: any) => {
+    const data = error.json();
+    console.log(data);
+    const {message, errors} = data;
+    switch (error.status) {
+    case(401):
+        throw Errors.UnauthorizedError.createUnauthorizedError(message);
+    case(400): 
+        if(message === 'validationError') {
+            throw new Errors.ValidationError(message, errors);
+        }
+        else if(message === 'modalError') {
+            throw Errors.ModalError.createModalError(errors);
+        }
+        else throw new Error(message);
 
-const checkStatusResponse = (response: any, request, isRetried: boolean) => {
-  if (response.status >= 400) {
-    //throw response
-    if (response.state === 401 && !isRetried) {
-      fetchRequest(request, true);
-      // hanlde the specific type of error
-    } else throw NonAuthorized();
-  }
-  else if (response.status === 200)
-    return response.json();
+    default: 
+        return data
+        // if(message === 'modalError') {
+        //     throw Errors.ModalError.createModalError(errors);
+        // }
+        // throw new Error(error.statusText);
+    }
 };
 
-function* getToken() {
-  const res = yield put({type: GET_TOKEN});
-    return res;
-}
-
-export {fetchRequest}
+export {fetchRequest};
