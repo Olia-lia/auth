@@ -2,6 +2,7 @@ import * as Errors from '../errorsMapper';
 import {put, delay} from 'redux-saga/effects';
 import {LOGIN_REQUEST_FAILED, LOGOUT} from '../authorization/redux/actionConstants';
 import { CLEAN_PAGE_ERROR, SET_PAGE_ERROR} from '../page/redux/actionCreators';
+import '@babel/polyfill';
 
 function* errorHandlerSaga (error: any) {
     if (error instanceof Errors.ValidationError) {

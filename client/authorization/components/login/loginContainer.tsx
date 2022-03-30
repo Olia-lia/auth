@@ -7,9 +7,9 @@ import * as authActions from '../../redux/actionsCreators'
 
 const mapDispatchToProps = (dispatch) => {
     return {
-      login: (credentials: CredentialsLogin): void => {dispatch(authActions.loginRequest(credentials))},
-    }
-  };
+        login: (credentials: CredentialsLogin): void => {dispatch(authActions.loginRequest(credentials))},
+    };
+};
   
 
 const mapStateToProps = (state:globalState) => {
