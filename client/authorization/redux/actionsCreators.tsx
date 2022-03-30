@@ -15,10 +15,10 @@ export const resetLoginState = () => {
 };
 
 
-export const loginRequest = (credentials: types.credentialsLogin) => {
+export const loginRequest = (credentials: types.CredentialsLogin) => {
     return {
         type: Constants.LOGIN_REQUEST,
-        credentials
+        credentials,
     }
 };
 

@@ -11,10 +11,9 @@ const saveTokensToLocalStorage = (data: types.LoginResponse) => {
     localStorage.setItem('refreshTokenExpiredIn', JSON.stringify(data.refreshTokenExpiredIn));
 };
 
-const login = (endpoint: string, data: types.CredentialsLogin) => {
-    return fetchRequest('POST', `${BASE_URL}/${endpoint}`, data);
+const login = (data: types.CredentialsLogin) => {
+    return fetchRequest('POST', `${BASE_URL}/auth/token`, data);
 };
-
 
 const logout = () => {
     localStorage.removeItem('accessToken');

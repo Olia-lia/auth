@@ -44,17 +44,17 @@ const fetchRequest = (url: URL | string, method: string, body?: any, isRetried:b
     }
 
     return fetch(url, options) // типизация
-        .then((response: Response) => {
-            if (response.status >= 400) {
-                if (response.status === 401 && !isRetried) {
-                    fetchRequest(url, options, isRetried = true);
-                }
-                else handleError(response);
-            }
-            else if(response.ok) {
-                return response.json();
-            }
-        });
+        // .then((response: Response) => {
+        //     if (response.status >= 400) {
+        //         if (response.status === 401 && !isRetried) {
+        //             fetchRequest(url, options, isRetried = true);
+        //         }
+        //         else handleError(response);
+        //     }
+        //     else if(response.ok) {
+        //         return response.json();
+        //     }
+        // });s
 };
 
 const handleError = (error: any) => {

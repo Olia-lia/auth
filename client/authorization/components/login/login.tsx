@@ -19,11 +19,6 @@ const Login: React.FC = (props) => {
       password
     }
 
-    const buttonStyle = {
-      width: '130px',
-      height: '30px',
-    }
-    
     const handleSubmit = (evt) => {
       evt.preventDefault();
       login(credentials)
@@ -70,7 +65,7 @@ const Login: React.FC = (props) => {
           </Input>
             {!passwordNotValid && <span className="login-error">{errors.password}</span>}
           <div>
-            <button className="form__button" style={buttonStyle} type="submit" onClick={(evt) => handleSubmit(evt)}>Login</button>
+            <button className="form__button"  type="submit" onClick={(evt) => handleSubmit(evt)}>Login</button>
           </div>
   
         </form>

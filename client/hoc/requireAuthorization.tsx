@@ -12,7 +12,7 @@ const RequireAuthorization = (Component) => {
     const RequiredComponent = (props) => {
     const location = useLocation() 
   
-    if(props.isLoginned == false) return <Navigate to='/login' state={{from: location}}/>
+    if(props.isLoginned == false) return <Navigate to='/' state={{from: location}}/>
     
 
     return <Component {...props}/>

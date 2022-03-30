@@ -10,10 +10,7 @@ const Layout = (props) =>{
     return(
         <div className='page__body'>
             <header>
-              <ul>
-                <li>
-                  <Link to="/login">login</Link>
-                </li>
+              <ul className='nav__list'>
                 <li>
                   <Link to="/user">user</Link>
                 </li>

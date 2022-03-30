@@ -17,10 +17,9 @@ import './style.sass';
 const App: React.FC = (props) => {
     return (
         <div>
-            <h1>hello</h1>
             <Routes>
                 <Route path='/' element={<PageContainer/>}>
-                    <Route path='/login' element = {
+                    <Route path='/' element = {
                         <LoginContainer/>}/>
                     <Route path='/user' element={
                         <AuthClientPageContainer/>

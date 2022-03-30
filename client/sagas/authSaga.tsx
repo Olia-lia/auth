@@ -27,7 +27,7 @@ function* loginSaga(action: any) {
         }
     }
     catch(error) {
-        yield call(errorHandlerSaga(error));
+        //yield (errorHandlerSaga(error));
        
     
     }
@@ -39,6 +39,6 @@ function* logoutSaga(action: any) {
         yield put({type: RESET_LOGIN_STATE});
     }
     catch(error) {
-        throw new Error(error);
+       console.log(error);
     }
 }
