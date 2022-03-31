@@ -7,16 +7,16 @@ export const getResource = (endpoint: string) => {
     return fetchRequest('GET', `${BASE_URL}/${endpoint}`)
 };
 
-export const iFetch = (method: string, endpoint: string, ...options: any) => {
-    return fetchRequest(method, `${BASE_URL}/${endpoint}`, isRetried = false, options);
+export const iFetch = (endpoint: string, method: string,  ...options: any) => {
+    return fetchRequest(`${BASE_URL}/users`, 'GET', options);
 };
 
 // client script
-export const getAllUsers = () => {
-    const endpoint = 'users';
-    const res = getResource(endpoint);  
-    return res;
-};
+// export const getAllUsers = () => {
+//     const endpoint = 'users';
+//     const res = getResource(endpoint);  
+//     return res;
+// };
 
 export const refreshToken = () => {
     const endpoint = 'auth/refresh_token';
@@ -25,5 +25,5 @@ export const refreshToken = () => {
         grant_type: 'refresh_token',
         refreshToken: refreshToken
     };
-    return fetchRequest('POST', `${BASE_URL}/${endpoint}}`, data);
+    return fetchRequest(`${BASE_URL}/${endpoint}`, 'POST',  data);
 };

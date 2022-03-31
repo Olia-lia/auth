@@ -1,4 +1,4 @@
-import { ErrorType } from './typesGlobal';
+
 
 const ErrorTypes = {
     validationErrror: 'validationError',
@@ -13,7 +13,7 @@ export class ValidationError extends Error {
         this.errors = errors;
     }
 
-    static createValidError(errors = []) {
+    static createValidError(errors) {
         return new ValidationError('validationError', errors);
     }
 }

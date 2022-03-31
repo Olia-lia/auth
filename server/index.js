@@ -34,6 +34,7 @@ const generateTokensResponse = () => {
   const ACCESS_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 2)
   const REFRESH_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 10)
   const responseData = {
+    token_type: 'bearer',
     accessToken: accessToken,
     refreshToken: refreshToken,
     accessTokenExpiredIn: ACCESS_TOKEN_EXPIRED_IN,

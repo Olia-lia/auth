@@ -7,8 +7,8 @@ import { saveTokensToLocalStorage } from '../authorization/authFetch';
 import * as types from '../client/clientTypes';
 import { LoginResponse } from '../authorization/authTypes';
 import { errorHandlerSaga } from './handlerErrorsSaga';
-import '@babel/polyfill';
-
+import { handleError } from '../utils/fetchContainer';
+import { HANDLE_ERROR } from '../authorization/redux/actionConstants';
 
 // function* main() {
 //   try {
@@ -22,7 +22,7 @@ import '@babel/polyfill';
 
 export default function* clientRequestSaga () {
     yield takeEvery(GET_RESOURSE, getResourseSaga);
-    //yield takeEvery(REFRESH_TOKEN, refreshToken);
+    yield takeLeading(REFRESH_TOKEN, refreshToken);
     yield takeLeading(GET_TOKEN, getToken);    
 } 
 
@@ -39,9 +39,11 @@ export default function* clientRequestSaga () {
 // refactoring
 function* getResourseSaga(action) {
     try {
-        const token = yield call(getToken);
-        if (token == true) {
-            const response: Response = yield call(getResource, action.endpoint);
+        const token = yield put({type: GET_TOKEN})
+        console.log(token)
+        if (token==true) {
+            console.log('ok')
+            const response: Response = yield call(getResource);
             console.log(response);
             if(response) {
                 yield put({type: RESOURSE_SUCCEEDED, data: response});
@@ -58,16 +60,20 @@ function* getResourseSaga(action) {
 function* getToken(action) {
     try {
         const checkedAccessToken: boolean = yield call(checkValidAccessToken);
+        console.log(checkedAccessToken);
         if(!checkedAccessToken) {
-            const response = yield call(refreshToken)
+            const response: LoginResponse = yield put({type: REFRESH_TOKEN});
+            console.log(response)
             if(response) {
-                yield call(saveTokensToLocalStorage(response)); 
-                return true;
+                yield(saveTokensToLocalStorage(response)); 
+                return true
             }
         }
+        return true
 
     }
     catch(error) {
-      yield call(errorHandlerSaga(error));
+        const err = yield (handleError(error))
+        yield put({type: HANDLE_ERROR, error: err});
     }
 } 

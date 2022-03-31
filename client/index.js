@@ -20,6 +20,7 @@ console.log(store.getState());
   
 sagaMiddleware.run(rootSaga);
 
+
 const action = type => store.dispatch({type});
 
 ReactDOM.render(

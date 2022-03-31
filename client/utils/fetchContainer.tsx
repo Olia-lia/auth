@@ -1,3 +1,4 @@
+import errorSaga from 'client/sagas/handlerErrorsSaga';
 import * as Errors from '../errorsMapper';
 
 interface IStatus {
@@ -20,8 +21,10 @@ const getToken = (): boolean => {
 };
 
 
-const fetchRequest = (url: URL | string, method: string, body?: any, isRetried:boolean = false, ...someConfig: any) => {
-    console.log(isRetried)
+const fetchRequest = (url: URL | string, method: string,  body?: any, isRetried:boolean = false, ...someConfig: any) => {
+    console.log(isRetried);
+    
+  
     //const token = getToken(); вынести в сагу
     const token = localStorage.getItem('accessToken');
 
@@ -44,42 +47,41 @@ const fetchRequest = (url: URL | string, method: string, body?: any, isRetried:b
     }
 
     return fetch(url, options) // типизация
-        // .then((response: Response) => {
-        //     if (response.status >= 400) {
-        //         if (response.status === 401 && !isRetried) {
-        //             fetchRequest(url, options, isRetried = true);
-        //         }
-        //         else handleError(response);
-        //     }
-        //     else if(response.ok) {
-        //         return response.json();
-        //     }
-        // });s
+        .then(async (response) => {
+            if (response.status >= 400) {
+                if (response.status === 401 && !isRetried) {
+                    return fetchRequest(url, options, isRetried = true);
+                }
+                else throw response;
+            }
+            else if(response.ok) {
+                return response.json();
+            }
+        });
 };
 
-const handleError = (error: any) => {
-    const data = error.json();
-    console.log(data);
+async function handleError(error: any) {
+  
+    const data = await error.json();
     const {message, errors} = data;
     switch (error.status) {
     case(401):
-        throw Errors.UnauthorizedError.createUnauthorizedError(message);
+        return Errors.UnauthorizedError.createUnauthorizedError(message);
     case(400): 
         if(message === 'validationError') {
-            throw new Errors.ValidationError(message, errors);
+            return Errors.ValidationError.createValidError(errors);
         }
         else if(message === 'modalError') {
+            return Errors.ModalError.createModalError(errors);
+        }
+        else return new Error(message);
+    default: 
+        //return data
+        if(message === 'modalError') {
             throw Errors.ModalError.createModalError(errors);
         }
-        else throw new Error(message);
-
-    default: 
-        return data
-        // if(message === 'modalError') {
-        //     throw Errors.ModalError.createModalError(errors);
-        // }
-        // throw new Error(error.statusText);
+        throw new Error(error.statusText);
     }
-};
+}
 
-export {fetchRequest};
+export {fetchRequest, handleError};

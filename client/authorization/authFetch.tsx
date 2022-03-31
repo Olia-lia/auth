@@ -12,7 +12,7 @@ const saveTokensToLocalStorage = (data: types.LoginResponse) => {
 };
 
 const login = (data: types.CredentialsLogin) => {
-    return fetchRequest('POST', `${BASE_URL}/auth/token`, data);
+    return fetchRequest(`${BASE_URL}/auth/token`, 'POST', data);
 };
 
 const logout = () => {

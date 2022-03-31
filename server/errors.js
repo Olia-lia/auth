@@ -4,7 +4,7 @@ module.exports = class AuthErrors extends Error {
         super(message);
           this.statusCode = statusCode,
           this.message = message,
-          this.errorsArray = errors
+          this.errors = errors
         }
   
         static Unauthorized(message){
