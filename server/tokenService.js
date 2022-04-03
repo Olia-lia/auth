@@ -13,6 +13,26 @@ module.exports = class Token {
         const refreshToken = jwt.sign(username, process.env.REFRESH_TOKEN)
         return refreshToken
     }
+
+    validateAccesToken(token) {
+        try {
+            const validatedToken = jwt.verify(token, process.env.ACCESS_TOKEN)
+            return validatedToken
+        }
+        catch(error) {
+            return null
+        }
+    }
+
+    static validateRefreshToken(token) {
+        try {
+            const validatedToken = jwt.verify(token, process.env.REFRESH_TOKEN)
+            return validatedToken
+        }
+        catch(error) {
+            return null
+        }
+    }
 }
 
 

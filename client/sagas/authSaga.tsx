@@ -5,7 +5,6 @@ import {login, logout, saveTokensToLocalStorage} from '../authorization/authFetc
 
 import '@babel/polyfill';
 import {LoginResponse} from '../authorization/authTypes';
-import {SET_PAGE_ERROR, CLEAN_PAGE_ERROR} from '../page/redux/actionCreators';
 import { handleError } from '../utils/fetchContainer';
 
 
@@ -25,7 +24,7 @@ function* loginSaga(action: any) {
         }
     }
     catch(error) {
-        const err = yield (handleError(error))
+        const err = yield call (handleError, error)
         yield put({type: HANDLE_ERROR, error: err});
         
         
@@ -36,7 +35,7 @@ function* loginSaga(action: any) {
 
 function* logoutSaga(action: any) {
     try {
-        yield call(logout);
+        yield call (logout);
         yield put({type: RESET_LOGIN_STATE});
         //reset all states
     }

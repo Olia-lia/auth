@@ -1,31 +1,11 @@
-import errorSaga from 'client/sagas/handlerErrorsSaga';
 import * as Errors from '../errorsMapper';
 
 interface IStatus {
 	status?: number
 }
 
-const getToken = (): boolean => { 
-    const accessToken = localStorage.getItem('accessToken');
-    if(!accessToken) return false;
-    const now = new Date().getTime();
-    const expireInStr = localStorage.getItem('accessTokenExpiredIn');
-    if(!expireInStr) return false;
-    const expireIn = JSON.parse(expireInStr);
-    if (now > expireIn) {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('accessTokenExpiredIn');
-        return false;
-    }
-    return true;
-};
-
-
-const fetchRequest = (url: URL | string, method: string,  body?: any, isRetried:boolean = false, ...someConfig: any) => {
-    console.log(isRetried);
+const fetchRequest = (url: URL | string, method: string,  body?: any, isRetried:boolean = false, ...someConfig: any) => {    console.log(isRetried);
     
-  
-    //const token = getToken(); вынести в сагу
     const token = localStorage.getItem('accessToken');
 
     const options = {   
@@ -42,7 +22,7 @@ const fetchRequest = (url: URL | string, method: string,  body?: any, isRetried:
         options.body = JSON.stringify(body);
     }
 
-    if(token) {
+    if(token != undefined) {
         options.headers.authorization = `Bearer ${token}`;
     }
 

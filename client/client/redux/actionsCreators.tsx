@@ -2,24 +2,23 @@ import * as Constants from './actionConstants';
 import * as Types from '../clientTypes';
 
 
-export const getResource = (endpoint: string) => {
+export const getResource = () => {
     return {
         type: Constants.GET_RESOURSE,
-        endpoint
     };
 };
 
 export const setResourse = (data: Types.UserInfo) => {
     return {
         type: Constants.RESOURSE_SUCCEEDED,
-        data
+        payload: data
     };
 };
 
 export const rejectResourse = (error) => {
     return {
         type: Constants.RESOURSE_FAILED,
-        error
+        payload: error
     };
 };
 

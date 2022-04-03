@@ -10,8 +10,6 @@ const app = express();
 const hostname = '127.0.0.1';
 const PORT = 5000;
 
-console.log(process.env.ACCESS_TOKEN)
-
 const corsOptions = {
   origin: '*',
   methods: 'GET, POST, PUT, PATCH',
@@ -34,7 +32,6 @@ const generateTokensResponse = () => {
   const ACCESS_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 2)
   const REFRESH_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 10)
   const responseData = {
-    token_type: 'bearer',
     accessToken: accessToken,
     refreshToken: refreshToken,
     accessTokenExpiredIn: ACCESS_TOKEN_EXPIRED_IN,
@@ -53,7 +50,7 @@ const login = async(request, response, next) => {
       const accessToken = Token.generateAccessToken('olya');
       const refreshToken = Token.generateRefreshToken('olya');
       const now = new Date();
-      const ACCESS_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 2)
+      const ACCESS_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 1)
       const REFRESH_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 10)
       const responseData = {
         accessToken: accessToken,
@@ -65,7 +62,7 @@ const login = async(request, response, next) => {
     } 
   
     if (data.username === 'kolya' && data.password === '123') {
-      next(AuthErrors.BadRequest('modalError', 'Такая комбинация логина и пароля не найдена'))
+      return next(AuthErrors.BadRequest('modalError', 'Такая комбинация логина и пароля не найдена'))
      }
   
     const validationErrors = []
@@ -106,9 +103,9 @@ const login = async(request, response, next) => {
       validationErrors.push(error)
     }
     if(validationErrors.length > 0)
-      next(AuthErrors.BadRequest('validationError', [...validationErrors]))
+      return next(AuthErrors.BadRequest('validationError', [...validationErrors]))
 
-    next(new AuthErrors(500, 'modalError', 'something broke'))
+    return next(new AuthErrors(500, 'modalError', 'something broke'))
  
   }
 
@@ -118,41 +115,13 @@ const login = async(request, response, next) => {
   }
 } 
 
-const validateRefreshToken = (request, response, next) => {
-  try{
-  const data = request.body;
-  console.log(data)
-  if(!data.grant_type || !data.refreshToken) 
-    return next(AuthErrors.Unauthorized('noToken'))
-  if (data.grant_type === 'refresh_token') 
-    return next(AuthErrors.Unauthorized('noToken'))
-    jwt.verify(data.refreshToken, process.env.REFRESH_TOKEN, (error, tokens) => {
-      if (error) {
-        return next(AuthErrors.Unauthorized('invalid token'))
-      }
-
-      request.tokens = tokens
-      next()
-    })
-  } 
-  catch(error) {
-    return next()
-  }
-}
-
- //////////////////////// GET 
-
 const validateAccessToken = (request, response, next) => {
   try {
     const authHeader = request.headers.authorization
-    console.log(authHeader)
-    
-    if (!authHeader) {
-      return next(AuthErrors.Unauthorized('noAccessToken'))
-    }
+
     const token = authHeader.split(' ')[1]
 
-    if (!token) return next(new AuthErrors(401, 'noAccessToken'))
+    if (!authHeader || !token) return next(new AuthErrors(401, 'noAccessToken'))
 
    
     jwt.verify(token, process.env.ACCESS_TOKEN, (error, user) => {
@@ -161,7 +130,7 @@ const validateAccessToken = (request, response, next) => {
       }
 
       request.user = user
-      next()
+      response.end();
     })
   }
   catch(error) {
@@ -187,11 +156,25 @@ app.get('/comments', validateAccessToken, (request, response) => {
 })
 
 router.post('/token', jsonParser,  login) 
-router.post('/refresh_token', validateRefreshToken, (request, response) => {
-  const newResponse = generateTokensResponse()
-  return response.status(200).json(newResponse)
-}) 
+router.post('/refresh_token', jsonParser, (request, response) => {
 
+  try{
+  const data = request.body;
+  const validToken = Token.generateRefreshToken(data.refreshToken)
+    if(!data.refreshToken || validToken) {
+      console.log(validToken)
+      return next(AuthErrors.Unauthorized('noToken'))
+    }
+    else {
+      const resp = generateTokensResponse();
+      console.log(resp)
+      return response.status(200).json(resp);
+    } 
+  }
+  catch(error) {
+    console.log(error)
+  }
+});
 
 const start = () => {
   try {

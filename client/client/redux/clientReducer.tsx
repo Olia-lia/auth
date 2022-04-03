@@ -20,7 +20,8 @@ export const clientReducer = (state = initialState, action: any) =>  {
         return {
             ...state, 
             isError: false,
-            users: action.data
+            users: [...state.users,
+                ...action.payload]
         };
         
 

@@ -17,10 +17,9 @@ export const checkValidRefreshToken = (): boolean => {
 
 export const checkValidAccessToken = (): boolean => { 
     const accessToken = localStorage.getItem('accessToken');
-    if(!accessToken) return false;
     const now = new Date().getTime();
     const expireInStr = localStorage.getItem('accessTokenExpiredIn');
-    if(!expireInStr) return false;
+    if(!accessToken || !expireInStr) return false;
     const expireIn = JSON.parse(expireInStr);
     if (now > expireIn) {
         localStorage.removeItem('accessToken');

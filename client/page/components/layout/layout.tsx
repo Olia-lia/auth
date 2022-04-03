@@ -1,11 +1,25 @@
 import {Link, NavLink, Outlet} from 'react-router-dom';
 import Modal from '../modal/modal';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 const Layout = (props) =>{
-    const {isFetchingError, pageError, getResource} = props
+    const {isFetchingError, pageError, getResource} = props;
+    const delay = 3000
      
-  const [modalOpened, setModal] = useState(true)
+  const [modalOpened, setModal] = useState(false)
+
+  useEffect(
+    () => {
+      if(isFetchingError) {
+         setModal(true)
+         let timer = setTimeout(() => setModal(false), delay)
+          return () => {
+        clearTimeout(timer)
+      }
+    }
+    },
+    [isFetchingError]
+  )
 
     return(
         <div className='page__body'>
@@ -21,7 +35,7 @@ const Layout = (props) =>{
             <main className='page__main'><Outlet/></main>
             {/* <footer>My App</footer> */}
 
-          {isFetchingError &&
+          {modalOpened &&
             <Modal active={modalOpened} setActive={setModal}>
               {<span>
                 {pageError.errors}

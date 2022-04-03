@@ -17,7 +17,7 @@ export const iFetch = (endpoint: string, method: string,  ...options: any) => {
 //     const res = getResource(endpoint);  
 //     return res;
 // };
-
+//client script
 export const refreshToken = () => {
     const endpoint = 'auth/refresh_token';
     const refreshToken = localStorage.getItem('refreshToken');

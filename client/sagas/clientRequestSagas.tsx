@@ -39,19 +39,21 @@ export default function* clientRequestSaga () {
 // refactoring
 function* getResourseSaga(action) {
     try {
-        const token = yield put({type: GET_TOKEN})
+        const token: boolean = yield put({type: GET_TOKEN})
         console.log(token)
-        if (token==true) {
+        if (token) {
             console.log('ok')
             const response: Response = yield call(getResource);
             console.log(response);
             if(response) {
-                yield put({type: RESOURSE_SUCCEEDED, data: response});
+                yield put({
+                    type: RESOURSE_SUCCEEDED,
+                    action: response});
             } 
         }
     }
     catch(error) {
-        yield call(errorHandlerSaga(error));
+        yield call(errorHandlerSaga, error);
     }
     
 }
@@ -65,6 +67,7 @@ function* getToken(action) {
             const response: LoginResponse = yield put({type: REFRESH_TOKEN});
             console.log(response)
             if(response) {
+                console.log(response)
                 yield(saveTokensToLocalStorage(response)); 
                 return true
             }
@@ -73,7 +76,7 @@ function* getToken(action) {
 
     }
     catch(error) {
-        const err = yield (handleError(error))
+        const err = yield call(handleError, error)
         yield put({type: HANDLE_ERROR, error: err});
     }
 } 

@@ -11,7 +11,6 @@ export type FieldErrors = {
 export type AuthState = {
     user: null,
     isLoginned: boolean,
-    retry: number,
     isValidationError: boolean,
     fieldsErrors: FieldErrors
 }
