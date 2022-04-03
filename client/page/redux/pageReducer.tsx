@@ -1,4 +1,4 @@
-import {SET_PAGE_ERROR} from './actionCreators';
+import {SET_PAGE_ERROR, RESET_PAGE_STATE} from './actionConstants';
 import {PageState} from '../pageTypes'
 
 
@@ -12,8 +12,13 @@ export const pageReducer = (state = initialState, action: any) => {
         case SET_PAGE_ERROR: 
             return {
                 isFetchingError: true, 
-                pageError: action.error
+                pageError: action.payload
             };
+            case RESET_PAGE_STATE: 
+            return {
+                isFetchingError: false,
+                pageError: null
+            }
 
         default: 
             return state;

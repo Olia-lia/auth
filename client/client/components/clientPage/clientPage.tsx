@@ -5,7 +5,7 @@ import * as types from '../../clientTypes';
 
 const ClientPage: React.FC = (props) => {
     const {users, logout} = props;
-    const {id} = useParams();
+  
 
     const buttonStyle = {
         width: '130px',
@@ -15,7 +15,9 @@ const ClientPage: React.FC = (props) => {
     return (
         <div>
             <h1>Your page</h1> {
-                users.map((user: types.UserInfo) => { return (
+                users.map((user: types.UserInfo) => { 
+                    const {id} = useParams();
+                    return (
                     <Link key={user.id} to={`/user/${user.id}`}>
                         {user.user}
                     </Link>

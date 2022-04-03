@@ -32,7 +32,7 @@ export const loginSuccess = (data: types.LoginResponse) => {
 export const loginFailed = (error) => {
     return {
         type: Constants.LOGIN_REQUEST_FAILED, 
-        error
+        payload: error
     };
 };
 
@@ -40,6 +40,6 @@ export const loginFailed = (error) => {
 export const  handleErrors = (error) => {
     return {
         type: Constants.HANDLE_ERROR,
-        error
+        payload: error
     };
 };

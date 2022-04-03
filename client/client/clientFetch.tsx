@@ -8,16 +8,16 @@ export const getResource = (endpoint: string) => {
 };
 
 export const iFetch = (endpoint: string, method: string,  ...options: any) => {
-    return fetchRequest(`${BASE_URL}/users`, 'GET', options);
+    return fetchRequest(`${BASE_URL}/${endpoint}`, 'METHOD', options);
 };
 
 // client script
 // export const getAllUsers = () => {
 //     const endpoint = 'users';
-//     const res = getResource(endpoint);  
+//     const res = iFetch(endpoint, method);  
 //     return res;
 // };
-//client script
+
 export const refreshToken = () => {
     const endpoint = 'auth/refresh_token';
     const refreshToken = localStorage.getItem('refreshToken');

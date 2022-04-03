@@ -36,7 +36,7 @@ export const loginReducer  = (state = initialState, action) => {
             isValidationError: true,
         };
             
-        const responseError = action.error
+        const responseError = action.payload
         responseError.errors.forEach((error) => {
             if (error.field === 'username') {
                 newState.fieldsErrors.username = error.message;
@@ -61,15 +61,6 @@ export const loginReducer  = (state = initialState, action) => {
 
         return newState;
     }
-
-    // case RETRY: {
-    //     newState = {
-    //         ...state,
-    //         user: null,
-    //         isLoginned: false,
-    //      }
-    //      newState.retry = state.retry + 1
-    // }
     
     default:
         return state;

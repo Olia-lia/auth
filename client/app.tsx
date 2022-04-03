@@ -4,6 +4,7 @@ import {Route, Routes, Link} from 'react-router-dom';
 import LoginContainer from './authorization/components/login/loginContainer';
 import PageContainer from './page/components/PageContainer';
 import AuthClientPageContainer from './client/components/clientPage/clientPageContainer';
+import NotFoundPage from './page/components/notFoundPage/notFoundPage';
 
 
 import * as authTypes from './authorization/authTypes';
@@ -24,6 +25,8 @@ const App: React.FC = (props) => {
                     <Route path='/user' element={
                         <AuthClientPageContainer/>
                     }/>
+                    <Route path='*' element={
+                        <NotFoundPage/>}/>
                 </Route>    
             </Routes>
         </div>

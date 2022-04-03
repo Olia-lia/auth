@@ -16,9 +16,10 @@ const login = (data: types.CredentialsLogin) => {
 };
 
 const logout = () => {
-    window.localStorage.removeItem('accessToken');
+    localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('accessTokenExpiredIn');
+    localStorage.removeItem('refreshTokenExpiredIn')
 };
 
 export {login, logout, saveTokensToLocalStorage};

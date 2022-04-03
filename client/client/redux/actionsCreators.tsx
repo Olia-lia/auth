@@ -2,9 +2,10 @@ import * as Constants from './actionConstants';
 import * as Types from '../clientTypes';
 
 
-export const getResource = () => {
+export const getResource = (endpoint: string) => {
     return {
         type: Constants.GET_RESOURSE,
+        payload: endpoint,
     };
 };
 

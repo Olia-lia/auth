@@ -1,14 +1,16 @@
-import * as authTypes from './authorization/authTypes';
-import * as clientTypes from './client/clientTypes';
+import {AuthState} from './authorization/authTypes';
+import {ClientState} from './client/clientTypes';
 import {PageState} from './page/pageTypes';
 
 export type globalState = {
-    login: authTypes.AuthState,
+    login: AuthState,
     page: PageState,
-    client: clientTypes.ClientState,
+    client: ClientState,
 }
 
 export type ErrorType = {
     message: string,
     errorsArray: Array<ErrorElement>
  }
+
+ 

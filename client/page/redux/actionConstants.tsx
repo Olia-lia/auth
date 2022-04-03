@@ -1,0 +1,2 @@
+export const SET_PAGE_ERROR = 'SET_PAGE_ERROR';
+export const RESET_PAGE_STATE = 'RESET_PAGE_STATE';

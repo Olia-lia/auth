@@ -14,6 +14,7 @@ export const clientReducer = (state = initialState, action: any) =>  {
         return {
             ...state,
             isFetching: true,
+            users: [state.users]
         };
 
     case RESOURSE_SUCCEEDED: 

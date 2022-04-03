@@ -1,8 +1,15 @@
-export const SET_PAGE_ERROR = 'SET_PAGE_ERROR';
+import * as Constants from './actionConstants'
 
 export const setPageError = (error) => {
     return {
-        type: SET_PAGE_ERROR, 
-        error
+        type: Constants.SET_PAGE_ERROR, 
+        payload: error
     }
-}
+};
+
+export const resetPageState = () => {
+    return {
+        type: Constants.RESET_PAGE_STATE, 
+    }
+};
+

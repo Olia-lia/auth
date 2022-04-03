@@ -4,7 +4,8 @@ interface IStatus {
 	status?: number
 }
 
-const fetchRequest = (url: URL | string, method: string,  body?: any, isRetried:boolean = false, ...someConfig: any) => {    console.log(isRetried);
+const fetchRequest = (url: URL | string, method: string,  body?: any, isRetried:boolean = false, ...someConfig: any) => {    
+    console.log(isRetried);
     
     const token = localStorage.getItem('accessToken');
 
@@ -26,13 +27,15 @@ const fetchRequest = (url: URL | string, method: string,  body?: any, isRetried:
         options.headers.authorization = `Bearer ${token}`;
     }
 
-    return fetch(url, options) // типизация
+    return window.fetch(url, options) // типизация
         .then(async (response) => {
             if (response.status >= 400) {
                 if (response.status === 401 && !isRetried) {
                     return fetchRequest(url, options, isRetried = true);
                 }
-                else throw response;
+            
+                    return handleError(response)
+    
             }
             else if(response.ok) {
                 return response.json();
@@ -46,21 +49,20 @@ async function handleError(error: any) {
     const {message, errors} = data;
     switch (error.status) {
     case(401):
-        return Errors.UnauthorizedError.createUnauthorizedError(message);
+        throw Errors.UnauthorizedError.createUnauthorizedError(message);
     case(400): 
         if(message === 'validationError') {
-            return Errors.ValidationError.createValidError(errors);
+            throw Errors.ValidationError.createValidError(errors);
         }
         else if(message === 'modalError') {
-            return Errors.ModalError.createModalError(errors);
+            throw Errors.ModalError.createModalError(errors);
         }
-        else return new Error(message);
+        else throw new Error(message);
     default: 
-        //return data
         if(message === 'modalError') {
             throw Errors.ModalError.createModalError(errors);
         }
-        throw new Error(error.statusText);
+        throw new Error(message);
     }
 }
 

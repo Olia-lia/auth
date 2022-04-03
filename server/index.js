@@ -5,6 +5,7 @@ const cors = require('cors');
 const AuthErrors = require('./errors');
 const errorMiddleware = require('./handleErrorMiddleware');
 const Token = require('./tokenService');
+const handleErrorMiddleware = require('./handleErrorMiddleware');
 
 const app = express();
 const hostname = '127.0.0.1';
@@ -43,6 +44,7 @@ const generateTokensResponse = () => {
 const login = async(request, response, next) => {
   try {
     const data = request.body
+    const validationErrors = []
    
     console.log(data)
 
@@ -65,9 +67,7 @@ const login = async(request, response, next) => {
       return next(AuthErrors.BadRequest('modalError', 'Такая комбинация логина и пароля не найдена'))
      }
   
-    const validationErrors = []
-
-    if (data.username === 'o') {
+  if (data.username === 'o') {
       const error = {
         field: 'username',
         type: 'invalid',
@@ -94,7 +94,7 @@ const login = async(request, response, next) => {
       validationErrors.push(error)
     }
 
-    if(data.password === '') {
+    if (data.password === '') {
        const error = {
         field: 'password',
         type: 'required',
@@ -102,16 +102,16 @@ const login = async(request, response, next) => {
       }
       validationErrors.push(error)
     }
-    if(validationErrors.length > 0)
-      return next(AuthErrors.BadRequest('validationError', [...validationErrors]))
+    if(validationErrors.length > 0) {
+      next(AuthErrors.BadRequest('validationError', [...validationErrors]))
+    }
 
-    return next(new AuthErrors(500, 'modalError', 'something broke'))
+    return handleErrorMiddleware()
  
   }
 
   catch(error) {
-    console.log(error)
-    return next()
+    next(handleErrorMiddleware)
   }
 } 
 
@@ -125,7 +125,7 @@ const validateAccessToken = (request, response, next) => {
 
    
     jwt.verify(token, process.env.ACCESS_TOKEN, (error, user) => {
-      if (error) {
+      if (!error) {
         return next(new AuthErrors(401, 'noAccessToken'))
       }
 
@@ -156,13 +156,12 @@ app.get('/comments', validateAccessToken, (request, response) => {
 })
 
 router.post('/token', jsonParser,  login) 
-router.post('/refresh_token', jsonParser, (request, response) => {
+router.post('/refresh_token', jsonParser, (request, response, next) => {
 
   try{
   const data = request.body;
-  const validToken = Token.generateRefreshToken(data.refreshToken)
+  const validToken = Token.validateRefreshToken(data.refreshToken)
     if(!data.refreshToken || validToken) {
-      console.log(validToken)
       return next(AuthErrors.Unauthorized('noToken'))
     }
     else {

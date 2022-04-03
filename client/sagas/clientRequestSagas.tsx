@@ -1,13 +1,11 @@
-import { call, put, takeEvery, takeLeading, spawn, all, delay } from 'redux-saga/effects';
+import { call, put, takeEvery, takeLeading, spawn, all, delay, join} from 'redux-saga/effects';
 import {getResource, refreshToken} from '../client/clientFetch';
 import { GET_RESOURSE, RESOURSE_SUCCEEDED, REFRESH_TOKEN, GET_TOKEN} from '../client/redux/actionConstants';
-import * as action from '../client/redux/actionsCreators';
+import * as actions from '../client/redux/actionsCreators';
 import {checkValidAccessToken} from '../checkValidTokens';
 import { saveTokensToLocalStorage } from '../authorization/authFetch';
 import * as types from '../client/clientTypes';
 import { LoginResponse } from '../authorization/authTypes';
-import { errorHandlerSaga } from './handlerErrorsSaga';
-import { handleError } from '../utils/fetchContainer';
 import { HANDLE_ERROR } from '../authorization/redux/actionConstants';
 
 // function* main() {
@@ -29,22 +27,22 @@ export default function* clientRequestSaga () {
 
 // function* fetchAll() {
 //     yield all([
-//       spawn(action.getResource, 'users'),    
-//     spawn(action.getResource, 'comments'),  
+//         spawn(getResourseSaga, 'users'),    
+//         //spawn(actions.getResource, 'comments'),  
 //     //delay(1000)
 //   ])
-// }
+//}
 
 
 // refactoring
-function* getResourseSaga(action) {
+function* getResourseSaga(action: any) {
     try {
         const token: boolean = yield put({type: GET_TOKEN})
         console.log(token)
-        if (token) {
+        if (token == true) {
             console.log('ok')
-            const response: Response = yield call(getResource);
-            console.log(response);
+           const task = yield call(fetchAll);
+           // return response
             if(response) {
                 yield put({
                     type: RESOURSE_SUCCEEDED,
@@ -53,7 +51,7 @@ function* getResourseSaga(action) {
         }
     }
     catch(error) {
-        yield call(errorHandlerSaga, error);
+        yield put({type: HANDLE_ERROR, payload: error});
     }
     
 }
@@ -62,7 +60,7 @@ function* getResourseSaga(action) {
 function* getToken(action) {
     try {
         const checkedAccessToken: boolean = yield call(checkValidAccessToken);
-        console.log(checkedAccessToken);
+      
         if(!checkedAccessToken) {
             const response: LoginResponse = yield put({type: REFRESH_TOKEN});
             console.log(response)
@@ -76,7 +74,7 @@ function* getToken(action) {
 
     }
     catch(error) {
-        const err = yield call(handleError, error)
-        yield put({type: HANDLE_ERROR, error: err});
+        yield put({type: HANDLE_ERROR, payload: error});
+  
     }
 } 
