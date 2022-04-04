@@ -24,6 +24,16 @@ module.exports = class Token {
         }
     }
 
+    static validateAccessToken(token) {
+        try {
+            const validatedToken = jwt.verify(token, process.env.ACCESS_TOKEN)
+            return validatedToken
+        }
+        catch(error) {
+            return null
+        }
+    }
+
     static validateRefreshToken(token) {
         try {
             const validatedToken = jwt.verify(token, process.env.REFRESH_TOKEN)

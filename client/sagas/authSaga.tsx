@@ -16,7 +16,7 @@ export default function* authSaga () {
 function* loginSaga(action: any) { 
  
     try {
-        yield spawn(logoutSaga, action)
+        yield spawn(logoutSaga, action);
         const response: LoginResponse = yield call(login, action.credentials);
       
         
@@ -35,7 +35,7 @@ function* logoutSaga(action: any) {
     try {
         yield call(logout);
         yield put({type: RESET_LOGIN_STATE});
-        yield put({type: RESET_PAGE_STATE})
+        yield put({type: RESET_PAGE_STATE});
     }
     catch(error) {
         yield put({type: HANDLE_ERROR, payload: error});

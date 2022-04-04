@@ -18,6 +18,18 @@ export class ValidationError extends Error {
     }
 }
 
+export class RedirectError extends Error {
+    constructor(message: string, errors: any) {
+        super(message);
+        this.message = message,
+        this.errors = errors;
+    }
+
+    static createRedirectError(errors) {
+        return new ValidationError('redirectError', errors);
+    }
+}
+
 export class ModalError extends Error {
     constructor(message: string, errors: any) {
         super(message);

@@ -4,19 +4,19 @@ import * as types from './clientTypes';
 const BASE_URL = 'http://localhost:5000';
 
 export const getResource = (endpoint: string) => {
-    return fetchRequest('GET', `${BASE_URL}/${endpoint}`)
+    return fetchRequest(`${BASE_URL}/${endpoint}`,  'GET');
 };
 
 export const iFetch = (endpoint: string, method: string,  ...options: any) => {
-    return fetchRequest(`${BASE_URL}/${endpoint}`, 'METHOD', options);
+    return fetchRequest(`${BASE_URL}/${endpoint}`, method, options);
 };
 
 // client script
-// export const getAllUsers = () => {
-//     const endpoint = 'users';
-//     const res = iFetch(endpoint, method);  
-//     return res;
-// };
+export const getAllUsers = () => {
+    const endpoint = 'users';
+    const res = iFetch(endpoint, 'GET');  
+    return res;
+};
 
 export const refreshToken = () => {
     const endpoint = 'auth/refresh_token';

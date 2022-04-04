@@ -118,19 +118,20 @@ const login = async(request, response, next) => {
 const validateAccessToken = (request, response, next) => {
   try {
     const authHeader = request.headers.authorization
-
-    const token = authHeader.split(' ')[1]
-
-    if (!authHeader || !token) return next(new AuthErrors(401, 'noAccessToken'))
-
-   
+    if (!authHeader)
+      return next(new AuthErrors(401, 'noAccessToken'))
+    const token = authHeader.split(' ')[1];
+    if (!token)
+      return next(new AuthErrors(401, 'noAccessToken'))
+    
     jwt.verify(token, process.env.ACCESS_TOKEN, (error, user) => {
-      if (!error) {
-        return next(new AuthErrors(401, 'noAccessToken'))
+      if (error) {
+        return next(new AuthErrors(401, 'notVerify'))
       }
 
-      request.user = user
-      response.end();
+     request.user = user
+     return next()
+  
     })
   }
   catch(error) {
@@ -161,7 +162,7 @@ router.post('/refresh_token', jsonParser, (request, response, next) => {
   try{
   const data = request.body;
   const validToken = Token.validateRefreshToken(data.refreshToken)
-    if(!data.refreshToken || validToken) {
+    if(!data.refreshToken || !validToken) {
       return next(AuthErrors.Unauthorized('noToken'))
     }
     else {

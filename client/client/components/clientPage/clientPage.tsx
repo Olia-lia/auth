@@ -18,10 +18,10 @@ const ClientPage: React.FC = (props) => {
                 users.map((user: types.UserInfo) => { 
                     const {id} = useParams();
                     return (
-                    <Link key={user.id} to={`/user/${user.id}`}>
-                        {user.user}
-                    </Link>
-                );})}
+                        <Link key={user.id} to={`/user/${user.id}`}>
+                            {user.user}
+                        </Link>
+                    );})}
             <button onClick={logout} style={buttonStyle}>Log out</button>
         </div>
     );

@@ -19,7 +19,7 @@ const logout = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('accessTokenExpiredIn');
-    localStorage.removeItem('refreshTokenExpiredIn')
+    localStorage.removeItem('refreshTokenExpiredIn');
 };
 
 export {login, logout, saveTokensToLocalStorage};

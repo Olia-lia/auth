@@ -1,12 +1,12 @@
 import * as Errors from '../errorsMapper';
-import {put, delay, takeLeading} from 'redux-saga/effects';
+import {put, take, takeLeading, takeEvery} from 'redux-saga/effects';
 import {LOGIN_REQUEST_FAILED, LOGOUT, HANDLE_ERROR} from '../authorization/redux/actionConstants';
 import { SET_PAGE_ERROR} from '../page/redux/actionConstants';
 import '@babel/polyfill';
 
 
 export default function* errorSaga () {
-    yield takeLeading(HANDLE_ERROR, errorHandlerSaga);
+    yield takeEvery(HANDLE_ERROR, errorHandlerSaga);
  
 } 
 

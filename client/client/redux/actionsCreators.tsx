@@ -2,7 +2,7 @@ import * as Constants from './actionConstants';
 import * as Types from '../clientTypes';
 
 
-export const getResource = (endpoint: string) => {
+export const getResourse = (endpoint: string) => {
     return {
         type: Constants.GET_RESOURSE,
         payload: endpoint,
@@ -36,8 +36,8 @@ export const getToken = () => {
     };
 };
 
-// export const cleanValidationError = () => {
-//     return {
-//         type: Constants.CLEAN_VALIDATION_ERROR,
-//     };
-// };
+export const fetchAll = () => {
+    return {
+        type: Constants.FETCH_ALL,
+    };
+};

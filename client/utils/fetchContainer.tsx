@@ -4,8 +4,8 @@ interface IStatus {
 	status?: number
 }
 
-const fetchRequest = (url: URL | string, method: string,  body?: any, isRetried:boolean = false, ...someConfig: any) => {    
-    console.log(isRetried);
+const fetchRequest = (url: string, method: string,  body?: any, isRetried:boolean = false, ...someConfig: any): any => {    
+    //console.log(isRetried);
     
     const token = localStorage.getItem('accessToken');
 
@@ -15,6 +15,7 @@ const fetchRequest = (url: URL | string, method: string,  body?: any, isRetried:
         
         headers: {
             'Content-Type': 'application/json',
+            'accept':'application/json',
             ...someConfig.header
         }
     };
@@ -23,18 +24,18 @@ const fetchRequest = (url: URL | string, method: string,  body?: any, isRetried:
         options.body = JSON.stringify(body);
     }
 
-    if(token != undefined) {
+    if(token) {
         options.headers.authorization = `Bearer ${token}`;
     }
 
-    return window.fetch(url, options) // типизация
+    return fetch(url, options) // типизация
         .then(async (response) => {
             if (response.status >= 400) {
                 if (response.status === 401 && !isRetried) {
-                    return fetchRequest(url, options, isRetried = true);
+                    return fetchRequest(url, method, body, isRetried = true, ...someConfig);
                 }
             
-                    return handleError(response)
+                return handleError(response);
     
             }
             else if(response.ok) {
