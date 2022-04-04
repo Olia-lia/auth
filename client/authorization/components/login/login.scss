@@ -6,7 +6,6 @@
     text-align: center;
 }
 
-
 .login__form {
     margin: 0 auto;
     padding: 50px;
@@ -33,18 +32,21 @@
 
 .input {
     &:hover  {
-        background-color: red;
-        opacity: 0.8;
+        border: 1px solid red;
+        color: grey
+    } 
+    &--invalid {
+        outline: 1px solid red
     }
 }
 
+
 .input-fieldset {
+    height: auto;
     margin: 0 auto;
-    width: 100%;
 }
 
 .input-label {
-    display: block;
     font-weight: 400;
     text-transform: uppercase;
     font-size: 13px;
@@ -53,17 +55,26 @@
     color: rgba(255,255,255,.7);
 }
 
-.input--invalid {
-border-color: red;
-}
-
 .form__button{
     text-transform: uppercase;
-    width: 70%;
+    width: 60%;
     padding: 5px 20px;
     border-radius: 10px;
+    margin-top: 30px;
 
     &:hover {
-        color: rgba(0,39,103,255);
+        transform: scale(1.1);
+        color: grey;
     }
+}
+
+.validation-error {
+    position: absolute;
+    display: inline-block;
+    width: 50px;
+    padding: 0 5px;
+    margin-left: 80px;
+    margin-top: -10px;
+    font-size: 10px;
+    background-color: red;
 }

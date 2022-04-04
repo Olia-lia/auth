@@ -1,8 +1,6 @@
 import {useState, useEffect} from 'react';
 import {CredentialsLogin, FieldErrors} from '../../authTypes';
 import { Input } from '../../../UI/input';
-//import './login.css';
-
 
 const Login: React.FC = (props) => {
     const {login, isError, errors} = props;
@@ -12,7 +10,7 @@ const Login: React.FC = (props) => {
     const[userNotValid, setUserNotValid] = useState(false);
     const[passwordNotValid, setPasswordNotValid] = useState(false);
       
-    let classNames= 'input input--invalid';
+    let classNames = 'input';
    
     const credentials: CredentialsLogin = {
         username,
@@ -34,6 +32,10 @@ const Login: React.FC = (props) => {
     },
     [errors]);
 
+    const onFocusField = function(evt) {
+        setPasswordNotValid(false)
+    }
+
     return(
         <div className="login__wrapper">
             <h1 className="login__heading">Log In</h1>
@@ -44,12 +46,12 @@ const Login: React.FC = (props) => {
                     name="username"
                     type="text" 
                     placeholder="your login" 
-                    className={!userNotValid ? 'input:invalid' : 'input'} 
+                    className={classNames}
                     label="username"
                     onChange={evt => setUser(evt.target.value)}
                 >
                 </Input>
-                {!userNotValid ? <span className="login-error">{errors.username}</span> : ''}
+                {!userNotValid && <span className="validation-error">{errors.username}</span>}
                 <Input
                     className={passwordNotValid ? classNames : 'input'}
                     id="password"
@@ -57,9 +59,12 @@ const Login: React.FC = (props) => {
                     type="password"
                     placeholder='your password'
                     label="password"
-                    onChange={evt => setPassword(evt.target.value)}>
+                    onChange={evt => setPassword(evt.target.value)}
+                    onFocus={evt => onFocusField()}>
+                
                 </Input>
-                {!passwordNotValid && <span className="login-error">{errors.password}</span>}
+                {!passwordNotValid  && <span className="validation-error">{errors.password}</span>}
+               
                 <div>
                     <button className="form__button"  type="submit" onClick={(evt) => handleSubmit(evt)}>Login</button>
                 </div>

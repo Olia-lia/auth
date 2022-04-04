@@ -5,5 +5,5 @@ export const RESOURSE_SUCCEEDED = 'RESOURSE_SUCCEDED';
 export const RESOURSE_FAILED = 'RESOURSE_FAILED';
 export const GET_TOKEN = 'GET_TOKEN';
 export const CHECK_VALID_ACCESS_TOKEN = 'CHECK_VALID_ACCESS_TOKEN';
-
+export const I_FETCH = 'I_FETCH';
 export const FETCH_ALL = 'FETCH_ALL';

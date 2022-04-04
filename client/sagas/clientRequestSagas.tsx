@@ -1,6 +1,6 @@
 import { call, put, takeEvery, takeLeading, spawn, all,delay, fork, join, take} from 'redux-saga/effects';
-import {getResource, refreshToken} from '../client/clientFetch';
-import { GET_RESOURSE, REFRESH_TOKEN, GET_TOKEN, RESOURSE_SUCCEEDED, FETCH_ALL} from '../client/redux/actionConstants';
+import {getResource, iFetch, refreshToken} from '../client/clientFetch';
+import { GET_RESOURSE, REFRESH_TOKEN, GET_TOKEN, FETCH_ALL, I_FETCH} from '../client/redux/actionConstants';
 import * as actions from '../client/redux/actionsCreators';
 import {checkValidAccessToken} from '../checkValidTokens';
 import { saveTokensToLocalStorage } from '../authorization/authFetch';
@@ -8,15 +8,6 @@ import * as types from '../client/clientTypes';
 import { LoginResponse } from '../authorization/authTypes';
 import { HANDLE_ERROR } from '../authorization/redux/actionConstants';
 
-// function* main() {
-//   try {
-//     yield call(fetchAll)
-//   } catch (e) {
-//     console.log(e)
-//   }
-// }
-
-//spawn
 
 export default function* clientRequestSaga () {
     yield takeEvery(FETCH_ALL, fetchAll);
@@ -56,14 +47,9 @@ function* getToken() {
       
         if(!checkedAccessToken) {
             const response: LoginResponse = yield call(refreshToken);
-            
-            if(response) {
-                yield(saveTokensToLocalStorage(response)); 
-                return true;
-            }
-            return false;
+            yield(saveTokensToLocalStorage(response)); 
         }
-        return checkedAccessToken;
+        //return checkedAccessToken;
     }
 
     catch(error) {

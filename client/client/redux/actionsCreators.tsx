@@ -9,6 +9,19 @@ export const getResourse = (endpoint: string) => {
     };
 };
 
+
+export const iFetch = (endpoint: string, method: string, ...options: any) => {
+    return {
+        type: Constants.I_FETCH,
+        payload: {
+            endpoint, 
+            method,
+            options
+        }
+    };
+};
+
+
 export const setResourse = (data: Types.UserInfo) => {
     return {
         type: Constants.RESOURSE_SUCCEEDED,
