@@ -32,7 +32,8 @@ const Login: React.FC = (props) => {
     },
     [errors]);
 
-    const onFocusField = function(evt) {
+    const onFocusField = () => {
+        console.log('evt')
         setPasswordNotValid(false)
     }
 
@@ -49,9 +50,10 @@ const Login: React.FC = (props) => {
                     className={classNames}
                     label="username"
                     onChange={evt => setUser(evt.target.value)}
-                >
+                    onFocus={evt => onFocusField()}>
                 </Input>
-                {!userNotValid && <span className="validation-error">{errors.username}</span>}
+                {!userNotValid && 
+                    <span className="validation-error">{errors.username}</span>}
                 <Input
                     className={passwordNotValid ? classNames : 'input'}
                     id="password"

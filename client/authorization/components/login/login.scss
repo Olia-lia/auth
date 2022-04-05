@@ -11,8 +11,8 @@
     padding: 50px;
     color: white;
     min-width: 300px;
-    text-align: center;
     max-width: 500px; 
+    text-align: center;
     border-radius: 15px;
     background-color: rgba(0,39,103,255);
     opacity: 0.9;
@@ -70,11 +70,10 @@
 
 .validation-error {
     position: absolute;
-    display: inline-block;
-    width: 50px;
+    display: block;
+    color: red;
     padding: 0 5px;
-    margin-left: 80px;
-    margin-top: -10px;
-    font-size: 10px;
-    background-color: red;
+    margin-left: 160px;
+    margin-top: -27px;
+    font-size: 15px;
 }
