@@ -5,10 +5,12 @@ import * as Types from '../clientTypes';
 export const fetchRequest = (endpoint: string, method: string, body?: any, options: any) => {
     return {
         type: Constants.FETCH_REQUEST,
+
         endpoint,
         method, 
         body,
         options
+    
     };
 };
 
@@ -37,8 +39,10 @@ export const fetchRequests = () => {
 export const getUsers = () => {
     return {
         type: Constants.GET_USERS,
-        endpoint: 'users',
-        method: 'GET'
+        // payload: {
+        //     endpoint: 'users',
+        //     method: 'GET'
+        // }
     
     };
 };
@@ -58,10 +62,10 @@ export const getUsers = () => {
 export const getComments = () => {
     return {
         type: Constants.GET_USERS,
-        payload: {
-            endpoint: 'comments',
-            method: 'GET'
-        }
+        // payload: {
+        //     endpoint: 'comments',
+        //     method: 'GET'
+        // }
     };
 };
 

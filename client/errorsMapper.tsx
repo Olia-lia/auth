@@ -3,6 +3,7 @@
 const ErrorTypes = {
     validationErrror: 'validationError',
     pageError: 'modalError',
+
 };
 
 
@@ -52,5 +53,11 @@ export class UnauthorizedError extends Error {
     static createUnauthorizedError(message) {
         return new UnauthorizedError(message);
     }
+}
 
+export class UnderfindError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.message = message;
+    }
 }

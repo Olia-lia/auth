@@ -59,6 +59,9 @@ async function handleError(error: any) {
             throw Errors.ModalError.createModalError(errors);
         }
         else throw new Error(message);
+    case(404): 
+        throw new Errors.UnderfindError(message)
+        
     default: 
         if(message === 'modalError') {
             throw Errors.ModalError.createModalError(errors);

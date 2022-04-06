@@ -2,7 +2,13 @@ import {useState, useEffect} from 'react';
 import {CredentialsLogin, FieldErrors} from '../../authTypes';
 import { Input } from '../../../UI/input';
 
-const Login: React.FC = (props) => {
+type Props = {
+    login: Response,
+    isError: boolean,
+    errors: Array<FieldErrors>
+}
+
+const Login: React.FC = (props: Props) => {
     const {login, isError, errors} = props;
 
     const[username, setUser] = useState('');

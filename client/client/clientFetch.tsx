@@ -33,6 +33,6 @@ export const refreshToken = () => {
         };
         return fetchRequest(`${BASE_URL}/${endpoint}`, 'POST',  data);
     }
-    throw new UnauthorizedError(error);
+    throw new UnauthorizedError('tokens not valid');
     
 };

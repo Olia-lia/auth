@@ -8,9 +8,17 @@ export type globalState = {
     client: ClientState,
 }
 
+export interface ErrorElement{
+    message?: string,
+    type?: string,
+    field?: string
+}
+
 export type ErrorType = {
+    statusCode?: number,
+    name?: string,
     message: string,
-    errorsArray: Array<ErrorElement>
+    errorsArray?: Array<ErrorElement>
  }
 
 export interface Payload {

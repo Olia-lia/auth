@@ -40,7 +40,7 @@ const Layout = (props) =>{
                 </ul>
             </header>
             <main className='page__main'><Outlet/></main>
-            <footer>My App</footer>
+            <footer className='page__footer'>My App</footer>
 
             {modalOpened &&
               <Modal active={modalOpened} setActive={setModal}>
