@@ -1,11 +1,8 @@
 import React from "react";
 import {connect} from 'react-redux';
 import Layout from './layout/layout';
-import { getResourse, fetchAll } from '../../client/redux/actionsCreators';
-
+import { fetchRequest, fetchRequests } from '../../client/redux/actionsCreators';
 import {globalState} from '../../typesGlobal';
-import {PageState} from '../pageTypes';
-
 
 const mapStateToProps = (state:globalState) => {
     return {
@@ -16,8 +13,8 @@ const mapStateToProps = (state:globalState) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getResourse: (endpoint: string): void => {dispatch(getResourse(endpoint));},
-        getAll: (): void => {dispatch(fetchAll());},
+        //getResourse: (endpoint: string): void => {dispatch(fetchRequest()));},
+        fetchRequests: (): void => {dispatch(fetchRequests());},
     };
 };
 

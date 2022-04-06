@@ -25,6 +25,7 @@ const Login: React.FC = (props) => {
     useEffect(() => {
         if (errors.username != null) {
             setUserNotValid(true);
+            classNames += ' input:invalid';
         }
         if(errors.password != null) {
             setPasswordNotValid(true);
@@ -32,9 +33,20 @@ const Login: React.FC = (props) => {
     },
     [errors]);
 
+    let classErrors = 'validation-error';
+
     const onFocusField = function(evt) {
-        setPasswordNotValid(false)
-    }
+        evt.preventDefault();
+        switch(evt.target.name) {
+        case('password'):
+            setPasswordNotValid(true);
+            break;
+        
+        case('username'):
+            setUserNotValid(true);
+            break;
+        }
+    };
 
     return(
         <div className="login__wrapper">
@@ -48,10 +60,11 @@ const Login: React.FC = (props) => {
                     placeholder="your login" 
                     className={classNames}
                     label="username"
-                    onChange={evt => setUser(evt.target.value)}
+                    onChange={(evt) => setUser(evt.target.value)}
+                    onFocus={(evt) => onFocusField(evt)}
                 >
                 </Input>
-                {!userNotValid && <span className="validation-error">{errors.username}</span>}
+                {!userNotValid && <span className={classErrors}>{errors.username}</span>}
                 <Input
                     className={passwordNotValid ? classNames : 'input'}
                     id="password"
@@ -60,7 +73,7 @@ const Login: React.FC = (props) => {
                     placeholder='your password'
                     label="password"
                     onChange={evt => setPassword(evt.target.value)}
-                    onFocus={evt => onFocusField()}>
+                    onFocus={(evt) => onFocusField(evt)}>
                 
                 </Input>
                 {!passwordNotValid  && <span className="validation-error">{errors.password}</span>}

@@ -1,14 +1,14 @@
+//import {}
 
-// export const checkValidRefreshToken = (): boolean => {
-//     const refreshToken = localStorage.getItem('refreshToken');
-//     if(!refreshToken) return false;
+// export const checkValidToken = (tokenType: string): boolean => {
+//     const token = localStorage.getItem(tokenType);
+ 
+//     if(!token || token == null) return false;
 //     const now = new Date().getTime();
-//     const expireInStr = localStorage.getItem('refreshTokenExpiredIn');
-//     if(!expireInStr) return false;
-//     const expireIn = JSON.parse(expireInStr);
-//     if (now > expireIn) {
-//         localStorage.removeItem('refreshToken');
-//         localStorage.removeItem('refreshTokenExpiredIn');
+//     const tokenExpiredsStr = localStorage.getItem()
+//     const tokenObj = JSON.parse(token);
+//     if (now > tokenObj.expiredIn) {
+//         localStorage.removeItem(tokenType);
 //         return false;
 //     }
 //     return true;
@@ -24,6 +24,21 @@ export const checkValidAccessToken = (): boolean => {
     if (now > expireIn) {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('accessTokenExpiredIn');
+        return false;
+    }
+    return true;
+};
+
+
+export const checkValidRefreshToken = (): boolean => { 
+    const accessToken = localStorage.getItem('refreshToken');
+    const now = new Date().getTime();
+    const expireInStr = localStorage.getItem('refreshTokenExpiredIn');
+    if(!accessToken || !expireInStr) return false;
+    const expireIn = JSON.parse(expireInStr);
+    if (now > expireIn) {
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('refreshTokenExpiredIn');
         return false;
     }
     return true;

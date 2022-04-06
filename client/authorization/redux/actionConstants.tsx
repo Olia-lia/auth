@@ -4,5 +4,5 @@ export const LOGIN_REQUEST_FAILED = 'LOGIN_REQUEST_FAILED';
 export const RESET_LOGIN_STATE = 'RESET_LOGIN_STATE';
 export const LOGOUT = 'LOGOUT';
 export const HANDLE_ERROR = 'HANDLE_ERROR';
-
+export const SET_TOKENS = 'SET_TOKENS';
 

@@ -1,23 +1,24 @@
 import * as types from '../clientTypes';
-import { GET_RESOURSE, RESOURSE_FAILED, RESOURSE_SUCCEEDED } from './actionConstants';
+import {USERS_FAILED, USERS_SUCCEEDED, COMMENTS_SUCCEDEED, COMMENTS_FAILED } from './actionConstants';
 
 const initialState: types.ClientState = {
     isFetching: false,
     isError: false,
-    users: []
+    users: [],
+    comments: []
 };
 
 export const clientReducer = (state = initialState, action: any) =>  {
 
     switch (action.type) {
-    case GET_RESOURSE:
-        return {
-            ...state,
-            isFetching: true,
-            users: [state.users]
-        };
+    // case GET_RESOURSE:
+    //     return {
+    //         ...state,
+    //         isFetching: true,
+    //         users: [state.users]
+    //     };
 
-    case RESOURSE_SUCCEEDED: 
+    case USERS_SUCCEEDED: 
         return {
             ...state, 
             isError: false,
@@ -26,7 +27,7 @@ export const clientReducer = (state = initialState, action: any) =>  {
         };
         
 
-    case RESOURSE_FAILED:
+    case USERS_FAILED:
         return {
             isFetching: false,
             isError: true,

@@ -4,12 +4,17 @@ export type UserInfo = {
     status: string,
 };
 
+export type Comment = {
+    id: number;
+    comment: string
+};
+
 export type ClientState = {
     isFetching: boolean;
     isError: boolean; 
-    users: Array<UserInfo>
+    users: Array<UserInfo>;
+    comments: Array<Comment>
 };
-
 
 export type RefreshTokenRequest = {
     //client_id: number,

@@ -13,4 +13,9 @@ export type ErrorType = {
     errorsArray: Array<ErrorElement>
  }
 
+export interface Payload {
+    response?: any
+    error?: Error
+  }
+
  

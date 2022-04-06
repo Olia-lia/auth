@@ -136,6 +136,17 @@ module.exports = {
           use: ["style-loader", "css-loader"],
           exclude: /\.module\.css$/,
         },
+        {
+          test: /\.(woff|woff2)$/,
+          type: 'asset/resource',
+          use: ['file-loader'],
+        },
+  
+        {
+          test: /\.(jpe?g|gif|png|svg|woff|ttf|wav|mp3)$/,
+          type: 'asset/resource',
+          use: ['file-loader'],
+        },
       ]
     },
     plugins: [
@@ -144,6 +155,15 @@ module.exports = {
 
           template: 'client/index.html',
         }),
+
+        // new CopyPlugin({
+        //   patterns: [
+        //   {
+        //   from: path.resolve(__dirname, './client/img'),
+        //   to: path.resolve(__dirname, './client/build/img')
+        //   },
+        //   ]
+        // }),
         new MiniCssExtractPlugin({
           filename: filename('css'),
         }),

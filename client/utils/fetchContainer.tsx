@@ -4,7 +4,7 @@ interface IStatus {
 	status?: number
 }
 
-const fetchRequest = (url: string, method: string,  body?: any, isRetried:boolean = false, ...someConfig: any): any => {    
+const fetchRequest = (url: string, method: string,  body?: any, isRetried:boolean = false, ...someConfig: any) => {    
     //console.log(isRetried);
     
     const token = localStorage.getItem('accessToken');

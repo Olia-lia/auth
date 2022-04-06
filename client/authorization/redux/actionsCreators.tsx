@@ -43,3 +43,10 @@ export const  handleErrors = (error) => {
         payload: error
     };
 };
+
+export const setTokens = (data: types.LoginResponse) => {
+    return {
+        type: Constants.SET_TOKENS,
+        payload: data
+    };
+}; 

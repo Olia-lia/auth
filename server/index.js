@@ -26,167 +26,164 @@ app.use('/auth', router);
 app.use(errorMiddleware)
 
 
+
 const generateTokensResponse = () => {
-  const accessToken = Token.generateAccessToken('olya');
-  const refreshToken = Token.generateRefreshToken('olya');
-  const now = new Date();
-  const ACCESS_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 2)
-  const REFRESH_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 10)
-  const responseData = {
-    accessToken: accessToken,
-    refreshToken: refreshToken,
-    accessTokenExpiredIn: ACCESS_TOKEN_EXPIRED_IN,
-    refreshTokenExpiredIn: REFRESH_TOKEN_EXPIRED_IN
+    const accessToken = Token.generateAccessToken('olya');
+    const refreshToken = Token.generateRefreshToken('olya');
+    const now = new Date();
+    const ACCESS_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 2)
+    const REFRESH_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 10)
+    const responseData = {
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+      accessTokenExpiredIn: ACCESS_TOKEN_EXPIRED_IN,
+      refreshTokenExpiredIn: REFRESH_TOKEN_EXPIRED_IN
+    }
+    return responseData
   }
-  return responseData
-}
-
-const login = async(request, response, next) => {
-  try {
-    const data = request.body
-    const validationErrors = []
-   
-    console.log(data)
-
-    if (data.username === 'olya' && data.password === '123') {
-      const accessToken = Token.generateAccessToken('olya');
-      const refreshToken = Token.generateRefreshToken('olya');
-      const now = new Date();
-      const ACCESS_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 1)
-      const REFRESH_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 10)
-      const responseData = {
-        accessToken: accessToken,
-        refreshToken: refreshToken,
-        accessTokenExpiredIn: ACCESS_TOKEN_EXPIRED_IN,
-        refreshTokenExpiredIn: REFRESH_TOKEN_EXPIRED_IN
-      }
-      return response.status(200).json(responseData)
-    } 
   
-    if (data.username === 'kolya' && data.password === '123') {
-      return next(AuthErrors.BadRequest('modalError', 'Такая комбинация логина и пароля не найдена'))
-     }
+  const login = async(request, response, next) => {
+    try {
+      const data = request.body
+      const validationErrors = []
+     
+      console.log(data)
   
-  if (data.username === 'o') {
-      const error = {
-        field: 'username',
-        type: 'invalid',
-        message: 'too shot'
-      }
-      validationErrors.push(error)
-    }
-
-    if (data.password === 'o') {
-      const error = {
-        field: 'password',
-        type: 'invalid',
-        message: 'too shot'
-      }
-      validationErrors.push(error)
-    }
-
-    if (data.username === '') {
-      const error = {
-        field: 'username',
-        type: 'required',
-        message: 'required field'
-      }
-      validationErrors.push(error)
-    }
-
-    if (data.password === '') {
-       const error = {
-        field: 'password',
-        type: 'required',
-        message: 'required field'
-      }
-      validationErrors.push(error)
-    }
-    if(validationErrors.length > 0) {
-      next(AuthErrors.BadRequest('validationError', [...validationErrors]))
-    }
-
-    return handleErrorMiddleware()
- 
-  }
-
-  catch(error) {
-    next(handleErrorMiddleware)
-  }
-} 
-
-const validateAccessToken = (request, response, next) => {
-  try {
-    const authHeader = request.headers.authorization
-    if (!authHeader)
-      return next(new AuthErrors(401, 'noAccessToken'))
-    const token = authHeader.split(' ')[1];
-    if (!token)
-      return next(new AuthErrors(401, 'noAccessToken'))
+      if (data.username === 'olya' && data.password === '123') {
+        const accessToken = Token.generateAccessToken('olya');
+        const refreshToken = Token.generateRefreshToken('olya');
+        const now = new Date();
+        const ACCESS_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 1)
+        const REFRESH_TOKEN_EXPIRED_IN = new Date().setMinutes(now.getMinutes() + 10)
+        const responseData = {
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+          accessTokenExpiredIn: ACCESS_TOKEN_EXPIRED_IN,
+          refreshTokenExpiredIn: REFRESH_TOKEN_EXPIRED_IN
+        }
+        return response.status(200).json(responseData)
+      } 
     
-    jwt.verify(token, process.env.ACCESS_TOKEN, (error, user) => {
-      if (error) {
-        return next(new AuthErrors(401, 'notVerify'))
+      if (data.username === 'kolya' && data.password === '123') {
+        return next(AuthErrors.BadRequest('modalError', 'Такая комбинация логина и пароля не найдена'))
+       }
+    
+    if (data.username === 'o') {
+        const error = {
+          field: 'username',
+          type: 'invalid',
+          message: 'too shot'
+        }
+        validationErrors.push(error)
       }
-
-     request.user = user
-     return next()
   
-    })
-  }
-  catch(error) {
-   console.log(error)
-  }
-}
-
-const USERS = [
-  {user: 'Vasya', id: 23, status: 'single'},
-  {user: 'Kolya', id: 566, status: 'single'},
-]
-
-const COMMENTS = [
-  {id: 23, comment: 'hello'}
-]
-
-app.get('/users', validateAccessToken, (request, response) => {
-  return response.status(200).json(USERS)
-})
-
-app.get('/comments', validateAccessToken, (request, response) => {
-  return response.status(200).json(COMMENTS)
-})
-
-router.post('/token', jsonParser,  login) 
-router.post('/refresh_token', jsonParser, (request, response, next) => {
-
-  try{
-  const data = request.body;
-  const validToken = Token.validateRefreshToken(data.refreshToken)
-    if(!data.refreshToken || !validToken) {
-      return next(AuthErrors.Unauthorized('noToken'))
+      if (data.password === 'o') {
+        const error = {
+          field: 'password',
+          type: 'invalid',
+          message: 'too shot'
+        }
+        validationErrors.push(error)
+      }
+  
+      if (data.username === '') {
+        const error = {
+          field: 'username',
+          type: 'required',
+          message: 'required field'
+        }
+        validationErrors.push(error)
+      }
+  
+      if (data.password === '') {
+         const error = {
+          field: 'password',
+          type: 'required',
+          message: 'required field'
+        }
+        validationErrors.push(error)
+      }
+      if(validationErrors.length > 0) {
+        next(AuthErrors.BadRequest('validationError', [...validationErrors]))
+      }
+  
+      return handleErrorMiddleware()
+   
     }
-    else {
-      const resp = generateTokensResponse();
-      console.log(resp)
-      return response.status(200).json(resp);
-    } 
+  
+    catch(error) {
+      next(handleErrorMiddleware)
+    }
+  } 
+  
+  const validateAccessToken = (request, response, next) => {
+    try {
+      const authHeader = request.headers.authorization
+      if (!authHeader)
+        return next(new AuthErrors(401, 'noAccessToken'))
+      const token = authHeader.split(' ')[1];
+      if (!token)
+        return next(new AuthErrors(401, 'noAccessToken'))
+      
+      jwt.verify(token, process.env.ACCESS_TOKEN, (error, user) => {
+        if (error) {
+          return next(new AuthErrors(401, 'notVerify'))
+        }
+  
+       request.user = user
+       return next()
+    
+      })
+    }
+    catch(error) {
+     console.log(error)
+    }
   }
-  catch(error) {
-    console.log(error)
+  
+  const USERS = [
+    {user: 'Vasya', id: 23, status: 'single'},
+    {user: 'Kolya', id: 566, status: 'single'},
+  ]
+  
+  const COMMENTS = [
+    {id: 23, comment: 'hello'}
+  ]
+  
+  app.get('/users', validateAccessToken, (request, response) => {
+    return response.status(200).json(USERS)
+  })
+  
+  app.get('/comments', validateAccessToken, (request, response) => {
+    return response.status(200).json(COMMENTS)
+  })
+  
+  router.post('/token', jsonParser,  login) 
+  router.post('/refresh_token', jsonParser, (request, response, next) => {
+  
+    try{
+    const data = request.body;
+    const validToken = Token.validateRefreshToken(data.refreshToken)
+      if(!data.refreshToken || !validToken) {
+        return next(AuthErrors.Unauthorized('noToken'))
+      }
+      else {
+        const resp = generateTokensResponse();
+        console.log(resp)
+        return response.status(200).json(resp);
+      } 
+    }
+    catch(error) {
+      console.log(error)
+    }
+  });
+  
+  const start = () => {
+    try {
+      app.listen(PORT, hostname, () => console.log(`server listening on ${PORT}`))
+    }
+    catch (error) {
+      console.log(error)
+    }
   }
-});
-
-const start = () => {
-  try {
-    app.listen(PORT, hostname, () => console.log(`server listening on ${PORT}`))
-  }
-  catch (error) {
-    console.log(error)
-  }
-}
-
-start()
-
-
-
-
+  
+  start()

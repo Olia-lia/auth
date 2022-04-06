@@ -23,8 +23,8 @@ export default function* rootSaga () {
     // });
     // yield all(retrySagas);
     yield all ([
-     authSaga(),
-    clientRequestSaga(), 
-    errorSaga(),
-     ]);
+        authSaga(),
+        clientRequestSaga(), 
+        errorSaga(),
+    ]);
 } 

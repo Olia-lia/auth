@@ -35,7 +35,7 @@ function* logoutSaga(action: any) {
     try {
         yield call(logout);
         yield put({type: RESET_LOGIN_STATE});
-        yield put({type: RESET_PAGE_STATE});
+        //yield put({type: RESET_PAGE_STATE});
     }
     catch(error) {
         yield put({type: HANDLE_ERROR, payload: error});

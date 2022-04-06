@@ -1,9 +1,15 @@
-import {Link, NavLink, Outlet} from 'react-router-dom';
+import {Link,  Outlet} from 'react-router-dom';
 import Modal from '../modal/modal';
 import {useEffect, useState} from 'react';
 
+// type props = {
+//     iisFetchingError: boolean,
+//     pageError: any
+
+// }
+
 const Layout = (props) =>{
-    const {isFetchingError, pageError, getResourse, getAll} = props;
+    const {isFetchingError, pageError, fetchRequests} = props;
     const delay = 3000;
      
     const [modalOpened, setModal] = useState(false);
@@ -28,13 +34,13 @@ const Layout = (props) =>{
                     <li>
                         <Link to="/user">user</Link>
                     </li>
-
-                    <button onClick={()=>{getResourse('users');}}>getResousce</button>
-                    <button onClick={()=>{getAll();}}>getAll</button>
+{/* 
+                    //<button onClick={()=>{getResourse('users');}}>getResousce</button> */}
+                    <button onClick={()=>{fetchRequests();}}>getAll</button>
                 </ul>
             </header>
             <main className='page__main'><Outlet/></main>
-            {/* <footer>My App</footer> */}
+            <footer>My App</footer>
 
             {modalOpened &&
               <Modal active={modalOpened} setActive={setModal}>

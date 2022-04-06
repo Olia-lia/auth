@@ -9,7 +9,7 @@ export const Input = (props) => {
 
     return (
         <div className='input-fieldset'>
-              {label &&
+            {label &&
             <label className='input-label' htmlFor={id}>{label}</label>}
             <input
                 name={id}

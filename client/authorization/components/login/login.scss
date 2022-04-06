@@ -28,17 +28,15 @@
    border-radius: 5px;
    opacity: 0.6;
    padding: 5px;
-};
 
-.input {
-    &:hover  {
-        border: 1px solid red;
-        color: grey
-    } 
-    &--invalid {
+   &:hover  {
+        border: 1px solid black;
+    }
+
+    &:invalid {
         outline: 1px solid red
     }
-}
+};
 
 
 .input-fieldset {
@@ -68,13 +66,18 @@
     }
 }
 
+
+
 .validation-error {
     position: absolute;
-    display: inline-block;
-    width: 50px;
+    display: block;
+    color: red;
     padding: 0 5px;
-    margin-left: 80px;
-    margin-top: -10px;
-    font-size: 10px;
-    background-color: red;
-}
+    margin-left: 160px;
+    margin-top: -27px;
+    font-size: 15px;
+
+    &--invisible {
+        display: none;
+    }
+};

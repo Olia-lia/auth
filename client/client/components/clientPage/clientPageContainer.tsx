@@ -9,7 +9,7 @@ import * as types from '../../clientTypes';
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getResource:(endpoint: string) => {dispatch(actions.getResourse(endpoint));},
+        //getResource:(endpoint: string) => {dispatch(actions.getResourse(endpoint));},
         logout: () => {dispatch(logOut());}
     };
 };

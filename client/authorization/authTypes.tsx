@@ -22,10 +22,14 @@ export interface CredentialsLogin {
 
 export type LoginResponse = {
     token_type: string,
-    accessToken: string,
-    refreshToken: string,
-    accessTokenExpiredIn: number,
-    refreshTokenExpiredIn: number
+    accessToken: {
+        accessToken: string,
+        expiredIn: number
+    }
+    refreshToken: {
+        refreshToken: string,
+        expiredIn: number
+    }
 }
 
 export type errorOfValidation = {
