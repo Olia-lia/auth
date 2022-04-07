@@ -1,11 +1,15 @@
 import * as Errors from '../errorsMapper';
 
-interface IStatus {
-	status?: number
-}
 
-const fetchRequest = (url: string, method: string,  body?: any, isRetried:boolean = false, ...someConfig: any) => {    
-    //console.log(isRetried);
+const fetchRequest = (
+    url: string, 
+    method: string,  
+    body?: any,
+    someConfig:any = {}, 
+    isRetried:boolean = false) => {    
+    console.log(isRetried);
+
+    //someConfig = {...someConfig}
     
     const token = localStorage.getItem('accessToken');
 

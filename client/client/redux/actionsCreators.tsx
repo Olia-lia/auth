@@ -2,7 +2,7 @@ import * as Constants from './actionConstants';
 import * as Types from '../clientTypes';
 
 
-export const fetchRequest = (endpoint: string, method: string, body?: any, options: any) => {
+export const fetchRequest = (endpoint: string, method: string, body?: any, ...options?: any) => {
     return {
         type: Constants.FETCH_REQUEST,
         endpoint,
