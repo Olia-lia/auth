@@ -9,7 +9,7 @@ import {useEffect, useState} from 'react';
 // }
 
 const Layout = (props) =>{
-    const {isFetchingError, pageError, fetchRequests} = props;
+    const {isFetchingError, pageError, isLoginned, logout} = props;
     const delay = 3000;
      
     const [modalOpened, setModal] = useState(false);
@@ -18,7 +18,7 @@ const Layout = (props) =>{
         () => {
             if(isFetchingError) {
                 setModal(true);
-                let timer = setTimeout(() => setModal(false), delay)
+                let timer = setTimeout(() => setModal(false), delay);
                 return () => {
                     clearTimeout(timer);
                 };
@@ -27,19 +27,9 @@ const Layout = (props) =>{
         [isFetchingError]
     );
 
+
     return(
-        <div className='page__body'>
-            <header>
-                <ul className='nav__list'>
-                    <li>
-                        <Link to="/user">user</Link>
-                    </li>
-                    {      /* 
-                    //<button onClick={()=>{getResourse('users');}}>getResousce</button> */}
-                    <button onClick={()=>{fetchRequests();}}>getAll</button>
-                </ul>
-            </header>
-            <main className='page__main'><Outlet/></main>
+        <div className='app__body'>
             {modalOpened &&
               <Modal active={modalOpened} setActive={setModal}>
                   {<span>
@@ -47,9 +37,14 @@ const Layout = (props) =>{
                   </span>} 
               </Modal>
             } 
-            <footer className='page__footer'>My App</footer>
-
-          
+            <header className='app__header'>
+                {isLoginned && 
+                    <button onClick={()=> {logout();}}>logout</button>}
+               My header
+            </header>
+            <main className='app__main'><Outlet/></main>
+           
+            {/* <footer className='app__footer'>My footer</footer> */}
         </div>
       
     );

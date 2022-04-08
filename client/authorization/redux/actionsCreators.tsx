@@ -44,9 +44,40 @@ export const  handleErrors = (error) => {
     };
 };
 
-export const setTokens = (data: types.LoginResponse) => {
+export const setTokens  = (data: types.LoginResponse) => {
     return {
         type: Constants.SET_TOKENS,
         payload: data
     };
 }; 
+
+
+// interface SetTokens {
+//     type: AuthTypes.SET_TOKENS,
+//     payload: TokenPair,
+// }
+
+// interface RemoveTokens {
+//     type: AuthTypes.REMOVE_TOKENS,
+//     payload: TokenPair,
+// }
+
+// interface RefreshTokens {
+//     type: AuthTypes.REFRESH_TOKENS,
+//     payload: {
+//         refreshToken: string,
+//     }
+// }
+
+// interface AcquireTokens {
+//     type: AuthTypes.ACQUIRE_TOKENS,
+//     payload: {
+//         url: string,
+//     }
+// }
+
+// export type AuthActions =
+//     SetTokens
+//     | RemoveTokens
+//     | RefreshTokens
+//     | AcquireTokens;

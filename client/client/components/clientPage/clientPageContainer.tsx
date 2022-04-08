@@ -1,16 +1,16 @@
 import {connect} from 'react-redux';
 import * as actions from '../../redux/actionsCreators';
-import {logOut} from '../../../authorization/redux/actionsCreators';
 import ClientPage from './clientPage';
 import RequireAuthorization from '../../../hoc/requireAuthorization';
 
 import {globalState} from '../../../typesGlobal';
 import * as types from '../../clientTypes';  
+import { fetchRequests } from '../../redux/actionsCreators';
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        //getResource:(endpoint: string) => {dispatch(actions.getResourse(endpoint));},
-        logout: () => {dispatch(logOut());}
+        fetchRequest:(endpoint: string, method: string ) => {dispatch(actions.fetchRequest(endpoint, method));},
+        fetchRequests: () => {dispatch(actions.fetchRequests());}
     };
 };
 

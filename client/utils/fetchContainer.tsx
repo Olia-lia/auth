@@ -6,11 +6,8 @@ const fetchRequest = (
     method: string,  
     body?: any,
     someConfig:any = {}, 
-    isRetried:boolean = false) => {    
-    console.log(isRetried);
+    isRetried:boolean = false): any => {    
 
-    //someConfig = {...someConfig}
-    
     const token = localStorage.getItem('accessToken');
 
     const options = {   
