@@ -3,10 +3,18 @@ import {CredentialsLogin, FieldErrors} from '../../authTypes';
 import { Input } from '../../../UI/input';
 import { Link, Navigate } from 'react-router-dom';
 
-const Login: React.FC = (props) => {
+type Props = {
+    login: () => void,
+    isLoginned: boolean,
+    isError: boolean,
+    errors: Array<any>,
+    fetchRequests: () => void
+};
+
+const Login: React.FC = (props: Props) => {
     const {login, isLoginned, isError, errors, fetchRequests} = props;
 
-    //if(isLoginned == true) return <Navigate to='users'></Navigate>;
+    if(isLoginned) return <Navigate to='users'></Navigate>;
 
     const[username, setUser] = useState('');
     const[password, setPassword] = useState('');

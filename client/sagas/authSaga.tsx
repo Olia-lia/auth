@@ -26,7 +26,7 @@ function* loginSaga(action: any) {
             yield put({type: LOGIN_REQUEST_SUCCEEDED, response});
         }
         
-       // yield put ({type: FETCH_REQUESTS});
+            yield put ({type: FETCH_REQUESTS});
     }
     catch(error) {
         yield put({type: HANDLE_ERROR, payload: error});
