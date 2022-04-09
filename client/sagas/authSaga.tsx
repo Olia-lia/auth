@@ -2,6 +2,7 @@ import {put, takeEvery, call, spawn} from 'redux-saga/effects';
 //import { GET_RESOURSE } from '../client/redux/actionConstants';
 import {LOGIN_REQUEST, LOGIN_REQUEST_SUCCEEDED, LOGOUT, RESET_LOGIN_STATE, HANDLE_ERROR} from '../authorization/redux/actionConstants';
 import {login, logout, saveTokensToLocalStorage} from '../authorization/authFetch';
+import { fetchRequests } from './clientRequestSagas';
 import { RESET_PAGE_STATE } from '../page/redux/actionConstants';
 
 import '@babel/polyfill';

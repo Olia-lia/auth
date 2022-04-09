@@ -34,14 +34,12 @@ const Layout = (props) =>{
                     <li>
                         <Link to="/user">user</Link>
                     </li>
-{/* 
+                    {      /* 
                     //<button onClick={()=>{getResourse('users');}}>getResousce</button> */}
                     <button onClick={()=>{fetchRequests();}}>getAll</button>
                 </ul>
             </header>
             <main className='page__main'><Outlet/></main>
-            <footer className='page__footer'>My App</footer>
-
             {modalOpened &&
               <Modal active={modalOpened} setActive={setModal}>
                   {<span>
@@ -49,6 +47,9 @@ const Layout = (props) =>{
                   </span>} 
               </Modal>
             } 
+            <footer className='page__footer'>My App</footer>
+
+          
         </div>
       
     );

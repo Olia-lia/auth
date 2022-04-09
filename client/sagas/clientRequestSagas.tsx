@@ -1,4 +1,4 @@
-import {call, put, takeEvery, takeLeading, spawn, delay, fork, all, throttle, takeLatest} from 'redux-saga/effects';
+import {call, put, takeEvery, spawn, delay, fork, throttle, takeLatest, takeLeading, all} from 'redux-saga/effects';
 import {iFetch, refreshToken} from '../client/clientFetch';
 import {
     CHECK_VALID_TOKEN, REFRESH_TOKEN, 
@@ -15,14 +15,6 @@ import '@babel/polyfill';
 
  
 
-export default function* clientRequestSaga () {
-    yield takeEvery(FETCH_REQUESTS, fetchRequests);
-    yield takeLatest(GET_TOKEN, getToken);  
-    yield takeLatest(FETCH_REQUEST, fetchRequest);
-    yield takeLatest(GET_USERS, getUsers);
-    yield takeLatest(GET_COMMENTS, getComments)
-}
-
 function* getUsers() {
     const response:Array<types.UserInfo> = yield fork(iFetch('users', 'GET')); 
   
@@ -38,56 +30,48 @@ function* getComments() {
 
     console.log(response);
     //if(response) yield put ({type: USERS_SUCCEEDED, payload: response})
+}
+ 
 
+export default function* clientRequestSaga () {
+    yield takeLatest(FETCH_REQUESTS, fetchRequests);
+    yield throttle(500, GET_TOKEN, getToken);  
+    yield takeEvery(FETCH_REQUEST, getResourseSaga);
 }
 
-// const requests = [GET_COMMENTS, GET_USERS];
-const requests = [getComments, getUsers]
+// function* getUsers() {
+//     const response:Array<types.UserInfo> = yield call (iFetch('users', 'GET')); 
+//     console.log(response)
+//     if(response) yield put ({type: USERS_SUCCEEDED, payload: response});
+// }
+    
+// function* getComments() {
+//     const response:Array<types.Comment> = yield call(iFetch('comments', 'GET'));
+//     console.log(response);
+//     //if(response) yield put ({type: USERS_SUCCEEDED, payload: response})
 
-function* fetchRequests() {
-    try {
-        yield call(getToken);
-       
-        yield fork(getUsers)
-        yield fork(getComments)
-        
-    // function* an () {requests.forEach((request) => function* (){
-    //         yield fork(request)
-    //  })}
-     
-     
-     
-    }
+// }
 
-    catch(error) {
-        console.log(error);
-        yield put({type: HANDLE_ERROR, payload: error});
-    }
+
+
+export function* fetchRequests() {
+    yield put (actions.fetchRequest('users', 'GET'));
+    yield put (actions.fetchRequest('comments', 'GET'));
+    
 }
-
-function* fetchRequest (action) {
-    yield put({type: GET_TOKEN});
-    yield call(getResourseSaga, action.payload);
-} 
-
-function* loadPage() {
-    try {
-        yield fork(getUsers);
-        yield fork(getComments);
-    }
-    catch (error) {
-        console.log(error);
-    }
-} 
-
 
 function* getResourseSaga(action: any) {
     try {
-        yield call(iFetch, action.endpoint, action.method);
+        yield call(throttleFn);
+        yield fork(iFetch, action.endpoint, action.method, action.body, action.options);
     }
     catch(error) {
         yield put({type: HANDLE_ERROR, payload: error});
     }
+}
+
+function* throttleFn() {
+    yield put({type: GET_TOKEN});
 }
 
 
@@ -101,7 +85,6 @@ function* getToken() {
         }
     }
     catch(error) {
-        console.log(error);
         yield put({type: HANDLE_ERROR, payload: error});
     }
 } 
