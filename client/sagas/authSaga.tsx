@@ -1,8 +1,9 @@
 import {put, takeEvery, call, spawn} from 'redux-saga/effects';
 //import { GET_RESOURSE } from '../client/redux/actionConstants';
-import {LOGIN_REQUEST, LOGIN_REQUEST_SUCCEEDED, LOGOUT, RESET_LOGIN_STATE, HANDLE_ERROR} from '../authorization/redux/actionConstants';
+import {LOGIN_REQUEST, LOGIN_REQUEST_SUCCEEDED, LOGOUT, RESET_LOGIN_STATE, HANDLE_ERROR, SET_TOKENS} from '../authorization/redux/actionConstants';
 import {login, logout, saveTokensToLocalStorage} from '../authorization/authFetch';
 import { fetchRequests } from './clientRequestSagas';
+import { FETCH_REQUESTS } from '../client/redux/actionConstants';
 import { RESET_PAGE_STATE } from '../page/redux/actionConstants';
 
 import '@babel/polyfill';
@@ -20,17 +21,17 @@ function* loginSaga(action: any) {
         yield spawn(logoutSaga, action);
         const response: LoginResponse = yield call(login, action.credentials);
       
-        
         if(response) {
-            yield (saveTokensToLocalStorage(response)); 
+            yield call (saveTokensToLocalStorage, response); 
             yield put({type: LOGIN_REQUEST_SUCCEEDED, response});
         }
+        
+            yield put ({type: FETCH_REQUESTS});
     }
     catch(error) {
         yield put({type: HANDLE_ERROR, payload: error});
     }
 }
-
 
 function* logoutSaga(action: any) {
     try {

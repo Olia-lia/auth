@@ -7,22 +7,18 @@ import AuthClientPageContainer from './client/components/clientPage/clientPageCo
 import NotFoundPage from './page/components/notFoundPage/notFoundPage';
 
 
-import * as authTypes from './authorization/authTypes';
-import * as clientTypes from './client/clientTypes';
-
-
 import 'normalize.css';
 import './style.sass';
 
 
-const App: React.FC = (props) => {
+const App: React.FC = (props) => {    
     return (
         <div>
             <Routes>
-                <Route path='/' element={<PageContainer/>}>
+                <Route element={<PageContainer/>}>
                     <Route path='/' element = {
                         <LoginContainer/>}/>
-                    <Route path='/user' element={
+                    <Route path='users' element={
                         <AuthClientPageContainer/>
                     }/>
                     <Route path='*' element={

@@ -1,5 +1,5 @@
 import * as types from '../clientTypes';
-import {USERS_FAILED, USERS_SUCCEEDED, COMMENTS_SUCCEDEED, COMMENTS_FAILED } from './actionConstants';
+import {USERS_FAILED, USERS_SUCCEEDED, COMMENTS_SUCCEDEED, COMMENTS_FAILED, FETCH_REQUEST } from './actionConstants';
 
 const initialState: types.ClientState = {
     isFetching: false,
@@ -11,20 +11,25 @@ const initialState: types.ClientState = {
 export const clientReducer = (state = initialState, action: any) =>  {
 
     switch (action.type) {
-    // case GET_RESOURSE:
-    //     return {
-    //         ...state,
-    //         isFetching: true,
-    //         users: [state.users]
-    //     };
+    case FETCH_REQUEST:
+        return {
+            ...state,
+            isFetching: true,
+            users: [...state.users]
+        };
 
     case USERS_SUCCEEDED: 
-        return {
+        // eslint-disable-next-line no-case-declarations
+        let newState = {
             ...state, 
             isError: false,
-            users: [...state.users,
-                ...action.payload]
+            users: [...state.users, action.payload]
+
         };
+        
+        console.log(newState.users);
+        return newState;
+ 
         
 
     case USERS_FAILED:

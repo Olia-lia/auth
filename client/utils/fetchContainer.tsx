@@ -1,16 +1,12 @@
 import * as Errors from '../errorsMapper';
 
-
 const fetchRequest = (
     url: string, 
     method: string,  
     body?: any,
     someConfig:any = {}, 
-    isRetried:boolean = false) => {    
-    console.log(isRetried);
+    isRetried:boolean = false): any => {    
 
-    //someConfig = {...someConfig}
-    
     const token = localStorage.getItem('accessToken');
 
     const options = {   
@@ -32,7 +28,7 @@ const fetchRequest = (
         options.headers.authorization = `Bearer ${token}`;
     }
 
-    return fetch(url, options) // типизация
+    return fetch(url, options) 
         .then(async (response) => {
             if (response.status >= 400) {
                 if (response.status === 401 && !isRetried) {

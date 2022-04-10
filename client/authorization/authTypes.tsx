@@ -21,19 +21,9 @@ export interface CredentialsLogin {
 }
 
 export type LoginResponse = {
-    token_type: string,
-    accessToken: {
-        accessToken: string,
-        expiredIn: number
-    }
-    refreshToken: {
-        refreshToken: string,
-        expiredIn: number
-    }
+    accessToken: string,
+    accessTokenexpiredIn: number,
+    refreshToken: string,
+    refreshTokenexpiredIn: number
 }
-
-export type errorOfValidation = {
-    type: string,
-    field: string
-  }
 

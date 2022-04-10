@@ -1,15 +1,21 @@
 import {useState, useEffect} from 'react';
 import {CredentialsLogin, FieldErrors} from '../../authTypes';
 import { Input } from '../../../UI/input';
+import { Link, Navigate } from 'react-router-dom';
 
-type Props = {
-    login: Response,
-    isError: boolean,
-    errors: Array<FieldErrors>
-}
+// type Props = {
 
-const Login: React.FC = (props: Props) => {
-    const {login, isError, errors} = props;
+//     login: () => void,
+//     isLoginned: boolean,
+//     isError: boolean,
+//     errors: Array<any>,
+//     fetchRequests: () => void
+// };
+
+const Login: React.FC = (props) => {
+    const {login, isLoginned, isError, errors, fetchRequests} = props;
+
+    if(isLoginned) return <Navigate to='users'></Navigate>;
 
     const[username, setUser] = useState('');
     const[password, setPassword] = useState('');
@@ -56,6 +62,14 @@ const Login: React.FC = (props: Props) => {
 
     return(
         <div className="login__wrapper">
+              <ul className='nav__list'>
+                    <li>
+                        <Link to="/user">user</Link>
+                    </li>
+                    {      /* 
+                    //<button onClick={()=>{getResourse('users');}}>getResousce</button> */}
+                    <button onClick={()=>{fetchRequests();}}>getAll</button>
+                </ul>
             <h1 className="login__heading">Log In</h1>
             <form className="login__form">
 

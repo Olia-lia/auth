@@ -1,4 +1,4 @@
-
+import { ErrorType } from "./typesGlobal";
 
 const ErrorTypes = {
     validationErrror: 'validationError',
@@ -8,7 +8,7 @@ const ErrorTypes = {
 
 
 export class ValidationError extends Error {
-    constructor(message: string, errors: any) {
+    constructor(message: string, errors: ErrorType) {
         super(message);
         this.message = message,
         this.errors = errors;

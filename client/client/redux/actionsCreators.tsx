@@ -15,9 +15,10 @@ export const fetchRequest = (endpoint: string, method: string, body?: any, optio
 };
 
 
-export const refreshToken = () => {
+export const refreshNewToken = (payload: Types.RefreshTokenRequest) => {
     return {
         type: Constants.REFRESH_TOKEN,
+        payload
      
     };
 };

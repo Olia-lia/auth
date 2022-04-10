@@ -6,25 +6,25 @@ import errorSaga from './handlerErrorsSaga';
 
 export default function* rootSaga () {
 
-    // const sagas = [authSaga, clientRequestSaga, errorSaga];
+    const sagas = [authSaga, clientRequestSaga, errorSaga];
 
-    // const retrySagas = sagas.map(saga => {
-    //     return spawn(function* () {
-    //         while(true) {
-    //             try {
-    //                 yield call(saga);
-    //                 break;
-    //             }
-    //             catch(error) {
-    //                 console.log(error);
-    //             }
-    //         }
-    //     });
-    // });
-    // yield all(retrySagas);
-    yield all ([
-        authSaga(),
-        clientRequestSaga(), 
-        errorSaga(),
-    ]);
+    const retrySagas = sagas.map(saga => {
+        return spawn(function* () {
+            while(true) {
+                try {
+                    yield call(saga);
+                    break;
+                }
+                catch(error) {
+                    console.log(error);
+                }
+            }
+        });
+    });
+    yield all(retrySagas);
+    // yield all ([
+    //     authSaga(),
+    //     clientRequestSaga(), 
+    //     errorSaga(),
+    // ]);
 } 

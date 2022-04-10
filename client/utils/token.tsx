@@ -1,74 +1,73 @@
-import { REFRESH_TOKEN } from 'client/client/redux/actionConstants';
-//import {LoginResponse} from './'
+import {LoginResponse} from '../authorization/authTypes';
+import {refreshNewToken} from '../authorization/authFetch';
+import {UnauthorizedError} from '../errorsMapper';
+import {saveTokensToLocalStorage} from '../authorization/authFetch'
+import { number } from 'prop-types';
 
-interface IToken {
-    name: string
-    position: string
-    saveTokensToLocalStorage: (token: Lo) => void
-  }
-
-class Token implements IToken {
-
-    const getNow() 
+interface CheckToken {
+    isAccessTokenValid: () =>  boolean,
+    isRefreshTokenValid: () => boolean
 }
 
-export const checkValidAccessToken = (): boolean => { 
-    const accessToken = localStorage.getItem('accessToken');
-    const now = new Date().getTime();
-    const expireInStr = localStorage.getItem('accessTokenExpiredIn');
-    if(!accessToken || !expireInStr) return false;
-    const expireIn = JSON.parse(expireInStr);
-    if (now > expireIn) {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('accessTokenExpiredIn');
-        return false;
-    }
-    return true;
-};
+interface tokenPair {
+    accessToken: string | null;
+    refreshToken: string | null,
+}
+
+// abstract class iToken {
+//     public static getToken: () => tokenPair;
+//     public static isAccessTokenValue: () => boolean;
+//     public static isRefreshTokenValue: () => boolean;
+// }
+
+class Token   {
 
 
-export const checkValidRefreshToken = (): boolean => { 
-    const accessToken = localStorage.getItem('refreshToken');
-    const now = new Date().getTime();
-    const expireInStr = localStorage.getItem('refreshTokenExpiredIn');
-    if(!accessToken || !expireInStr) return false;
-    const expireIn = JSON.parse(expireInStr);
-    if (now > expireIn) {
-        localStorage.removeItem('refreshToken');
-        localStorage.removeItem('refreshTokenExpiredIn');
-        return false;
-    }
-    return true;
-};
-
-
-let refreshTokenRequest = false;
-
-
-const checkToken = {
-    isAccessTokenValid: () => (now) => now < accessTokenExpiredIn,
-    isRefreshTokenValid: () => (now) => now < refreshTokenExpiredIn,
-};
-
-
-async function requestValidAccessToken() {
-    let { accessToken } = getToken();
-    //const now = Date.now()
-    if (!checkToken.isRefreshTokenValid(now)) {
-        //throw new Unauthorized
-    } 
-    else if (!checkToken.isAccessTokenValid(now)) {
-        if (!refreshTokenRequest) {
-            //refreshTokenRequest: boolean = true;
-            REFRESH_TOKEN
+    static getToken(): tokenPair{
+        return {
+            accessToken: localStorage.getItem('accessToken'),
+            refreshToken: localStorage.getItem('refreshToken'),
         }
-        
-        accessToken = await refreshTokenRequest;
+    }
 
-    // и очищаем переменную
-    refreshTokenRequest = null;
-  }
+    static isAccessTokenValid(now: number){
+        console.log('now', now);
+        const tokenExpiresStr = localStorage.getItem('accessTokenExpiredIn');
+        const tokenExpiresDate: number = JSON.parse(tokenExpiresStr);
+        console.log('access', tokenExpiresDate)
+        return now < tokenExpiresDate
+    }
 
+    static isRefreshTokenValid(now: number) {
+        console.log(now);
+        const tokenExpiresStr = localStorage.getItem('refreshTokenExpiredIn');
+        const tokenExpiresDate: number = JSON.parse(tokenExpiresStr);
+        console.log('аксксс', tokenExpiresDate)
+        return now < tokenExpiresDate
+    }
+    
+}
+
+//export interface IRefreshTokenRequest {}
+
+export async function requestValidToken(refreshTokenRequest = null) {
+    console.log(refreshTokenRequest)
+    let {refreshToken, accessToken} = Token.getToken();
+    const now = Date.now();
+    console.log(refreshToken)
+    if (refreshToken == null || !Token.isRefreshTokenValid(now)) {
+        throw new UnauthorizedError('token not valid');
+    } 
+    else if (accessToken == null || !Token.isAccessTokenValid(now)) {
+        if (refreshTokenRequest == null) {
+            refreshTokenRequest = refreshNewToken();
+         
+        }
+        const data: LoginResponse = await refreshTokenRequest;
+        refreshTokenRequest = null;
+        const savedTokens = await saveTokensToLocalStorage(data)
+        return data.accessToken
+    }
     return accessToken;
 }
 

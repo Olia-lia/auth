@@ -4,11 +4,14 @@
 };
 
 .page__body {
-  display: grid;
-  grid-template-rows: min-content 1fr min-content;
-  align-content: start;
-  background-color: $page-background;
-  min-width: 320px;
   height: 100%;
-  margin: 0;
-};
+}
+
+
+#root {
+  height: 100%;
+}
+
+#root div {
+  height: 100%;
+}

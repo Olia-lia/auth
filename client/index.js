@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import {BrowserRouter} from 'react-router-dom';
 import App from './app';
 import rootSaga from './sagas/rootSaga';
-import {createStore, applyMiddleware} from 'redux';
+import {createStore, applyMiddleware, compose} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import rootReducer from './rootReducer'; 
 
@@ -12,12 +12,10 @@ import rootReducer from './rootReducer';
 const sagaMiddleware = createSagaMiddleware();
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(
-    rootReducer,
-    composeEnhancers(
-        applyMiddleware(sagaMiddleware))
+const store = createStore(rootReducer, composeEnhancers(
+    applyMiddleware(sagaMiddleware))
 );
-console.log(store.getState());
+
   
 sagaMiddleware.run(rootSaga);
 
