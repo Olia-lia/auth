@@ -1,14 +1,19 @@
-import { ErrorType } from "./typesGlobal";
+import { ErrorElement } from "./types";
 
-const ErrorTypes = {
-    validationErrror: 'validationError',
-    pageError: 'modalError',
 
-};
+export type ErrorType = {
+    statusCode?: number,
+    name?: string,
+    message: string,
+    errors: Array<ErrorElement>
+ }
 
 
 export class ValidationError extends Error {
-    constructor(message: string, errors: ErrorType) {
+    // message: string
+    // errors?: Array<ErrorElement>
+
+    constructor(message: string, errors: Array<ErrorElement>) {
         super(message);
         this.message = message,
         this.errors = errors;
@@ -20,6 +25,9 @@ export class ValidationError extends Error {
 }
 
 export class RedirectError extends Error {
+    message: string
+    errors?: any
+
     constructor(message: string, errors: any) {
         super(message);
         this.message = message,
@@ -27,13 +35,14 @@ export class RedirectError extends Error {
     }
 
     static createRedirectError(errors) {
-        return new ValidationError('redirectError', errors);
+        return new RedirectError('redirectError', errors);
     }
 }
 
 export class ModalError extends Error {
     message: string
     errors?: any
+
     constructor(message: string, errors: any) {
         super(message);
         this.message = message,

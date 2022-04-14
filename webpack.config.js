@@ -28,7 +28,6 @@ const babelOptions = preset => {
   return opts
 };
 
-
 const jsLoaders = () => {
   const loaders = [{
     loader: 'babel-loader',
@@ -67,10 +66,12 @@ module.exports = {
     entry: './client/index.js',
     mode: isDev,
     devtool: 'source-map',
+
   
       output: {
         path: path.resolve(__dirname, 'build'),
-        filename: 'bundle.js'
+        filename: 'bundle.js',
+  
       },
     
       resolve: {
@@ -92,12 +93,21 @@ module.exports = {
       rules: [
         {
           test: /\.(ts|tsx|jsx|js)$/,
-          exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader',
-            //options: babelOptions('@babel/preset-typescript')
-          },
+          exclude: [/node_modules/],
+         // include: [/node_modules\/auth-flow/],
+          use: [ 
+            {
+              loader: 'babel-loader',
+              options: {
+                "presets":['@babel/preset-env']
+              }
+            },
+          //   {
+          //     loader: 'ts-loader'
+          //   }
+          ]
         },
+        
         { 
           test: /s[ac]ss$/, 
           use: [

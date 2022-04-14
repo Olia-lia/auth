@@ -19,7 +19,7 @@ export const clientReducer = (state = initialState, action: any) =>  {
         };
 
     case USERS_SUCCEEDED: 
-        // eslint-disable-next-line no-case-declarations
+  
         let newState = {
             ...state, 
             isError: false,

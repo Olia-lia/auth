@@ -15,7 +15,7 @@ import { Link, Navigate } from 'react-router-dom';
 const Login: React.FC = (props) => {
     const {login, isLoginned, isError, errors, fetchRequests} = props;
 
-    if(isLoginned) return <Navigate to='users'></Navigate>;
+    //if(isLoginned) return <Navigate to='users'></Navigate>;
 
     const[username, setUser] = useState('');
     const[password, setPassword] = useState('');
@@ -62,14 +62,14 @@ const Login: React.FC = (props) => {
 
     return(
         <div className="login__wrapper">
-              <ul className='nav__list'>
-                    <li>
-                        <Link to="/user">user</Link>
-                    </li>
-                    {      /* 
-                    //<button onClick={()=>{getResourse('users');}}>getResousce</button> */}
-                    <button onClick={()=>{fetchRequests();}}>getAll</button>
-                </ul>
+            <ul className='nav__list'>
+                <li>
+                    <Link to="/user">user</Link>
+                </li>
+                {      /* 
+                //<button onClick={()=>{getResourse('users');}}>getResousce</button> */}
+                <button onClick={()=>{fetchRequests();}}>getAll</button>
+            </ul>
             <h1 className="login__heading">Log In</h1>
             <form className="login__form">
 

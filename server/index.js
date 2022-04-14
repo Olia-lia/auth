@@ -12,7 +12,7 @@ const hostname = '127.0.0.1';
 const PORT = 5000;
 
 const corsOptions = {
-    origin: process.env.CLIENT_URL,
+    origin: 'http://localhost:4200',
     methods: 'GET, POST, PUT, PATCH',
     optionsSuccessStatus: 200
 };

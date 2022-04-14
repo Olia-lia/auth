@@ -1,6 +1,4 @@
 import {Route, Routes, Link} from 'react-router-dom';
-
-
 import LoginContainer from './authorization/components/login/loginContainer';
 import PageContainer from './page/components/PageContainer';
 import AuthClientPageContainer from './client/components/clientPage/clientPageContainer';
@@ -11,8 +9,10 @@ import 'normalize.css';
 import './style.sass';
 
 
-const App: React.FC = (props) => {    
+const App: React.FC = (props) => {   
+
     return (
+     
         <div>
             <Routes>
                 <Route element={<PageContainer/>}>

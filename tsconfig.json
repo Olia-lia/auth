@@ -5,6 +5,10 @@
         "es2017",
         "dom"
       ],
+      "typeRoots": [
+        "./types/auth-flow",
+        "./node_modules/@types/"
+      ],
       "allowJs": true,
       "target": "es2017",
       "module": "esnext",
@@ -18,10 +22,15 @@
       "jsx": "react-jsx",
       "baseUrl": "./",
       "allowSyntheticDefaultImports": true,
-      "resolveJsonModule": true
-  
-      },
+      "resolveJsonModule": true,
+     
+      "noImplicitAny": false,
+    },
+
     "include": [
-      "client"
+      "./client/**/*",
     ],
-  }
+    "exclude": [
+      "node_modules",
+    ]
+}

@@ -4,7 +4,7 @@ import {CredentialsLogin} from '../../authTypes';
 import {globalState} from '../../../typesGlobal';
 import {Navigate, useLocation} from 'react-router-dom';
 import * as authActions from '../../redux/actionsCreators';
-import * as clientActions from '../../../client/redux/actionsCreators'
+import * as clientActions from '../../../client/redux/actionsCreators';
 
 const mapDispatchToProps = (dispatch) => {
     return {

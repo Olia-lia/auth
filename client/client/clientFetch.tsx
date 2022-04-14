@@ -1,7 +1,5 @@
-import { fetchRequest } from '../utils/fetchContainer';
-import * as types from './clientTypes';
-import { checkValidRefreshToken} from '../checkValidTokens';
-import { UnauthorizedError } from '../errorsMapper';
+import { fetchRequest } from 'auth-flow/lib/index';
+//import { fetchRequest } from '../utils/fetchContainer'
 
 const BASE_URL = 'http://localhost:5000';
 

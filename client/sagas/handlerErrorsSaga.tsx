@@ -1,7 +1,8 @@
-import * as Errors from '../errorsMapper';
+import * as Errors from 'auth-flow/lib/errors';
+//import * as Errors from '../errorsMapper'
 import {put, takeEvery} from 'redux-saga/effects';
 import {LOGIN_REQUEST_FAILED, LOGOUT, HANDLE_ERROR} from '../authorization/redux/actionConstants';
-import { SET_PAGE_ERROR} from '../page/redux/actionConstants';
+import {SET_PAGE_ERROR} from '../page/redux/actionConstants';
 import '@babel/polyfill';
 
 
@@ -11,6 +12,7 @@ export default function* errorSaga () {
 } 
 
 function* errorHandlerSaga (action) {
+    console.log(action.payload)
     if (action.payload instanceof Errors.ValidationError) {
         yield put({type: LOGIN_REQUEST_FAILED, payload: action.payload});
     }
@@ -20,9 +22,6 @@ function* errorHandlerSaga (action) {
     else if (action.payload instanceof Errors.UnauthorizedError) {
         yield put({type: LOGOUT});
     }
-    //else if (action.payload instanceof Errors.RedirectError) {
-    ////
-    //}
 }
 
 export {errorHandlerSaga};

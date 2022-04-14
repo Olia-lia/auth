@@ -1,11 +1,11 @@
-import * as Errors from '../errorsMapper';
+import * as Errors from './errors';
 
-const fetchRequest = (
+export const fetchRequest = (
     url: string, 
     method: string,  
     body?: any,
-    someConfig: any = {}, 
-    isRetried: boolean = false): any => {    
+    someConfig:any = {}, 
+    isRetried:boolean = false): any => {    
 
     const token = localStorage.getItem('accessToken');
 
@@ -60,7 +60,7 @@ async function handleError(error: any) {
         }
         else throw new Error(message);
     case(404): 
-        throw new Errors.UnderfindError(message);
+        throw new Errors.UnderfindError(message)
         
     default: 
         if(message === 'modalError') {
@@ -70,4 +70,9 @@ async function handleError(error: any) {
     }
 }
 
-export {fetchRequest, handleError};
+export const iFetch = (url: string, method: string, body?: any, ...options: any) => {
+    return fetchRequest(url, method, body, options)
+};
+
+
+

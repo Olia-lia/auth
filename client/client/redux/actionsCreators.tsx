@@ -5,20 +5,18 @@ import * as Types from '../clientTypes';
 export const fetchRequest = (endpoint: string, method: string, body?: any, options: any) => {
     return {
         type: Constants.FETCH_REQUEST,
-
         endpoint,
         method, 
         body,
         options
-    
     };
 };
 
 
-export const refreshNewToken = (payload: Types.RefreshTokenRequest) => {
+export const refreshNewToken = (refreshToken: string) => {
     return {
         type: Constants.REFRESH_TOKEN,
-        payload
+        payload: refreshToken
      
     };
 };
@@ -96,13 +94,5 @@ export const failedComments = (error) => {
     return {
         type: Constants.USERS_FAILED,
         payload: error
-    };
-};
-
-
-export const checkValidToken = (token: string) => {
-    return {
-        type: Constants.CHECK_VALID_TOKEN,
-        payload: token
     };
 };

@@ -1,7 +1,7 @@
-export type ErrorElement = {
-    field: string
-    subtype: string
-} 
+// export type ErrorElement = {
+//     field: string
+//     subtype: string
+// } 
 
 export type FieldErrors = {
     username: string | null,
@@ -22,8 +22,8 @@ export interface CredentialsLogin {
 
 export type LoginResponse = {
     accessToken: string,
-    accessTokenexpiredIn: number,
+    accessTokenExpiredIn: number,
     refreshToken: string,
-    refreshTokenexpiredIn: number
+    refreshTokenExpiredIn: number
 }
 
