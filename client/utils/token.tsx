@@ -34,53 +34,54 @@ class Token   {
 }
 
 
-// export function* refreshTokens(action){
-//     yield put({
-//         type: REFRESH_TOKEN, 
-//         payload: refreshToken,
-//     });
-// }
-         
-
-let refreshTokenRequest = null;
-
-export async function requestValidToken() {
-    console.log(refreshTokenRequest);
-    let {refreshToken, accessToken} = Token.getToken();
-    const now = Date.now();
-    console.log(refreshToken)
-    if (refreshToken == null || !Token.isRefreshTokenValid(now)) {
-        throw UnauthorizedError.createUnauthorizedError('');
-    } 
-    else if (accessToken == null || !Token.isAccessTokenValid(now)) {
-        if (refreshTokenRequest == null) {
-            refreshTokenRequest = refreshNewToken();
-        }
-        const data: LoginResponse = await refreshTokenRequest;
-        refreshTokenRequest = null;
-        await setTokens(data);
-        return data.accessToken;
-    }
-    return accessToken;
-}
 
 
-// export function* requestValidToken() {
-  
+// export async function requestValidToken() {
+
 //     console.log(refreshTokenRequest);
 //     let {refreshToken, accessToken} = Token.getToken();
-//     const now =  Date.now();
+//     const now = Date.now();
 //     if (refreshToken == null || !Token.isRefreshTokenValid(now)) {
-//         throw new UnauthorizedError('token not valid');
+//         throw new UnauthorizedError('no token');
 //     } 
 //     else if (accessToken == null || !Token.isAccessTokenValid(now)) {
 //         if (refreshTokenRequest == null) {
-//             refreshTokenRequest = yield put({type: REFRESH_TOKEN, payload: refreshToken})
+//             refreshTokenRequest = refreshNewToken();
 //         }
-//         const data: LoginResponse = yield refreshTokenRequest;
+//         const data: LoginResponse = await refreshTokenRequest;
 //         refreshTokenRequest = null;
-//         yield saveTokensToLocalStorage(data);
+//         await setTokens(data);
 //         return data.accessToken;
 //     }
 //     return accessToken;
+
+  
 // }
+
+let refreshTokenRequest: LoginResponse | null = null;
+
+const refffreshToken = function*(action) {
+    yield put({type: REFRESH_TOKEN, payload: action.payload});
+};
+
+export function* requestValidToken() {
+  
+    let {refreshToken, accessToken} = yield call(Token.getToken);
+    const now =  yield call(Date.now);
+    if (refreshToken == null || !Token.isRefreshTokenValid(now)) {
+        throw new UnauthorizedError('token not valid');
+    } 
+    else if (accessToken == null || !Token.isAccessTokenValid(now)) {
+        if (refreshTokenRequest == null) {
+            refreshTokenRequest = yield refffreshToken(refreshToken)
+     
+        }
+        const data:LoginResponse = yield call (refffreshToken, refreshToken)
+        console.log(data)
+        yield call(setTokens, data);
+       
+        refreshTokenRequest = null;
+       // return data.accessToken;
+    }
+    return accessToken;
+}

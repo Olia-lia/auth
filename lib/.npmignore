@@ -3,3 +3,4 @@ tsconfig.json
 src
 tslint.json
 .prettierrc
+.vscode/

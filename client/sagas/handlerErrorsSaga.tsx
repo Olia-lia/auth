@@ -12,7 +12,6 @@ export default function* errorSaga () {
 } 
 
 function* errorHandlerSaga (action) {
-    console.log(action.payload)
     if (action.payload instanceof Errors.ValidationError) {
         yield put({type: LOGIN_REQUEST_FAILED, payload: action.payload});
     }

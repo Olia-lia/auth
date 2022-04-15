@@ -4,7 +4,6 @@
     field?: string
 }
 
-
 export type LoginResponse = {
     accessToken: string,
     accessTokenexpiredIn: number,
@@ -12,12 +11,7 @@ export type LoginResponse = {
     refreshTokenexpiredIn: number
 }
 
-
-
-///////state
-export type AuthState = {
-    user: null,
-    isLoginned: boolean,
-    isValidationError: boolean,
-    fieldsErrors: FieldErrors
+export interface tokenPair {
+    accessToken: string | null;
+    refreshToken: string | null,
 }

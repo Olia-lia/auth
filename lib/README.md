@@ -21,12 +21,17 @@ For this flow it needed to separate
 
 ## Methods
 ``` 
-fetchRequest(url, method, body?, {options}) - method for REST API requests, wrapper fot native fetch method.
+iFetch(url, method, body?, {options}) - method for REST API requests, wrapper fot native fetch method.
+
 url - api adress 
-methos - method of REST API request
+method - method of REST API request
 body - optional parameter
 options - optional parameter, default is an empty object.
-Example: fetchRequest('http://localhost:5000', 'GET', body, {credentials:'same-origin'})
+Example: iFetch('http://localhost:5000/login', 'POST', body, {credentials:'same-origin'})
+Import method:
+```
+import {iFetch} from '?????????????????????????'
+```
 ```   
 
 ### Saga methods 
@@ -89,6 +94,26 @@ export class ValidationError extends Error {
         this.message = message,
         this.errors = errors;
     }
+
+Example of ErrorHandler in Saga: 
+
+export default function* errorSaga () {
+    yield takeEvery(HANDLE_ERROR, errorHandlerSaga);
+ 
+} 
+
+function* errorHandlerSaga (action) {
+    console.log(action.payload.errors);
+    if (action.payload instanceof Errors.ValidationError) {
+        yield put({type: LOGIN_REQUEST_FAILED, payload: action.payload});
+    }
+    else if (action.payload instanceof Errors.ModalError) {
+        yield put ({type: SET_PAGE_ERROR, payload: action.payload});
+    }
+    else if (action.payload instanceof Errors.UnauthorizedError) {
+        yield put({type: LOGOUT});
+    }
+}
 
 
 example of configuration file:

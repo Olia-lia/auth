@@ -65,7 +65,7 @@ const cssLoaders = extra => {
 module.exports = {
     entry: './client/index.js',
     mode: isDev,
-    devtool: 'source-map',
+    devtool: 'source-map-loader',
 
   
       output: {

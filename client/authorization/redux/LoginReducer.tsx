@@ -1,7 +1,7 @@
 import {LOGIN_REQUEST_FAILED, LOGIN_REQUEST_SUCCEEDED, RESET_LOGIN_STATE} from './actionConstants';
 import * as types from '../authTypes';
 
-const initialState: types.AuthStte = {
+const initialState: types.AuthState = {
     user: null,
     isLoginned: false,
     isValidationError: false,
