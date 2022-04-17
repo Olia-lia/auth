@@ -1,6 +1,6 @@
 import {all, call, spawn} from 'redux-saga/effects';
 import authSaga from './authSaga';
-import clientRequestSaga from './clientRequestSagas';
+import clientRequestSaga from 'auth-flow/lib/sagas';
 import errorSaga from './handlerErrorsSaga';
 
 
@@ -22,9 +22,4 @@ export default function* rootSaga () {
         });
     });
     yield all(retrySagas);
-    // yield all ([
-    //     authSaga(),
-    //     clientRequestSaga(), 
-    //     errorSaga(),
-    // ]);
 } 

@@ -5,4 +5,5 @@ export const RESET_LOGIN_STATE = 'RESET_LOGIN_STATE';
 export const LOGOUT = 'LOGOUT';
 export const HANDLE_ERROR = 'HANDLE_ERROR';
 export const SET_TOKENS = 'SET_TOKENS';
+export const REFRESH_TOKEN = 'REFRESH_TOKEN';
 

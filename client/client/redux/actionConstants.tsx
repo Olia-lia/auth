@@ -1,4 +1,4 @@
-export const REFRESH_TOKEN = 'REFRESH_TOKEN';
+
 export const GET_TOKEN = 'GET_TOKEN';
 export const FETCH_REQUEST = 'FETCH_REQUEST';
 export const FETCH_REQUESTS = 'FETCH_REQUESTS';

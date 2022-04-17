@@ -1,7 +1,9 @@
-import {fetchRequest} from 'auth-flow/lib/index';
+import {fetchRequest, iFetch} from 'auth-flow/lib/index';
 //import { fetchRequest } from '../utils/fetchContainer'
 import * as types from './authTypes';
 import { RefreshTokenRequest } from '../client/clientTypes';
+
+
 
 const BASE_URL = 'http://localhost:5000';
 
@@ -18,9 +20,10 @@ const login = (data: types.CredentialsLogin) => {
 };
 
 
-export const refreshNewToken = () => {
+
+export const refreshNewToken = (token: string) => {
     const endpoint = 'auth/refresh_token';
-    const token = localStorage.getItem('refreshToken');
+   // const token = localStorage.getItem('refreshToken');
   
     const data: RefreshTokenRequest = {
         grant_type: 'refresh_token',

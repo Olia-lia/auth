@@ -1,17 +1,16 @@
 import {call, put, takeEvery, spawn, delay, fork, throttle, takeLatest, takeLeading, all} from 'redux-saga/effects';
 import {iFetch} from '../client/clientFetch';
-import { refreshNewToken } from '../authorization/authFetch';
-import { requestValidToken } from '../utils/token';
-
-import {REFRESH_TOKEN, 
+//import { requestValidToken } from '../utils/token';
+import {fetchRequest} from 'auth-flow/lib/sagas';
+import {
 GET_TOKEN, GET_USERS, USERS_SUCCEEDED, USERS_FAILED, GET_COMMENTS,  COMMENTS_SUCCEEDED,
 FETCH_REQUEST, FETCH_REQUESTS} from '../client/redux/actionConstants';
 import * as actions from '../client/redux/actionsCreators';
 import * as types from '../client/clientTypes';
-import {checkValidAccessToken} from '../checkValidTokens';
 import {setTokens} from '../authorization/authFetch';
 import {LoginResponse} from '../authorization/authTypes';
 import { HANDLE_ERROR} from '../authorization/redux/actionConstants';
+
 import '@babel/polyfill';
 
 // function* getUsers() {
@@ -31,16 +30,17 @@ import '@babel/polyfill';
 //     //if(response) yield put ({type: USERS_SUCCEEDED, payload: response})
 // }
  
-
-export default function* clientRequestSaga () {
+const BASE_URL = 'http://localhost:5000'
+export default function* clientCodeRequestSaga () {
     yield takeLatest(FETCH_REQUESTS, fetchRequests);
-    yield takeEvery(FETCH_REQUEST, fetchRequest);
-    yield takeLeading(REFRESH_TOKEN, refreshNewToken);
+   // yield takeEvery(FETCH_REQUEST, fetchRequest);
+  
 }
+
 
 function* getUsers() {
     try {
-        const response: types.UserInfo = yield call(fetchRequest, {endpoint: 'users', method: 'GET'});
+        const response: types.UserInfo = yield call(fetchRequest, {endpoint: `${BASE_URL}/users`, method: 'GET'});
         if (response) yield put ({type: USERS_SUCCEEDED, payload: response});
     
     }
@@ -55,7 +55,7 @@ function* getUsers() {
     
 function* getComments() {
     try{
-        const response: types.UserInfo = yield call(fetchRequest, {endpoint: 'comments', method: 'GET'});
+        const response: types.UserInfo = yield call(fetchRequest, {endpoint: `${BASE_URL}/comments`, method: 'GET'});
         if (response) yield put ({type: USERS_SUCCEEDED, payload: response});
         //else yield put({type: USERS_FAILED, payload: response})
     }
@@ -68,7 +68,7 @@ function* getComments() {
     
 function* getAvatars() {
     try {
-        const response: types.UserInfo = yield spawn(fetchRequest, {endpoint: 'avatars', method: 'GET'});
+        const response: types.UserInfo = yield spawn(fetchRequest, {endpoint: `${BASE_URL}/avatars`, method: 'GET'});
         if (response) yield put ({type: USERS_SUCCEEDED, payload: response});
         
     }
@@ -81,7 +81,7 @@ function* getAvatars() {
 
 function* getMessage() {
     try {
-        const response: types.UserInfo = yield spawn(fetchRequest, {endpoint: 'message', method: 'GET'});
+        const response: types.UserInfo = yield spawn(fetchRequest, {endpoint: `${BASE_URL}/message`, method: 'GET'});
         if (response) yield put ({type: USERS_SUCCEEDED, payload: response});
         else yield put({type: USERS_FAILED, payload: response})
     }
@@ -101,12 +101,12 @@ export function* fetchRequests() {
     yield fork(getMessage);
 }
 
-function* fetchRequest(action: any) {
+//function* fetchRequest(action: any) {
  
        // yield call(throttleFn);
-        yield call(requestValidToken);
+        //yield call(requestValidToken);
 
-        const response: Response = yield call(iFetch, action.endpoint, action.method, action.body, action.options);
+        //const response: Response = yield call(iFetch, action.endpoint, action.method, action.body, action.options);
        // return response;
     
    
@@ -114,7 +114,7 @@ function* fetchRequest(action: any) {
     //     console.log(error)
     //     yield put({type: HANDLE_ERROR, payload: error});
     // }
-}
+//}
 
 // function* throttleFn() {
 //     yield put({type: GET_TOKEN});
@@ -136,11 +136,11 @@ function* fetchRequest(action: any) {
 // } 
 
 
-function* getToken() {
+//function* getToken() {
     //try {
-    yield call(requestValidToken);
+    //yield call(requestValidToken);
     //}
     // catch(error) {
     //     yield put({type: HANDLE_ERROR, payload: error});
     // }
-} 
+//} 

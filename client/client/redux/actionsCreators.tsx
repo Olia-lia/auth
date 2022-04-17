@@ -13,25 +13,15 @@ export const fetchRequest = (endpoint: string, method: string, body?: any, optio
 };
 
 
-export const refreshNewToken = (refreshToken: string) => {
-    return {
-        type: Constants.REFRESH_TOKEN,
-        payload: refreshToken
-     
-    };
-};
-
 export const getToken = () => {
     return {
         type: Constants.GET_TOKEN,
     };
 };
 
-//(requestArray: Array<void>)
 export const fetchRequests = () => {
     return {
         type: Constants.FETCH_REQUESTS,
-        //payload: requestArray
     };
 };
 
@@ -46,25 +36,10 @@ export const getUsers = () => {
     };
 };
 
-// export const getComments =  (endpoint: string, method: string, options?: any) => {
-//     return {
-//         type: Constants.GET_USERS,
-//         payload: {
-//             endpoint,
-//             method,
-//             options
-//         }
-//     };
-// };
-
 
 export const getComments = () => {
     return {
         type: Constants.GET_USERS,
-        // payload: {
-        //     endpoint: 'comments',
-        //     method: 'GET'
-        // }
     };
 };
 

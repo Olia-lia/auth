@@ -52,32 +52,11 @@ export const setTokens  = (data: types.LoginResponse) => {
 }; 
 
 
-// interface SetTokens {
-//     type: AuthTypes.SET_TOKENS,
-//     payload: TokenPair,
-// }
+export const refreshNewToken = (refreshToken: string) => {
+    return {
+        type: Constants.REFRESH_TOKEN,
+        payload: refreshToken
+     
+    };
+};
 
-// interface RemoveTokens {
-//     type: AuthTypes.REMOVE_TOKENS,
-//     payload: TokenPair,
-// }
-
-// interface RefreshToken {
-//     type: AuthTypes.REFRESH_TOKEN,
-//     payload: {
-//         refreshToken: string,
-//     }
-// }
-
-// interface AcquireTokens {
-//     type: AuthTypes.ACQUIRE_TOKENS,
-//     payload: {
-//         url: string,
-//     }
-// }
-
-// export type AuthActions =
-//     SetTokens
-//     | RemoveTokens
-//     | RefreshTokens
-//     | AcquireTokens;

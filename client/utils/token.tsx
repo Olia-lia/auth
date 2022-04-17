@@ -1,9 +1,8 @@
 import {LoginResponse} from '../authorization/authTypes';
-import {refreshNewToken} from '../authorization/authFetch';
+//import {refreshNewToken} from '../authorization/authFetch';
 import {UnauthorizedError} from 'auth-flow/lib/errors';
-import {setTokens} from '../authorization/authFetch';
 import {put, call, spawn, fork} from 'redux-saga/effects';
-import { REFRESH_TOKEN } from '../client/redux/actionConstants';
+import { REFRESH_TOKEN } from '../authorization/redux/actionConstants';
 import '@babel/polyfill';
 
 interface tokenPair {
@@ -46,11 +45,12 @@ class Token   {
 //     } 
 //     else if (accessToken == null || !Token.isAccessTokenValid(now)) {
 //         if (refreshTokenRequest == null) {
-//             refreshTokenRequest = refreshNewToken();
+//             refreshTokenRequest = ref(refreshToken);
 //         }
 //         const data: LoginResponse = await refreshTokenRequest;
+      
+//         //await setTokens(data);
 //         refreshTokenRequest = null;
-//         await setTokens(data);
 //         return data.accessToken;
 //     }
 //     return accessToken;
@@ -60,28 +60,32 @@ class Token   {
 
 let refreshTokenRequest: LoginResponse | null = null;
 
-const refffreshToken = function*(action) {
-    yield put({type: REFRESH_TOKEN, payload: action.payload});
-};
+// export const refreshNewToken = function*(action) {
+//     const data: LoginResponse = yield put({type: REFRESH_TOKEN, payload: action.payload})
+// };
 
 export function* requestValidToken() {
   
+ console.log(refreshTokenRequest);
     let {refreshToken, accessToken} = yield call(Token.getToken);
-    const now =  yield call(Date.now);
-    if (refreshToken == null || !Token.isRefreshTokenValid(now)) {
+    const now:number = yield call(Date.now);
+    if (refreshToken == null || !(Token.isRefreshTokenValid(now))) {
         throw new UnauthorizedError('token not valid');
     } 
     else if (accessToken == null || !Token.isAccessTokenValid(now)) {
+
         if (refreshTokenRequest == null) {
-            refreshTokenRequest = yield refffreshToken(refreshToken)
-     
+            refreshTokenRequest = put({type: REFRESH_TOKEN, payload: refreshToken})
         }
-        const data:LoginResponse = yield call (refffreshToken, refreshToken)
-        console.log(data)
-        yield call(setTokens, data);
+        
+        const data:LoginResponse = yield (refreshTokenRequest)
        
-        refreshTokenRequest = null;
-       // return data.accessToken;
+        //yield put({type: SET_TOKENS, payload: data})
+     
+  
+         refreshTokenRequest = null;
+         return data.accessToken
+  
     }
     return accessToken;
 }
